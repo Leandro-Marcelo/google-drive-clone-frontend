@@ -3,7 +3,7 @@ import store from "./store/store"
 import { BrowserRouter, Route } from "react-router-dom"
 import RoutesWithNotFound from "./components/RoutesWithNotFound"
 import { PrivateRoutes, PublicRoutes } from "./utils/constants"
-import AuthGuard from "./utils/guards/AuthGuard"
+/* import AuthGuard from "./utils/guards/AuthGuard" */
 import LoginSignUpPage from "./pages/LoginSignUpPage"
 
 const App = () => {

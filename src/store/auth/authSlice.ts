@@ -13,6 +13,7 @@ const CURRENT_USER_RESET: CurrentUser = {
 
 const AUTH_STATE_RESET = {
   currentUser: CURRENT_USER_RESET,
+  logged: false,
 }
 
 const initialState = AUTH_STATE_RESET
