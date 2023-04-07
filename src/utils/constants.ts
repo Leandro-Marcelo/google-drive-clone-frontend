@@ -1,10 +1,9 @@
 export const PublicRoutes = {
-  LOGIN: "login",
-  SIGN_UP: "sign-up",
+  AUTH: "auth",
 }
 
 // routes tipo : googledrive.leandrocode/private/*
-export const PrivateRoutes = {
+export const AuthenticatedRoutes = {
   DRIVE: "drive",
   MY_DRIVE: "my-drive",
   FOLDER: "folder",

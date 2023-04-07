@@ -35,3 +35,10 @@ export interface File {
 export type CurrentUser = Omit<User, "password">
 
 export type PublicUser = Omit<User, "password">
+
+// AUTH
+
+export interface AuthValidateResponse {
+  currentUser: CurrentUser
+  authJwt: string
+}

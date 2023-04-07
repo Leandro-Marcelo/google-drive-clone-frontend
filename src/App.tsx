@@ -2,9 +2,12 @@ import { Provider } from "react-redux"
 import store from "./store/store"
 import { BrowserRouter, Route } from "react-router-dom"
 import RoutesWithNotFound from "./components/RoutesWithNotFound"
-import { PrivateRoutes, PublicRoutes } from "./utils/constants"
-/* import AuthGuard from "./utils/guards/AuthGuard" */
-import LoginSignUpPage from "./pages/LoginSignUpPage"
+import { AuthenticatedRoutes, PublicRoutes } from "./utils/constants"
+import AuthGuard from "./utils/guards/AuthGuard"
+import LoginSignUpPage from "./pages/Public/LoginSignUpPage"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import Drive from "./pages/Authenticated/Drive/Index"
 
 const App = () => {
   return (
@@ -12,12 +15,15 @@ const App = () => {
       <BrowserRouter>
         <RoutesWithNotFound>
           <Route path="/" element={<LoginSignUpPage />} />
-          {/* <Route path={PublicRoutes.LOGIN} element={<Login />} />
           <Route element={<AuthGuard />}>
-            <Route path={`${PrivateRoutes.DRIVE}/*`} element={<Drive />} />
-          </Route> */}
+            <Route
+              path={`${AuthenticatedRoutes.DRIVE}/*`}
+              element={<Drive />}
+            />
+          </Route>
         </RoutesWithNotFound>
       </BrowserRouter>
+      <ToastContainer />
     </Provider>
   )
 }

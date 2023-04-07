@@ -26,3 +26,29 @@ export const MODE = import.meta.env.MODE // development (str)
 export const DEV = import.meta.env.DEV // true (bool)
 export const PROD = import.meta.env.PROD // false (bool)
 ```
+
+Muy importante que en las peticiones hacía el servidor se use bien el content-type ya que al trabajar con files no podemos pedir que nos stremee un archivo y le mandamos como content type application/json ya que el servidor no sabrá que hacer con el archivo.
+
+## Para traer los datos de una API
+
+### func authLoginAPI
+
+### func authLogoutAPI
+
+## Función para hacer esa petición async
+
+### func authLoginFetch
+
+### func authLogoutFetch
+
+### Función para manejar esa funcionalidad
+
+### func handleLogout
+
+## Para llamar a los reducers
+
+### func loginSignUpGoogleReducer
+
+## Para traer datos del estado global (store)
+
+### func storeAuth

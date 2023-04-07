@@ -1,21 +1,32 @@
-import { Link, useNavigate } from "react-router-dom"
-import svgGoogleLogo from "../assets/googleLogo.svg"
-import { DEV, MODE, PROD, REST_API } from "../configs"
+import { useNavigate } from "react-router-dom"
+import svgGoogleLogo from "../../assets/googleLogo.svg"
+import { REST_API } from "../../configs"
 import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "../store/hook"
+import { useAppDispatch, useAppSelector } from "../../store/hook"
+import { authValidateAPI } from "../../services"
+import { loginSignUpGoogleReducer } from "../../store/auth/authSlice"
 
 const LoginSignUpPage = () => {
   const auth = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const authValidateFetch = async () => {
+      try {
+        const response = await authValidateAPI()
+        dispatch(loginSignUpGoogleReducer(response.data))
+      } catch (err: any) {}
+    }
+
+    authValidateFetch()
+  }, [])
 
   useEffect(() => {
-    if (auth.logged) {
+    if (auth.currentUser !== null) {
       navigate("/drive")
     }
-  }, [auth.logged])
+  }, [auth.currentUser])
 
   return (
     <div className="w-full h-screen ">
