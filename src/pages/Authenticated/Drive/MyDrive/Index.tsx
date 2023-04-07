@@ -10,7 +10,7 @@ const Index = () => {
     <>
       <div className="flex max-h-screen min-h-screen">
         <LeftSideBar />
-        {/* (all-without-left-sidebar.png) */}
+        {/* (all-without-left-sidebar.png)  */}
         <div className="w-full bg-green-500">
           <SearchTop />
           {/* (files-folders-body-and-others-apps.png) */}
