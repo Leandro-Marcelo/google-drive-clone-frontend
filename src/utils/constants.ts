@@ -6,6 +6,13 @@ export const PublicRoutes = {
 export const AuthenticatedRoutes = {
   DRIVE: "drive",
   MY_DRIVE: "my-drive",
+  COMPUTERS: "computers",
+  SHARED_WITH_ME: "shared-with-me",
+  STARRED: "starred",
+  RECENT: "recent",
+  TRASH: "trash",
+  STORAGE: "quota",
+
   FOLDER: "folder",
   // PAGES
   PROFILE: "profile",

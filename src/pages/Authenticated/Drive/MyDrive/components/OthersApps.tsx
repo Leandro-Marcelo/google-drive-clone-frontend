@@ -10,7 +10,7 @@ const OthersApps = () => {
   return (
     <div className="w-[50px]">
       {/* flex w-[50px] flex-col items-center gap-8 bg-green-400 py-3 */}
-      <div className="flex h-[93.5%] flex-col items-center gap-8 bg-red-500 py-3">
+      <div className="flex h-[93.5%] flex-col items-center gap-8  py-3">
         <div>
           <img src={googleCalendar} alt="" className="h-5 w-5" />
         </div>

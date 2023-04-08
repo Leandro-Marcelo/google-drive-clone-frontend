@@ -8,6 +8,7 @@ import LoginSignUpPage from "./pages/Public/LoginSignUpPage"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import Drive from "./pages/Authenticated/Drive/Index"
+import Test from "./pages/Test"
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <BrowserRouter>
         <RoutesWithNotFound>
           <Route path="/" element={<LoginSignUpPage />} />
+          <Route path="/test" element={<Test />} />
           <Route element={<AuthGuard />}>
             <Route
               path={`${AuthenticatedRoutes.DRIVE}/*`}

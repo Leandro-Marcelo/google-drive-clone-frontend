@@ -4,6 +4,7 @@ import PreviewFile from "./components/PreviewFile"
 import MessageWarningStorage from "./components/MessageWarningStorage"
 import OthersApps from "./components/OthersApps"
 import FileActions from "./components/FileActions"
+import MessageAlertStorage from "./components/MessageAlertStorage"
 
 const Index = () => {
   return (
@@ -11,16 +12,18 @@ const Index = () => {
       <div className="flex max-h-screen min-h-screen">
         <LeftSideBar />
         {/* (all-without-left-sidebar.png)  */}
-        <div className="w-full bg-green-500">
+        <div className="w-full ">
           <SearchTop />
           {/* (files-folders-body-and-others-apps.png) */}
-          <div className="flex h-[93%] bg-yellow-400">
+          <div className="flex h-[93%] bg-[#F7F9FC] ">
             {/* (files-folders-body.png) */}
-            <div className="w-full bg-amber-600">
+            {/* px-5 py-1 */}
+            <div className="w-full bg-white rounded-2xl ">
               <FileActions />
               {/* message-warning-storage-and-preview-file */}
-              <div className="flex h-[94.5%]">
-                <MessageWarningStorage />
+              <div className="flex h-[92.5%]">
+                {/* <MessageWarningStorage /> */}
+                <MessageAlertStorage />
                 {/* <PreviewFile /> */}
               </div>
               {/* ./ message-warning-storage-and-preview-file */}
