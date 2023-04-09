@@ -11,7 +11,13 @@ const MessageAlertStorage = () => {
       {"81% of storage used" ? (
         /* flex-wrap items-center justify-between */
         /* px-3 py-[6px] */
-        <div className="grid min-h-[5%]   w-full grid-cols-[30px_1fr_30px]  bg-[#F9DEDC] py-2 px-3 rounded-md">
+        <div
+          className="grid min-h-[5%]   w-full grid-cols-[30px_1fr_30px]  bg-[#F9DEDC] py-2 px-3 rounded-md"
+          onContextMenu={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+        >
           {/*  pt-3 */}
           <div className=" flex justify-center pt-[6px]">
             {getSvg({

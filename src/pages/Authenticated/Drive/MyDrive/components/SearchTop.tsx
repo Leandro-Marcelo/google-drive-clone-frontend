@@ -8,6 +8,7 @@ const SearchTop = () => {
       className="flex h-[7%] bg-[#F7F9FC] "
       onContextMenu={(e) => {
         e.preventDefault()
+        e.stopPropagation()
       }}
     >
       <div className="flex w-full items-center  ">

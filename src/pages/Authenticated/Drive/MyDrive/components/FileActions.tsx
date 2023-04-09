@@ -15,7 +15,12 @@ const FileActions = () => {
 
   return (
     /*   pl-1 pr-7 */
-    <div className="flex h-[7.5%] items-center justify-between border-b-[1px] border-solid border-[#ccc] pl-2 pr-8 py-1">
+    <div
+      className="flex h-[7.5%] items-center justify-between border-b-[1px] border-solid border-[#ccc] pl-2 pr-8 py-1"
+      onContextMenu={(e) => {
+        e.preventDefault()
+      }}
+    >
       {fileOrFolderSelected ? (
         /* pl-4  */
         <div className="flex items-center gap-3 ">

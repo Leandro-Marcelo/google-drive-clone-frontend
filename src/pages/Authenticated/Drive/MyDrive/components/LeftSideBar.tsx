@@ -21,6 +21,7 @@ const LeftSideBar = () => {
       className="min-w-[260px] bg-[#F7F9FC] "
       onContextMenu={(e) => {
         e.preventDefault()
+        e.stopPropagation()
       }}
     >
       <div className="h-[7%] ">

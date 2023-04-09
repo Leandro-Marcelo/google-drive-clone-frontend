@@ -30,7 +30,13 @@ const MyFilesAndFolders = () => {
   return (
     <>
       {/* TODO Crear las imagenes que van debajo de Suggested */}
-      <div className="h-[6%] py-4 pl-1 pr-7 text-sm font-semibold text-[#5f6368]">
+      <div
+        className="h-[6%] py-4 pl-1 pr-7 text-sm font-semibold text-[#5f6368]"
+        onContextMenu={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+      >
         Suggested
       </div>
       <div
