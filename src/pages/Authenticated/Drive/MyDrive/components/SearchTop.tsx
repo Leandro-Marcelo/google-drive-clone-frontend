@@ -4,12 +4,17 @@ import Tooltip from "../../../../../components/Tooltip"
 
 const SearchTop = () => {
   return (
-    <div className="flex h-[7%] bg-[#F7F9FC] ">
+    <div
+      className="flex h-[7%] bg-[#F7F9FC] "
+      onContextMenu={(e) => {
+        e.preventDefault()
+      }}
+    >
       <div className="flex w-full items-center  ">
         {/* relative flex w-full items-center shadow-md lg:shadow-none xl:w-[714px] */}
         <div className="relative flex w-full items-center shadow-md rounded-full xl:w-[714px]">
           {/* hover:bg-[#3c404314] rounded-full p-2 group */}
-          <div className="absolute left-3 hidden lg:block   ">
+          <div className="absolute left-[6px] hidden lg:block   ">
             <Tooltip text="Search" direction="top-10 -left-4" textNoWrap={true}>
               <div>
                 {getSvg({

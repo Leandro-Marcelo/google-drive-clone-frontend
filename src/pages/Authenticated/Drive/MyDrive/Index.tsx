@@ -5,6 +5,7 @@ import MessageWarningStorage from "./components/MessageWarningStorage"
 import OthersApps from "./components/OthersApps"
 import FileActions from "./components/FileActions"
 import MessageAlertStorage from "./components/MessageAlertStorage"
+import MyFilesAndFolders from "./components/MyFilesAndFolders"
 
 const Index = () => {
   return (
@@ -23,7 +24,10 @@ const Index = () => {
               {/* message-warning-storage-and-preview-file */}
               <div className="flex h-[92.5%]">
                 {/* <MessageWarningStorage /> */}
-                <MessageAlertStorage />
+                <div className="w-full overflow-y-scroll  px-4">
+                  <MessageAlertStorage />
+                  <MyFilesAndFolders />
+                </div>
                 {/* <PreviewFile /> */}
               </div>
               {/* ./ message-warning-storage-and-preview-file */}

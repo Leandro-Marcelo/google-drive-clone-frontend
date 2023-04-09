@@ -33,6 +33,8 @@ export type SvgType =
   | "trashSelected"
   | "cloudSelected"
   | "warningSelected"
+  | "checkboxIndeterminate"
+  | "checkboxChecked"
 
 export type SvgFill =
   | "#5F6368"
@@ -41,6 +43,7 @@ export type SvgFill =
   | "#444746"
   | "#1F1F1F"
   | "#B42921"
+  | "#c5221f"
 
 export interface SvgItem {
   type: SvgType

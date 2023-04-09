@@ -17,7 +17,12 @@ const LeftSideBar = () => {
     "mb-[2px] flex items-center gap-4 py-[6px] rounded-full bg-[#C2E7FF]"
 
   return (
-    <div className="min-w-[260px] bg-[#F7F9FC] ">
+    <div
+      className="min-w-[260px] bg-[#F7F9FC] "
+      onContextMenu={(e) => {
+        e.preventDefault()
+      }}
+    >
       <div className="h-[7%] ">
         <div className="flex items-center gap-2 py-3  px-5">
           <img src={googleDriveIcon} alt="" className="h-10 w-10" />

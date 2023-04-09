@@ -8,16 +8,15 @@ export interface Props {
 }
 
 const Tooltip = ({ text, children, direction, textNoWrap }: Props) => {
-  const style = `absolute top-10 rounded text-white hidden transition-all duration-300 group-hover:block ${direction}`
+  const style = `absolute rounded text-white hidden transition-all duration-300 group-hover:block ${direction}`
 
-  const textStyles = `rounded bg-[#5f6368] py-[6px] px-2 text-[12px] text-center shadow-lg ${
+  const textStyles = `rounded bg-[#5f6368] py-[6px] px-2 text-[12px] text-center shadow-lg font-semibold ${
     textNoWrap ? "whitespace-nowrap" : ""
   }`
 
   const mainDivStyle = `p-2 rounded-full hover:bg-[#3c404314]  cursor-pointer relative group`
 
   return (
-    /* group */
     <div className={mainDivStyle}>
       {children}
       <div className={style}>

@@ -3,37 +3,35 @@ import Tooltip from "../../../../../components/Tooltip"
 import { getSvg } from "../../../../../utils/getSvg"
 
 const FileActions = () => {
-  const [fileOrFolderSelected, setFileOrFolderSelected] = useState(true)
+  const [fileOrFolderSelected, setFileOrFolderSelected] = useState(false)
 
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e: any) => {
     setChecked(e.target.checked)
     setIndeterminate(false)
   }
 
   return (
     /*   pl-1 pr-7 */
-    <div className="flex h-[7.5%] items-center justify-between border-b-[1px] border-solid border-[#ccc] pl-5 pr-8 py-1">
+    <div className="flex h-[7.5%] items-center justify-between border-b-[1px] border-solid border-[#ccc] pl-2 pr-8 py-1">
       {fileOrFolderSelected ? (
         /* pl-4  */
         <div className="flex items-center gap-3 ">
-          {/* <div className="flex items-center gap-2 text-[#1F1F1F] font-semibold">
-            <input type="checkbox" className="w-4 h-4" />
-            <div>1 selected</div>
-          </div> */}
-          <input
-            type="checkbox"
-            className="w-4 h-4 block"
-            checked={checked}
-            onChange={handleCheckboxChange}
-            ref={(input) => {
-              if (input) {
-                input.indeterminate = indeterminate
-              }
-            }}
-          />
+          <Tooltip
+            text="Select all files on screen"
+            direction="top-10 -left-4"
+            textNoWrap={true}
+          >
+            <div>
+              {getSvg({
+                type: "checkboxIndeterminate",
+                width: "20px",
+                height: "20px",
+              })}
+            </div>
+          </Tooltip>
 
           <div className="text-[#1F1F1F] font-semibold">1 selected</div>
 

@@ -1,0 +1,166 @@
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import { Link } from "react-router-dom";
+import { PrivateRoutes } from "../utils/constants";
+import { openModalCreateUpdateFolder } from "../utils/openModal";
+import { getSvg } from "../utils/getSvg";
+import ContextMenu from "./ContextMenu";
+import {
+    setChildFolders,
+    setFolderToUpdate,
+} from "../store/folder/folderSlice";
+import { deleteFolderThunk } from "../store/folder/folderThunk";
+
+interface Props {
+    /* setShow: React.Dispatch<React.SetStateAction<boolean>>; */
+    initialState: {
+        x: number;
+        y: number;
+        fileSelected: number;
+        folderSelected: number;
+    };
+    show: boolean;
+    setShow: any;
+    points: {
+        x: number;
+        y: number;
+        fileSelected: number;
+        folderSelected: number;
+    };
+    setPoints: any;
+}
+
+export default function FolderContainer({
+    initialState,
+    show,
+    setShow,
+    points,
+    setPoints,
+}: Props) {
+    const dispatch = useAppDispatch();
+    const { folders } = useAppSelector((state) => state.folder);
+
+    /* const addFolderIdToInFolderState = (id: number, originalName: string) => */
+
+    // PARA QUE SE PONGA AZUL
+    // ! QUIZAS NO DEBERÍAMOS UTILIZAR UN ESTADO PORQUE RENDERIZA TODA LA APP
+    /* const [isClicked, setIsClicked] = useState(false);
+
+    const normalFolder =
+        "flex items-center rounded-md border-1 border-solid border-[#ccc]   px-5 relative hover:bg-[#f5f5f5]  font-semibold";
+
+    const clickedFolder =
+        "flex items-center rounded-md border-1 border-solid border-[#ccc] bg-[#E8F0FE]  px-5 relative text-[#185ABC] font-semibold"; */
+
+    const handleDelete = (folderId: number) => {
+        dispatch(deleteFolderThunk(folderId));
+    };
+
+    return (
+        <div className="grid w-full  grid-cols-2   justify-between gap-2   px-2 md:grid-cols-3 2xl:grid-cols-5">
+            {folders &&
+                folders.length >= 0 &&
+                folders.map((folder) => (
+                    <div
+                        key={folder.id}
+                        className="rounded-md border-[1px] border-solid border-[#DADCE0]"
+                    >
+                        <div
+                            onContextMenu={(e) => {
+                                // ESTO ES PARA QUE NO SE HABRA EL CONTEXT MENU POR DEFECTO DE LOS NAVEGADORES
+                                e.preventDefault();
+                                // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
+                                e.stopPropagation();
+                                setShow(true);
+                                setPoints({
+                                    ...initialState,
+                                    x: e.pageX,
+                                    y: e.pageY,
+                                    folderSelected: folder.id,
+                                });
+                            }}
+                            className={"z-100 relative"}
+                        >
+                            <p
+                                /* className={
+                                    isClicked ? clickedFolder : normalFolder
+                                } */
+                                className={`border-1 relative flex items-center rounded-md border-solid   border-[#ccc] px-5 font-semibold  hover:bg-[#f5f5f5]`}
+                                /* onClick={() => setIsClicked(!isClicked)} */
+                                /* to={`/drive/${PrivateRoutes.FOLDER}/${folder.id}`} */
+                                onClick={() =>
+                                    dispatch(
+                                        setChildFolders({
+                                            id: folder.id,
+                                            originalName: folder.originalName,
+                                        })
+                                    )
+                                }
+                            >
+                                {getSvg({ type: "folder" })}
+                                <span
+                                    className="overflow-hidden text-ellipsis whitespace-nowrap p-4 text-[13px] hover:cursor-default"
+                                    title={folder.originalName}
+                                >
+                                    {folder.originalName}
+                                </span>
+                            </p>
+                        </div>
+                        {show && points.folderSelected === folder.id && (
+                            <ContextMenu y={points.y} x={points.x}>
+                                <ul className="cardShadow rounded-md bg-white py-4">
+                                    {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                                        Get Link {folder.id}
+                                    </li>
+                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                                        Move to
+                                    </li>
+                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                                        Add to Starred or Tag
+                                    </li> */}
+
+                                    <li
+                                        className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+                                        onClick={() => {
+                                            dispatch(
+                                                setFolderToUpdate({
+                                                    id: folder.id,
+                                                    originalName:
+                                                        folder.originalName,
+                                                })
+                                            );
+                                            openModalCreateUpdateFolder();
+                                        }}
+                                    >
+                                        Rename
+                                    </li>
+                                    {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                                        Change Color
+                                    </li>
+                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                                        Download
+                                    </li> */}
+                                    <li
+                                        className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+                                        onClick={() => handleDelete(folder.id)}
+                                    >
+                                        Remove
+                                    </li>
+                                </ul>
+                            </ContextMenu>
+                        )}
+                    </div>
+                ))}
+        </div>
+    );
+}
+
+/* 
+
+
+<Folder
+                        key={folder.id}
+                        id={folder.id}
+                        originalName={folder.originalName}
+                    />
+*/
