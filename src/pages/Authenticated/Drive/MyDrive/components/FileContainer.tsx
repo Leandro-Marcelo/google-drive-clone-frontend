@@ -222,7 +222,10 @@ export default function FileContainer({
                       dispatch(
                         setFileToUpdateReducer({
                           fileId: file.id,
-                          originalName: file.originalName,
+                          data: {
+                            originalName: file.originalName,
+                            folderId: file.folderId,
+                          },
                         })
                       )
                       openModalUpdateFile()

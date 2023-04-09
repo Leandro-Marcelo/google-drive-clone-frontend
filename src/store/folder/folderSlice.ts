@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { File, Folder } from "../../utils/typesAndInterfaces"
+import {
+  File,
+  Folder,
+  UpdateFileByIdParams,
+} from "../../utils/typesAndInterfaces"
 
 export interface ReduxState {
   status: string
@@ -20,10 +24,7 @@ export interface FolderState extends ReduxState {
     id: string
     originalName: string
   } | null
-  fileToUpdate: {
-    fileId: string
-    originalName: string
-  } | null
+  fileToUpdate: UpdateFileByIdParams | null
 }
 
 const initialState: FolderState = {
@@ -60,19 +61,27 @@ export const foldersSlice = createSlice({
 
     setFileToUpdateReducer(
       state,
-      action: PayloadAction<{ fileId: string; originalName: string } | null>
+      action: PayloadAction<UpdateFileByIdParams | null>
     ) {
+      if (!action.payload) return { ...state, fileToUpdate: null }
+
       return {
         ...state,
         fileToUpdate: action.payload,
       }
     },
-    updateFileByIdReducer(
-      state,
-      action: PayloadAction<{ fileId: string; originalName: string }>
-    ) {
+    updateFileByIdReducer(state, action: PayloadAction<File>) {
+      const updatedFiles = state.files.map((file) => {
+        if (file.id === action.payload.id) return action.payload
+        return file
+      })
+
+      console.log("updatedFiles")
+      console.log(updatedFiles)
+
       return {
         ...state,
+        files: updatedFiles,
       }
     },
   },

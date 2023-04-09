@@ -7,6 +7,7 @@ import {
   updateFileByIdReducer,
 } from "../store/folder/folderSlice"
 import { getSvg } from "../utils/getSvg"
+import { updateFileByIdAPI } from "../services/files"
 
 interface Props {
   root: any
@@ -21,7 +22,7 @@ export default function ModalUpdateFile({ root }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
   const { originalName, handleChange, resetForm } = useForm({
-    originalName: fileToUpdate ? fileToUpdate.originalName : "",
+    originalName: fileToUpdate ? fileToUpdate.data.originalName : "",
   })
 
   function cb(e: Event) {
@@ -40,18 +41,25 @@ export default function ModalUpdateFile({ root }: Props) {
     dispatch(setFileToUpdateReducer(null))
   }
 
-  const handleUpdateFile = () => {
-    if (fileToUpdate && fileToUpdate.fileId) {
-      dispatch(
-        updateFileByIdReducer({
-          // no se que hace ese !
-          // originalName: originalName,
+  const updateFileByIdFetch = async () => {
+    try {
+      // TODO: add validation
+      if (!fileToUpdate) return
+      const response = await updateFileByIdAPI({
+        fileId: fileToUpdate.fileId,
+        data: {
           originalName: originalName,
-          fileId: fileToUpdate.fileId,
-        })
-      )
-    }
+          folderId: fileToUpdate.data.folderId,
+        },
+      })
+      dispatch(updateFileByIdReducer(response.data))
+    } catch (err) {}
+  }
 
+  const handleUpdateFileById = async () => {
+    if (!fileToUpdate) return
+
+    await updateFileByIdFetch()
     handleClick()
     resetForm()
   }
@@ -132,7 +140,7 @@ export default function ModalUpdateFile({ root }: Props) {
               /* 1967d2 */
               /* f6f9fd */
               className="closeBtn cursor-pointer bg-none px-5 py-1 font-medium text-white  bg-[#1967d2] rounded-full text-[15px]"
-              onClick={handleUpdateFile}
+              onClick={handleUpdateFileById}
             >
               OK
             </button>

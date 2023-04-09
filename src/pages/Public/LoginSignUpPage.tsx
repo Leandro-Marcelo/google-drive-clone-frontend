@@ -3,7 +3,7 @@ import svgGoogleLogo from "../../assets/googleLogo.svg"
 import { REST_API } from "../../configs"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../store/hook"
-import { authValidateAPI } from "../../services"
+import { authValidateAPI } from "../../services/auth"
 import { loginSignUpGoogleReducer } from "../../store/auth/authSlice"
 
 const LoginSignUpPage = () => {

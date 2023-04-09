@@ -42,3 +42,11 @@ export interface AuthValidateResponse {
   currentUser: CurrentUser
   authJwt: string
 }
+
+// FILE
+export type UpdateFileDBInput = Pick<File, "originalName" | "folderId">
+
+export interface UpdateFileByIdParams {
+  fileId: string
+  data: UpdateFileDBInput
+}

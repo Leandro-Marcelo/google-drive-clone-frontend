@@ -49,10 +49,3 @@ axiosClient.interceptors.response.use(
     return Promise.reject(err)
   }
 )
-
-// * AUTH ENDPOINTS
-export const authValidateAPI = () =>
-  axiosClient.get<AuthValidateResponse>(`/auth/validate`, axiosClientConfig)
-
-export const authLogoutAPI = () =>
-  axiosClient.get<void>(`/auth/logout`, axiosClientConfig)
