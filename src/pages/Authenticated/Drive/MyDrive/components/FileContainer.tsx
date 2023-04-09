@@ -6,6 +6,9 @@ import fileNameIcon from "../../../../../assets/imgs/photoImg.png"
 import { File } from "../../../../../utils/typesAndInterfaces"
 import { getSvg } from "../../../../../utils/getSvg"
 import Tooltip from "../../../../../components/Tooltip"
+import { setFileToUpdateReducer } from "../../../../../store/folder/folderSlice"
+import { openModalUpdateFile } from "../../../../../utils/openModal"
+import { useState } from "react"
 /* import { openModalUpdateFile } from "../utils/openModal" */
 
 interface Props {
@@ -32,9 +35,9 @@ export default function FileContainer({
   setPoints,
 }: Props) {
   const dispatch = useAppDispatch()
-  /* const { files } = useAppSelector((state) => state.folder) */
+  const { files } = useAppSelector((state) => state.folder)
 
-  const files: File[] = [
+  /* const files: File[] = [
     {
       id: "1",
       fileName: "file1",
@@ -101,7 +104,7 @@ export default function FileContainer({
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-  ]
+  ] */
 
   const normalFile =
     "overflow-hidden text-ellipsis whitespace-nowrap rounded-b-md border-b-1 border-l-1 border-r-1 border-solid border-[#ccc] p-4 group-hover:bg-[#f5f5f5] flex gap-2 items-center"
@@ -118,7 +121,7 @@ export default function FileContainer({
 
   return (
     /* px-2 */
-    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  md:grid-cols-3 2xl:grid-cols-6">
+    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  md:grid-cols-3 2xl:grid-cols-6 ">
       {files &&
         files.length >= 0 &&
         files.map((file) => (
@@ -127,8 +130,9 @@ export default function FileContainer({
             /* rounded-md border-[1px] border-solid border-[#DADCE0] */
             className="rounded-xl bg-[#F2F6FC] hover:bg-[#f5f5f5] "
           >
+            {/* bg-blue-500 */}
             <div
-              className=" px-3 pb-3 py-1 relative cursor-default bg-blue-500" /* onClick={() => setIsClicked(!isClicked)} */
+              className=" px-3 pb-3 py-1 relative cursor-default " /* onClick={() => setIsClicked(!isClicked)} */
               onContextMenu={(e) => {
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
                 e.stopPropagation()
@@ -143,47 +147,42 @@ export default function FileContainer({
                 })
               }}
             >
+              {/* p-4 */}
+              {/* overflow-hidden text-ellipsis whitespace-nowrap rounded-b-md border-b-1 border-l-1 border-r-1 border-solid border-[#ccc]  group-hover:bg-[#f5f5f5] flex gap-2 items-center bg-red-500 */}
+              {/* overflow-hidden */}
+              {/* group-hover:bg-[#f5f5f5]  */}
               <div
-                /* bg-[#F7F9FC] */
-                /* rounded-md */
-                /* font-semibold */
-                /* group */
-                className="  "
+                className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1`}
               >
-                {/* p-4 */}
-                {/* overflow-hidden text-ellipsis whitespace-nowrap rounded-b-md border-b-1 border-l-1 border-r-1 border-solid border-[#ccc]  group-hover:bg-[#f5f5f5] flex gap-2 items-center bg-red-500 */}
-                {/* overflow-hidden */}
-                {/* group-hover:bg-[#f5f5f5]  */}
-                <div
-                  className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 `}
-                >
-                  {/* //! ACA DEBERÍAMOS QUITARLE LA EXNTESIÓN PORQUE HAY GENTE QUE SUBE IMAGENES CON . */}
-                  <div className="flex items-center gap-4 pl-3  flex-1">
-                    <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
-                    {/* pl-3   */}
-                    <div className={`group/tooltip flex-1`}>
-                      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] flex-1">
-                        {file.originalName}
-                        {".svg"}
-                      </span>
-                      <div
-                        className={`absolute  rounded text-white hidden transition-all duration-300 group-hover/tooltip:block top-8 left-6`}
-                      >
-                        <div className="flex max-w-xs flex-col items-center">
-                          <div
-                            className={`rounded bg-[#5f6368] py-[6px] px-2 text-[12px] text-center shadow-lg`}
-                          >
-                            {file.originalName}
-                            {".svg"}
-                          </div>
+                {/* //! ACA DEBERÍAMOS QUITARLE LA EXNTESIÓN PORQUE HAY GENTE QUE SUBE IMAGENES CON . */}
+                {/* flex-1 */}
+                <div className="flex items-center gap-4 pl-3   w-[90%]">
+                  <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
+                  {/* flex-1 */}
+                  <div
+                    className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
+                  >
+                    {/* flex-1 */}
+                    <span className=" text-[13px] ">{file.originalName}</span>
+                    <div
+                      className={`absolute  rounded text-white hidden transition-all duration-300 group-hover/tooltip:block top-8 left-6`}
+                    >
+                      <div className="flex max-w-xs flex-col items-center">
+                        <div
+                          className={`rounded bg-[#5f6368] py-[6px] px-2 text-[12px] text-center shadow-lg`}
+                        >
+                          {file.originalName}
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="w-[10%]">
                   <Tooltip
                     text="More actions"
                     direction="top-8 -left-6"
                     textNoWrap={true}
+                    hoverPadding="p-1"
                   >
                     <div>
                       {getSvg({
@@ -194,16 +193,16 @@ export default function FileContainer({
                     </div>
                   </Tooltip>
                 </div>
-                <img
-                  src={file.imgSrc}
-                  alt="leandro profile picture"
-                  className="h-[200px] w-full rounded-md object-cover "
-                />
               </div>
+              <img
+                src={file.imgSrc}
+                alt="leandro profile picture"
+                className="h-[200px] w-full rounded-md object-cover "
+              />
             </div>
             {points.fileSelected === file.id && (
               <ContextMenu y={points.y} x={points.x}>
-                <ul className="cardShadow rounded-md bg-white py-4">
+                <ul className="rounded-md bg-white py-4">
                   {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
                                         Preview {file.id}
                                     </li>
@@ -220,13 +219,17 @@ export default function FileContainer({
                   <li
                     className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
                     onClick={() => {
-                      /* dispatch(
-                        setFileToUpdate({
-                          id: file.id,
+                      dispatch(
+                        setFileToUpdateReducer({
+                          fileId: file.id,
                           originalName: file.originalName,
                         })
-                      ) */
-                      /*  openModalUpdateFile() */
+                      )
+                      openModalUpdateFile()
+                      setPoints({
+                        ...initialState,
+                        fileSelected: "",
+                      })
                     }}
                   >
                     Rename

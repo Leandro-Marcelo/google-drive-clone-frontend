@@ -1,9 +1,11 @@
 import authReducer from "./auth/authSlice"
+import folderReducer from "./folder/folderSlice"
 import { configureStore } from "@reduxjs/toolkit"
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    folder: folderReducer,
   },
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware({

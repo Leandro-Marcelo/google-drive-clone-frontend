@@ -16,7 +16,7 @@ const FileActions = () => {
   return (
     /*   pl-1 pr-7 */
     <div
-      className="flex h-[7.5%] items-center justify-between border-b-[1px] border-solid border-[#ccc] pl-2 pr-8 py-1"
+      className="flex h-[7.5%] items-center justify-between pl-1 pr-8"
       onContextMenu={(e) => {
         e.preventDefault()
       }}

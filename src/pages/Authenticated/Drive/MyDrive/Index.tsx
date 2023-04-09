@@ -1,13 +1,51 @@
 import LeftSideBar from "./components/LeftSideBar"
 import SearchTop from "./components/SearchTop"
-import PreviewFile from "./components/PreviewFile"
-import MessageWarningStorage from "./components/MessageWarningStorage"
 import OthersApps from "./components/OthersApps"
 import FileActions from "./components/FileActions"
 import MessageAlertStorage from "./components/MessageAlertStorage"
 import MyFilesAndFolders from "./components/MyFilesAndFolders"
+import { useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "../../../../store/hook"
+import { getRootFilesAndFoldersReducer } from "../../../../store/folder/folderSlice"
+import { getRootFilesAPI } from "../../../../services/files"
+import { getRootFoldersAPI } from "../../../../services/folders"
 
 const Index = () => {
+  const dispatch = useAppDispatch()
+  const storeFolder = useAppSelector((store) => store.folder)
+
+  useEffect(() => {
+    //console.log("childFolders", childFolders);
+
+    const getRootFilesAndFolderFetch = async () => {
+      try {
+        const filesResponse = await getRootFilesAPI()
+        const folderResponse = await getRootFoldersAPI()
+        dispatch(
+          getRootFilesAndFoldersReducer({
+            files: filesResponse.data,
+            folders: folderResponse.data,
+          })
+        )
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    if (storeFolder.childFolders && storeFolder.childFolders.length >= 1) {
+      /* dispatch(
+        getFolderByIdThunk(
+          storeFolder.childFolders[storeFolder.childFolders.length - 1].id
+        )
+      ) */
+    } else {
+      getRootFilesAndFolderFetch()
+      // dispatch(getRootFilesAndFoldersReducer())
+    }
+
+    return () => {}
+  }, [storeFolder.childFolders])
+
   return (
     <>
       <div className="flex max-h-screen min-h-screen">
@@ -17,22 +55,28 @@ const Index = () => {
           <SearchTop />
           {/* (files-folders-body-and-others-apps.png) */}
           <div className="flex h-[93%] bg-[#F7F9FC] ">
-            {/* (files-folders-body.png) */}
-            {/* px-5 py-1 */}
-            <div className="w-full bg-white rounded-2xl ">
-              <FileActions />
-              {/* message-warning-storage-and-preview-file */}
-              <div className="flex h-[92.5%]">
-                {/* <MessageWarningStorage /> */}
-                <div className="w-full overflow-y-scroll  px-4">
-                  <MessageAlertStorage />
-                  <MyFilesAndFolders />
+            <div className="h-full">
+              {/* (files-folders-body.png) */}
+              <div className="w-full   h-[98%] bg-white rounded-2xl">
+                <FileActions />
+                {/* message-warning-storage-and-preview-file */}
+                {/* bg-white rounded-xl */}
+                <div className="flex h-[92.5%] ">
+                  {/* <MessageWarningStorage /> */}
+                  {/* overflow-y-scroll */}
+                  <div className="w-full overflow-y-auto  px-4 h-full">
+                    {"hasStorageFull" === "hasStorageFull" ? (
+                      <MessageAlertStorage />
+                    ) : null}
+                    <MyFilesAndFolders />
+                  </div>
+                  {/* <PreviewFile /> */}
                 </div>
-                {/* <PreviewFile /> */}
+                {/* ./ message-warning-storage-and-preview-file */}
               </div>
-              {/* ./ message-warning-storage-and-preview-file */}
+              {/* ./ (files-folders-body.png) */}
+              <div className="h-[2%]"></div>
             </div>
-            {/* ./ (files-folders-body.png) */}
             <OthersApps />
           </div>
           {/* ./ (files-folders-body-and-others-apps.png) */}
@@ -43,3 +87,8 @@ const Index = () => {
   )
 }
 export default Index
+
+/* <div>
+              <div></div>  
+              <div></div>  
+            </div> */

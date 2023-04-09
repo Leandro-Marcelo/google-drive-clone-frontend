@@ -11,8 +11,9 @@ const MessageAlertStorage = () => {
       {"81% of storage used" ? (
         /* flex-wrap items-center justify-between */
         /* px-3 py-[6px] */
+        /* min-h-[5%]   */
         <div
-          className="grid min-h-[5%]   w-full grid-cols-[30px_1fr_30px]  bg-[#F9DEDC] py-2 px-3 rounded-md"
+          className="grid min-h-[6%]   w-full grid-cols-[30px_1fr_30px]  bg-[#F9DEDC] py-2 px-3 rounded-md"
           onContextMenu={(e) => {
             e.preventDefault()
             e.stopPropagation()

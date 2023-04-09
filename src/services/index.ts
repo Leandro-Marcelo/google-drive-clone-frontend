@@ -1,10 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios"
 import { REST_API } from "../configs"
-import { AuthValidateResponse } from "../utils/typesAndInterfaces"
+import { AuthValidateResponse, File, Folder } from "../utils/typesAndInterfaces"
 import { errorToast } from "../utils/toasts"
 
 export const axiosClient = axios.create({ baseURL: REST_API + "/api" })
-export const config: AxiosRequestConfig = { withCredentials: true }
+export const axiosClientConfig: AxiosRequestConfig = { withCredentials: true }
 
 // * Example of interceptor with JWT
 /* import { getInLocalStorage, LocalStorageKeys } from "./localStorage"
@@ -52,6 +52,7 @@ axiosClient.interceptors.response.use(
 
 // * AUTH ENDPOINTS
 export const authValidateAPI = () =>
-  axiosClient.get<AuthValidateResponse>(`/auth/validate`, config)
+  axiosClient.get<AuthValidateResponse>(`/auth/validate`, axiosClientConfig)
 
-export const authLogoutAPI = () => axiosClient.get<void>(`/auth/logout`, config)
+export const authLogoutAPI = () =>
+  axiosClient.get<void>(`/auth/logout`, axiosClientConfig)

@@ -42,7 +42,7 @@ export const getSvg = (item: SvgItem) => {
           height={item.height ? item.height : "14px"}
           viewBox="0 0 10 10"
           focusable="false"
-          fill={item.fill}
+          fill={item.fill ? item.fill : "currentColor"}
         >
           <polygon points="10,1.01 8.99,0 5,3.99 1.01,0 0,1.01 3.99,5 0,8.99 1.01,10 5,6.01 8.99,10 10,8.99 6.01,5 "></polygon>
         </svg>

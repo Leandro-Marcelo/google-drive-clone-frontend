@@ -31,7 +31,7 @@ const MyFilesAndFolders = () => {
     <>
       {/* TODO Crear las imagenes que van debajo de Suggested */}
       <div
-        className="h-[6%] py-4 pl-1 pr-7 text-sm font-semibold text-[#5f6368]"
+        className="h-[7%] py-4 pl-1 pr-7 text-sm font-semibold text-[#5f6368] "
         onContextMenu={(e) => {
           e.preventDefault()
           e.stopPropagation()
@@ -40,49 +40,47 @@ const MyFilesAndFolders = () => {
         Suggested
       </div>
       <div
-        /* bg-yellow-500 */
-        className={`bg-white ${
+        /* className={` bg-green-500 ${
           "81% of storage used" === "81% of storage used"
             ? `min-h-[89%]`
             : `min-h-[94%]`
-        } `}
+        } `} */
+        /* bg-green-500 */
+        className={`   ${
+          "hasStorageFull" === "hasStorageFull" ? `min-h-[87%]` : `min-h-[93%]`
+        }`}
+        onContextMenu={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          setPoints({
+            ...initialState,
+            x: e.pageX,
+            y: e.pageY,
+            fileSelected: "",
+            folderSelected: "",
+            dropAreaSelected: "newFileOrFolder",
+          })
+        }}
       >
-        <div
-          /* bg-yellow-500  min-h-screen */
-          className="bg-yellow-500"
-          onContextMenu={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setPoints({
-              ...initialState,
-              x: e.pageX,
-              y: e.pageY,
-              fileSelected: "",
-              folderSelected: "",
-              dropAreaSelected: "newFileOrFolder",
-            })
-          }}
-        >
-          {/* <DropArea refInputFile={refInputFile} /> */}
-          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-            Folders
-          </h4>
-          {/* <FolderContainer
+        {/* <DropArea refInputFile={refInputFile} /> */}
+        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
+          Folders
+        </h4>
+        {/* <FolderContainer
               initialState={initialState}
               show={show}
               setShow={setShow}
               points={points}
               setPoints={setPoints}
             /> */}
-          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-            Files
-          </h4>
-          <FileContainer
-            initialState={initialState}
-            points={points}
-            setPoints={setPoints}
-          />
-        </div>
+        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
+          Files
+        </h4>
+        <FileContainer
+          initialState={initialState}
+          points={points}
+          setPoints={setPoints}
+        />
         {points.dropAreaSelected === "newFileOrFolder" && (
           <ContextMenu y={points.y} x={points.x}>
             <ul className="rounded-md bg-white py-4">

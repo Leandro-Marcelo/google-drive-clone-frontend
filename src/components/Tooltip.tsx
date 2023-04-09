@@ -5,10 +5,19 @@ export interface Props {
   children: ReactNode
   direction: string
   textNoWrap: boolean
+  hoverPadding?: string
 }
 
-const Tooltip = ({ text, children, direction, textNoWrap }: Props) => {
-  const mainContainer = `p-2 rounded-full hover:bg-[#3c404314]  cursor-pointer relative group`
+const Tooltip = ({
+  text,
+  children,
+  direction,
+  textNoWrap,
+  hoverPadding,
+}: Props) => {
+  const mainContainer = `${
+    hoverPadding ? hoverPadding : "p-2"
+  } rounded-full hover:bg-[#3c404314]  cursor-pointer relative group`
 
   const tooltipContainer = `absolute rounded text-white hidden transition-all duration-300 group-hover:block ${direction} z-20`
 
