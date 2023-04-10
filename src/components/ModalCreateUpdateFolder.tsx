@@ -118,17 +118,13 @@ export default function ModalCreateFolder({ root }: Props) {
         <input
           type="text"
           name="originalName"
-          /* border-[1px] focus:border-1 mb-4 rounded-md border-solid border-[#747775]  px-3 py-2 text-sm  focus:outline-[#1967D2] */
-          /* border-1 focus:border-1 mb-2 rounded-md border-solid border-[#DADCE0]  px-5 py-3 text-sm hover:border-black focus:outline-[#1967D2] */
           className="border-[1px] focus:border-1 mb-4 rounded-[4px] border-solid border-[#747775]  px-4 py-[10px] text-sm  focus:outline-[#1967D2] "
-          /* defaultValue={`Untitled folder`} */
           value={originalName}
           onChange={handleChange}
           ref={inputRef}
         />
         <div className="ml-auto">
           <button
-            /* f6f9fd */
             className="closeBtn hover:bg-[rgba(0,0,0,0.1) ] cursor-pointer rounded-full bg-none px-[15px] py-[10px] font-semibold text-[#0b57d0] hover:bg-[#f6f9fd] hover:text-[#185ABC] text-[15px]"
             onClick={cancel}
           >
