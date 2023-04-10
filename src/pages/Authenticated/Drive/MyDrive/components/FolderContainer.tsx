@@ -1,15 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
-/* import { setFileToUpdate } from "../store/folder/folderSlice"
-import { deleteManyThunk } from "../store/folder/folderThunk" */
-import ContextMenu from "./ContextMenu"
-import fileNameIcon from "../../../../../assets/imgs/photoImg.png"
-import { File } from "../../../../../utils/typesAndInterfaces"
+import { openModalCreateUpdateFolder } from "../../../../../utils/openModal"
 import { getSvg } from "../../../../../utils/getSvg"
+import ContextMenu from "./ContextMenu"
+import { setFolderToUpdate } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
-import { setFileToUpdateReducer } from "../../../../../store/folder/folderSlice"
-import { openModalUpdateFile } from "../../../../../utils/openModal"
-import { useEffect, useState } from "react"
-/* import { openModalUpdateFile } from "../utils/openModal" */
 
 interface Props {
   /* setShow: React.Dispatch<React.SetStateAction<boolean>>; */
@@ -19,7 +13,6 @@ interface Props {
     fileSelected: string
     folderSelected: string
   }
-
   points: {
     x: number
     y: number
@@ -29,70 +22,69 @@ interface Props {
   setPoints: any
 }
 
-export default function FileContainer({
+export default function FolderContainer({
   initialState,
   points,
   setPoints,
 }: Props) {
   const dispatch = useAppDispatch()
-  const { files } = useAppSelector((state) => state.folder)
+  const storeFolder = useAppSelector((store) => store.folder)
 
-  useEffect(() => {
-    const handleClick = () => {
-      setPoints({
-        ...initialState,
-        fileSelected: "",
-      })
-    }
-    window.addEventListener("click", handleClick)
-    return () => window.removeEventListener("click", handleClick)
-  }, [])
+  /* const addFolderIdToInFolderState = (id: number, originalName: string) => */
+
+  // PARA QUE SE PONGA AZUL
+  // ! QUIZAS NO DEBERÍAMOS UTILIZAR UN ESTADO PORQUE RENDERIZA TODA LA APP
+  /* const [isClicked, setIsClicked] = useState(false);
+
+    const normalFolder =
+        "flex items-center rounded-md border-1 border-solid border-[#ccc]   px-5 relative hover:bg-[#f5f5f5]  font-semibold";
+
+    const clickedFolder =
+        "flex items-center rounded-md border-1 border-solid border-[#ccc] bg-[#E8F0FE]  px-5 relative text-[#185ABC] font-semibold"; */
+
+  /* const handleDelete = (folderId: number) => {
+    dispatch(deleteFolderThunk(folderId))
+  } */
 
   return (
-    /* px-2 */
-    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  md:grid-cols-3 2xl:grid-cols-6 ">
-      {files &&
-        files.length >= 0 &&
-        files.map((file) => (
+    <div className="grid w-full  grid-cols-2   justify-between gap-2    md:grid-cols-3 2xl:grid-cols-6">
+      {storeFolder.folders.length >= 0 &&
+        storeFolder.folders.map((folder) => (
           <div
-            key={file.id}
-            /* rounded-md border-[1px] border-solid border-[#DADCE0] */
+            key={folder.id}
+            /* border-[1px] border-solid border-[#DADCE0] */
             className="rounded-xl bg-[#F2F6FC] hover:bg-[#f5f5f5] "
           >
-            {/* bg-blue-500 */}
             <div
-              className=" px-3 pb-3 py-1 relative cursor-default " /* onClick={() => setIsClicked(!isClicked)} */
+              className={"px-3 py-[6px] relative cursor-default "}
               onContextMenu={(e) => {
-                // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
-                e.stopPropagation()
                 // ESTO ES PARA QUE NO SE HABRA EL CONTEXT MENU POR DEFECTO DE LOS NAVEGADORES
                 e.preventDefault()
+                // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
+                e.stopPropagation()
                 setPoints({
                   ...initialState,
                   x: e.pageX,
                   y: e.pageY,
-                  fileSelected: file.id,
-                  dropAreaSelected: "",
+                  folderSelected: folder.id,
                 })
               }}
+              /* px-3 pb-3 py-1 relative cursor-default */
+              /* z-100 relative flex items-center */
             >
-              {/* p-4 */}
-              {/* overflow-hidden text-ellipsis whitespace-nowrap rounded-b-md border-b-1 border-l-1 border-r-1 border-solid border-[#ccc]  group-hover:bg-[#f5f5f5] flex gap-2 items-center bg-red-500 */}
-              {/* overflow-hidden */}
-              {/* group-hover:bg-[#f5f5f5]  */}
               <div
-                className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1`}
+                className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1 `}
               >
                 {/* //! ACA DEBERÍAMOS QUITARLE LA EXNTESIÓN PORQUE HAY GENTE QUE SUBE IMAGENES CON . */}
                 {/* flex-1 */}
                 <div className="flex items-center gap-4 pl-3   w-[90%]">
-                  <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
+                  {getSvg({ type: "folder", width: "20px", height: "20px" })}
                   {/* flex-1 */}
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
                   >
                     {/* flex-1 */}
-                    <span className=" text-[13px] ">{file.originalName}</span>
+                    <span className=" text-[13px] ">{folder.originalName}</span>
                     <div
                       className={`absolute  rounded text-white hidden transition-all duration-300 group-hover/tooltip:block top-8 left-6`}
                     >
@@ -100,12 +92,25 @@ export default function FileContainer({
                         <div
                           className={`rounded bg-[#5f6368] py-[6px] px-2 text-[12px] text-center shadow-lg`}
                         >
-                          {file.originalName}
+                          {folder.originalName}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                {/* <div className="w-[90%] pl-3">
+                <p
+                  className={`border-1 relative flex items-center rounded-md border-solid   border-[#ccc]    `}
+                >
+                  {getSvg({ type: "folder", width: "20px", height: "20px" })}
+                  <span
+                    className="overflow-hidden text-ellipsis whitespace-nowrap p-4 text-[13px] hover:cursor-default"
+                    title={folder.originalName}
+                  >
+                    {folder.originalName}
+                  </span>
+                </p>
+              </div> */}
                 <div className="w-[10%]">
                   <Tooltip
                     text="More actions"
@@ -123,20 +128,12 @@ export default function FileContainer({
                   </Tooltip>
                 </div>
               </div>
-              <img
-                src={file.imgSrc}
-                alt="leandro profile picture"
-                className="h-[200px] w-full rounded-md object-cover "
-              />
             </div>
-            {points.fileSelected === file.id && (
+            {points.folderSelected === folder.id && (
               <ContextMenu y={points.y} x={points.x}>
-                <ul className="rounded-md bg-white py-4">
+                <ul className="cardShadow rounded-md bg-white py-4">
                   {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Preview {file.id}
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Get Link
+                                        Get Link {folder.id}
                                     </li>
                                     <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
                                         Move to
@@ -149,29 +146,28 @@ export default function FileContainer({
                     className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
                     onClick={() => {
                       dispatch(
-                        setFileToUpdateReducer({
-                          fileId: file.id,
+                        setFolderToUpdate({
+                          folderId: folder.id,
                           data: {
-                            originalName: file.originalName,
-                            folderId: file.folderId,
+                            originalName: folder.originalName,
+                            parentFolderId: folder.parentFolderId,
                           },
                         })
                       )
-                      openModalUpdateFile()
-                      setPoints({
-                        ...initialState,
-                        fileSelected: "",
-                      })
+                      openModalCreateUpdateFolder()
                     }}
                   >
                     Rename
                   </li>
                   {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                                        Change Color
+                                    </li>
+                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
                                         Download
                                     </li> */}
                   <li
                     className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                    /* onClick={() => handleRemove(file.fileName)} */
+                    // onClick={() => handleDelete(folder.id)}
                   >
                     Remove
                   </li>
@@ -183,3 +179,13 @@ export default function FileContainer({
     </div>
   )
 }
+
+/* 
+
+
+<Folder
+                        key={folder.id}
+                        id={folder.id}
+                        originalName={folder.originalName}
+                    />
+*/

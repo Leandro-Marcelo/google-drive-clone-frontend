@@ -19,6 +19,23 @@ export function openModal() {
   )
 }
 
+export function openModalCreateUpdateFolder() {
+  const ModalCreateUpdateFolder = lazy(
+    () => import("../components/ModalCreateUpdateFolder")
+  )
+  const modalDiv = document.createElement("div")
+  modalDiv.id = "modalCreateFolder"
+  document.body.appendChild(modalDiv)
+  const root = createRoot(modalDiv)
+  root.render(
+    <Suspense fallback={<ModalLoading />}>
+      <Provider store={store}>
+        <ModalCreateUpdateFolder root={root} />
+      </Provider>
+    </Suspense>
+  )
+}
+
 export function openModalUpdateFile() {
   const ModalUpdateFile = lazy(() => import("../components/ModalUpdateFile"))
   const modalDiv = document.createElement("div")

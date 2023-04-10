@@ -3,6 +3,8 @@ import {
   File,
   Folder,
   UpdateFileByIdParams,
+  UpdateFolderByIdParams,
+  UpdateFolderDBInput,
 } from "../../utils/typesAndInterfaces"
 
 export interface ReduxState {
@@ -20,10 +22,7 @@ export interface FolderState extends ReduxState {
   files: File[]
   folders: Folder[]
   childFolders: ChildFolder[]
-  folderToUpdate: {
-    id: string
-    originalName: string
-  } | null
+  folderToUpdate: UpdateFolderByIdParams | null
   fileToUpdate: UpdateFileByIdParams | null
 }
 
@@ -44,7 +43,6 @@ export const foldersSlice = createSlice({
   name: "folders",
   initialState,
   reducers: {
-    // * FOLDER STATE
     getRootFilesAndFoldersReducer(
       state,
       action: PayloadAction<{
@@ -58,7 +56,15 @@ export const foldersSlice = createSlice({
         folders: action.payload.folders,
       }
     },
-
+    setFolderToUpdate(
+      state,
+      action: PayloadAction<UpdateFolderByIdParams | null>
+    ) {
+      return {
+        ...state,
+        folderToUpdate: action.payload,
+      }
+    },
     setFileToUpdateReducer(
       state,
       action: PayloadAction<UpdateFileByIdParams | null>
@@ -76,12 +82,28 @@ export const foldersSlice = createSlice({
         return file
       })
 
-      console.log("updatedFiles")
-      console.log(updatedFiles)
-
       return {
         ...state,
         files: updatedFiles,
+      }
+    },
+
+    updateFolderByIdReducer(state, action: PayloadAction<Folder>) {
+      const updatedFolders = state.folders.map((folder) => {
+        if (folder.id === action.payload.id) return action.payload
+        return folder
+      })
+
+      return {
+        ...state,
+        folders: updatedFolders,
+      }
+    },
+
+    createFolderReducer(state, action: PayloadAction<Folder>) {
+      return {
+        ...state,
+        folders: [...state.folders, action.payload],
       }
     },
   },
@@ -94,6 +116,9 @@ export const {
   getRootFilesAndFoldersReducer,
   setFileToUpdateReducer,
   updateFileByIdReducer,
+  setFolderToUpdate,
+  updateFolderByIdReducer,
+  createFolderReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

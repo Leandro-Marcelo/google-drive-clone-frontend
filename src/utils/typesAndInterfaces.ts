@@ -50,3 +50,20 @@ export interface UpdateFileByIdParams {
   fileId: string
   data: UpdateFileDBInput
 }
+
+// FOLDER
+
+export type CreateFolderDBInput = Pick<
+  Folder,
+  "originalName" | "parentFolderId"
+>
+
+export type UpdateFolderDBInput = Pick<
+  Folder,
+  "originalName" | "parentFolderId"
+>
+
+export interface UpdateFolderByIdParams {
+  folderId: string
+  data: UpdateFolderDBInput
+}

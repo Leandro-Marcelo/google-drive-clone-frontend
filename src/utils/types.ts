@@ -35,6 +35,7 @@ export type SvgType =
   | "warningSelected"
   | "checkboxIndeterminate"
   | "checkboxChecked"
+  | "folder"
 
 export type SvgFill =
   | "#5F6368"

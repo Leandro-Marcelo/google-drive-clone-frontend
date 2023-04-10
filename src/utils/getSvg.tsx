@@ -521,6 +521,24 @@ MEI+zj0AAAAASUVORK5CYII="
           </g>
         </svg>
       )
+
+    case "folder":
+      return (
+        <svg
+          width={item.width ? item.width : "24px"}
+          height={item.height ? item.height : "24px"}
+          viewBox="0 0 22 16"
+          fill={item.fill ? item.fill : "currentColor"}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M7.07283 0.49712C6.70791 0.176698 6.23886 0 5.75323 0H2C0.89543 0 0 0.895431 0 2V2.34668V3.84V14C0 15.1046 0.895433 16 2 16H19.3333C20.4379 16 21.3333 15.1046 21.3333 14V4.34668C21.3333 3.24211 20.4379 2.34668 19.3333 2.34668H9.93271C9.44708 2.34668 8.97803 2.16998 8.61311 1.84956L7.07283 0.49712Z"
+            fill="#5f6368"
+          />
+        </svg>
+      )
   }
 }
 

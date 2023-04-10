@@ -124,7 +124,6 @@ export default function ModalUpdateFile({ root }: Props) {
           /* defaultValue={`Untitled folder`} */
           value={originalName}
           onChange={handleChange}
-          autoFocus={true}
           ref={inputRef}
         />
         <div className="ml-auto">
