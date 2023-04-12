@@ -50,7 +50,7 @@ export default function FileContainer({
 
   return (
     /* px-2 */
-    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  md:grid-cols-3 2xl:grid-cols-6 ">
+    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  xl:grid-cols-3 2xl:grid-cols-6 ">
       {files &&
         files.length >= 0 &&
         files.map((file) => (

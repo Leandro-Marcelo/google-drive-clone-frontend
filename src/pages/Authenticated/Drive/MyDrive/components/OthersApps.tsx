@@ -18,26 +18,42 @@ const OthersApps = () => {
     >
       {/* flex w-[50px] flex-col items-center gap-8 bg-green-400 py-3 */}
       <div className="flex h-[93.5%] flex-col items-center gap-5 py-3">
-        <Tooltip text="Calendar" direction="top-10 -left-6" textNoWrap={true}>
+        <Tooltip
+          text="Calendar"
+          direction="top-10 -left-8 xl:top-10 xl:-left-7 md:top-10 md:-left-8 2xl:top-10 2xl:-left-8"
+          textNoWrap={true}
+        >
           <div>
             <img src={googleCalendar} alt="" className="h-5 w-5" />
           </div>
         </Tooltip>
 
-        <Tooltip text="Keep" direction="top-10 -left-1" textNoWrap={true}>
+        <Tooltip
+          text="Keep"
+          direction="top-10 -left-3 xl:top-10 xl:-left-2 md:top-10 md:-left-2 2xl:top-10 2xl:-left-2"
+          textNoWrap={true}
+        >
           <div>
             <img src={googleKeep} alt="" className="h-5 w-5" />
           </div>
         </Tooltip>
 
-        <Tooltip text="Tasks" direction="top-10 -left-1" textNoWrap={true}>
+        <Tooltip
+          text="Tasks"
+          direction="top-10 -left-3 xl:top-10 xl:-left-2 md:top-10 md:-left-2 2xl:top-10 2xl:-left-2"
+          textNoWrap={true}
+        >
           <div>
             <img src={googleTask} alt="" className="h-5 w-5" />
           </div>
         </Tooltip>
 
         <div className="mb-[26px]">
-          <Tooltip text="Contacts" direction="top-10 -left-6" textNoWrap={true}>
+          <Tooltip
+            text="Contacts"
+            direction="top-10 -left-8 xl:top-10 xl:-left-7 md:top-10 md:-left-8 2xl:top-10 2xl:-left-8"
+            textNoWrap={true}
+          >
             <div>
               <img src={googleContact} alt="" className="h-5 w-5" />
             </div>
@@ -46,7 +62,7 @@ const OthersApps = () => {
 
         <Tooltip
           text="Get Adds-on"
-          direction="top-10 -left-11"
+          direction="top-10 -left-[50px] md:top-10 md:-left-[50px] xl:top-10 xl:-left-[50px]  2xl:top-10 2xl:-left-[50px]"
           textNoWrap={true}
         >
           {/* my-8 */}

@@ -13,6 +13,9 @@ import {
   getRootFoldersAPI,
 } from "../../../../services/folders"
 
+import { getSvg } from "../../../../utils/getSvg"
+import CloudUploadingDragOver from "./components/CloudUploadingDragOver"
+
 const Index = () => {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
@@ -67,14 +70,15 @@ const Index = () => {
 
   return (
     <>
-      <div className="flex max-h-screen min-h-screen">
+      <div className="flex max-h-screen min-h-screen relative">
+        <CloudUploadingDragOver />
         <LeftSideBar />
         {/* (all-without-left-sidebar.png)  */}
         <div className="w-full ">
           <SearchTop />
           {/* (files-folders-body-and-others-apps.png) */}
           <div className="flex h-[93%] bg-[#F7F9FC] ">
-            <div className="h-full">
+            <div className="h-full flex flex-1">
               {/* (files-folders-body.png) */}
               <div className="w-full   h-[98%] bg-white rounded-2xl">
                 <FileActions />

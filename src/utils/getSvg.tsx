@@ -15,6 +15,24 @@ export const getSvg = (item: SvgItem) => {
           <polygon points="5,8 10,13 15,8"></polygon>
         </svg>
       )
+    case "driveEmpty":
+      return (
+        <svg
+          width={item.width ? item.width : "100"}
+          height={item.height ? item.height : "75"}
+          viewBox="0 0 100 75"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M4 0C1.79086 0 0 1.79086 0 4V14C0 14.1693 0.0105217 14.3362 0.0309469 14.5C0.0105217 14.6638 0 14.8307 0 15V71C0 73.2091 1.79086 75 4 75H96C98.2091 75 100 73.2091 100 71V15C100 12.7909 98.2091 11 96 11H43.0278C43.0256 10.9981 43.0234 10.9962 43.0212 10.9942L31.6323 0.994239C30.9025 0.353396 29.9644 0 28.9931 0H4Z"
+            fill="#40A9FF"
+          />
+        </svg>
+      )
+
     case "arrowToggleSidePanel":
       return (
         <svg
@@ -146,7 +164,7 @@ export const getSvg = (item: SvgItem) => {
           width={item.width ? item.width : "24px"}
           height={item.height ? item.height : "24px"}
           viewBox="0 0 24 24"
-          fill="#000000"
+          fill={item.fill ? item.fill : "currentColor"}
           focusable="false"
         >
           <path d="M19 2H5C3.9 2 3 2.9 3 4V20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V4C21 2.9 20.1 2 19 2ZM19 20H5V19H19V20ZM19 17H5V4H19V17Z"></path>

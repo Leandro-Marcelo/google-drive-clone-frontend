@@ -50,7 +50,7 @@ export default function FolderContainer({
   } */
 
   return (
-    <div className="grid w-full  grid-cols-2   justify-between gap-2    md:grid-cols-3 2xl:grid-cols-6">
+    <div className="grid w-full  grid-cols-2   justify-between gap-2    xl:grid-cols-3 2xl:grid-cols-6">
       {storeFolder.folders.length >= 0 &&
         storeFolder.folders.map((folder) => (
           <div

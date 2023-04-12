@@ -37,6 +37,7 @@ export type SvgType =
   | "checkboxChecked"
   | "folder"
   | "greatherThanFolder"
+  | "driveEmpty"
 
 export type SvgFill =
   | "#5F6368"
