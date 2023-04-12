@@ -539,6 +539,19 @@ MEI+zj0AAAAASUVORK5CYII="
           />
         </svg>
       )
+
+    case "greatherThanFolder":
+      return (
+        <svg
+          width={item.width ? item.width : "24px"}
+          height={item.height ? item.height : "24px"}
+          viewBox="0 0 24 24"
+          focusable="false"
+          fill={item.fill ? item.fill : "currentColor"}
+        >
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+        </svg>
+      )
   }
 }
 

@@ -67,3 +67,7 @@ export interface UpdateFolderByIdParams {
   folderId: string
   data: UpdateFolderDBInput
 }
+
+export interface GetFolderContents {
+  folderId: string
+}

@@ -36,6 +36,7 @@ export type SvgType =
   | "checkboxIndeterminate"
   | "checkboxChecked"
   | "folder"
+  | "greatherThanFolder"
 
 export type SvgFill =
   | "#5F6368"
@@ -45,6 +46,7 @@ export type SvgFill =
   | "#1F1F1F"
   | "#B42921"
   | "#c5221f"
+  | "#747775"
 
 export interface SvgItem {
   type: SvgType

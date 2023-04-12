@@ -4,7 +4,6 @@ import {
   Folder,
   UpdateFileByIdParams,
   UpdateFolderByIdParams,
-  UpdateFolderDBInput,
 } from "../../utils/typesAndInterfaces"
 
 export interface ReduxState {
@@ -106,6 +105,32 @@ export const foldersSlice = createSlice({
         folders: [...state.folders, action.payload],
       }
     },
+
+    updateChildFoldersReducer(state, action: PayloadAction<ChildFolder>) {
+      const { id } = action.payload // Obtener el id del folder seleccionado
+
+      if (id === "ROOT") {
+        // Si el id es ROOT, resetear el array de childFolders
+        state.childFolders = []
+        return
+      }
+
+      const existingChildFolderIndex = state.childFolders.findIndex(
+        (childFolder) => childFolder.id === id
+      ) // Encontrar el índice del childFolder existente en state.childFolders
+
+      if (existingChildFolderIndex !== -1) {
+        // Si el childFolder ya existe en state.childFolders
+        // Truncar el array de childFolders para mantener solo los elementos hasta el childFolder existente (incluyéndolo)
+        state.childFolders = state.childFolders.slice(
+          0,
+          existingChildFolderIndex + 1
+        )
+      } else {
+        // Agregar el childFolder al final del array de childFolders
+        state.childFolders = [...state.childFolders, action.payload]
+      }
+    },
   },
 
   extraReducers: (builder) => {},
@@ -119,6 +144,7 @@ export const {
   setFolderToUpdate,
   updateFolderByIdReducer,
   createFolderReducer,
+  updateChildFoldersReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

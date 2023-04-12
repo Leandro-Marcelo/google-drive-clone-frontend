@@ -2,7 +2,10 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import { openModalCreateUpdateFolder } from "../../../../../utils/openModal"
 import { getSvg } from "../../../../../utils/getSvg"
 import ContextMenu from "./ContextMenu"
-import { setFolderToUpdate } from "../../../../../store/folder/folderSlice"
+import {
+  updateChildFoldersReducer,
+  setFolderToUpdate,
+} from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
 
 interface Props {
@@ -82,6 +85,14 @@ export default function FolderContainer({
                   {/* flex-1 */}
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
+                    onDoubleClick={(e) => {
+                      dispatch(
+                        updateChildFoldersReducer({
+                          id: folder.id,
+                          originalName: folder.originalName,
+                        })
+                      )
+                    }}
                   >
                     {/* flex-1 */}
                     <span className=" text-[13px] ">{folder.originalName}</span>

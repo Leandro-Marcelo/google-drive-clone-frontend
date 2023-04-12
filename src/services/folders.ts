@@ -1,6 +1,8 @@
 import {
   CreateFolderDBInput,
+  File,
   Folder,
+  GetFolderContents,
   UpdateFolderByIdParams,
 } from "../utils/typesAndInterfaces"
 import { axiosClient, axiosClientConfig } from "./index"
@@ -17,3 +19,11 @@ export const updateFolderByIdAPI = (params: UpdateFolderByIdParams) =>
     params.data,
     axiosClientConfig
   )
+
+export const getFolderContentsAPI = ({ folderId }: GetFolderContents) =>
+  axiosClient.get<
+    Folder & {
+      childFolders: Folder[]
+      files: File[]
+    }
+  >(`/folders/${folderId}`, axiosClientConfig)

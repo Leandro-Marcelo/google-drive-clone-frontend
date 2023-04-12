@@ -8,7 +8,10 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../store/hook"
 import { getRootFilesAndFoldersReducer } from "../../../../store/folder/folderSlice"
 import { getRootFilesAPI } from "../../../../services/files"
-import { getRootFoldersAPI } from "../../../../services/folders"
+import {
+  getFolderContentsAPI,
+  getRootFoldersAPI,
+} from "../../../../services/folders"
 
 const Index = () => {
   const dispatch = useAppDispatch()
@@ -32,12 +35,28 @@ const Index = () => {
       }
     }
 
+    const getFolderContentsFetch = async () => {
+      try {
+        const response = await getFolderContentsAPI({
+          folderId:
+            storeFolder.childFolders[storeFolder.childFolders.length - 1].id,
+        })
+        dispatch(
+          getRootFilesAndFoldersReducer({
+            files: response.data.files,
+            folders: response.data.childFolders,
+          })
+        )
+      } catch (err) {}
+    }
+
     if (storeFolder.childFolders && storeFolder.childFolders.length >= 1) {
       /* dispatch(
         getFolderByIdThunk(
           storeFolder.childFolders[storeFolder.childFolders.length - 1].id
         )
       ) */
+      getFolderContentsFetch()
     } else {
       getRootFilesAndFolderFetch()
       // dispatch(getRootFilesAndFoldersReducer())

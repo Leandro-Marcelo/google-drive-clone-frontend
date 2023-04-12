@@ -1,8 +1,13 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import Tooltip from "../../../../../components/Tooltip"
 import { getSvg } from "../../../../../utils/getSvg"
+import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
+import { updateChildFoldersReducer } from "../../../../../store/folder/folderSlice"
 
 const FileActions = () => {
+  const dispatch = useAppDispatch()
+  const storeFolder = useAppSelector((store) => store.folder)
+
   const [fileOrFolderSelected, setFileOrFolderSelected] = useState(false)
 
   const [checked, setChecked] = useState(false)
@@ -99,10 +104,74 @@ const FileActions = () => {
             </div>
           </Tooltip>
         </div>
-      ) : (
-        <div className="flex cursor-pointer items-center gap-1 rounded-full px-[6px] py-1 hover:bg-[#f5f5f5]">
+      ) : storeFolder.childFolders.length === 0 ? (
+        <div className="flex cursor-pointer items-center gap-1 rounded-full px-[6px] py-1 hover:bg-[#f5f5f5] ">
           <div className="text-2xl pl-2">My Drive</div>
-          {getSvg({ type: "arrowDownSelect" })}
+          <div className="pt-1">{getSvg({ type: "arrowDownSelect" })}</div>
+        </div>
+      ) : (
+        <div className="flex items-center gap-1">
+          <div
+            className="text-[24px] px-4 cursor-pointer hover:bg-[#f5f5f5] rounded-full "
+            onClick={() =>
+              dispatch(
+                updateChildFoldersReducer({
+                  id: "ROOT",
+                  originalName: "ROOT",
+                })
+              )
+            }
+          >
+            My Drive
+          </div>
+          {storeFolder.childFolders.map((cf, idx) => {
+            if (idx === storeFolder.childFolders.length - 1) {
+              return (
+                <React.Fragment key={cf.id}>
+                  <div className="">
+                    {getSvg({
+                      type: "greatherThanFolder",
+                      width: "24px",
+                      height: "24px",
+                      fill: "#747775",
+                    })}
+                  </div>
+                  <div className="flex  items-center pl-4 pr-2 cursor-pointer hover:bg-[#f5f5f5] rounded-full text-[22px]">
+                    <div>{cf.originalName}</div>
+                    <div className="pt-1">
+                      {getSvg({ type: "arrowDownSelect" })}
+                    </div>
+                  </div>
+                </React.Fragment>
+              )
+            }
+
+            return (
+              <React.Fragment key={cf.id}>
+                <div className="">
+                  {getSvg({
+                    type: "greatherThanFolder",
+                    width: "24px",
+                    height: "24px",
+                    fill: "#747775",
+                  })}
+                </div>
+                <div
+                  className="text-[22px] pl-4 pr-4 cursor-pointer hover:bg-[#f5f5f5] rounded-full "
+                  onClick={() =>
+                    dispatch(
+                      updateChildFoldersReducer({
+                        id: cf.id,
+                        originalName: cf.originalName,
+                      })
+                    )
+                  }
+                >
+                  {cf.originalName}
+                </div>
+              </React.Fragment>
+            )
+          })}
         </div>
       )}
       <div className="gap-5 h-full flex items-center">

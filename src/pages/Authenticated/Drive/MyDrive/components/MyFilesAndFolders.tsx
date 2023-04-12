@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { getSvg } from "../../../../../utils/getSvg"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import ContextMenu from "./ContextMenu"
@@ -16,6 +16,11 @@ interface InitialState {
 }
 
 const MyFilesAndFolders = () => {
+  const refInputFile = useRef<HTMLInputElement>(null)
+  const handleClickInputFile = () => {
+    refInputFile.current && refInputFile.current.click()
+  }
+
   const dispatch = useAppDispatch()
   /*  const { childFolders } = useAppSelector((state) => state.folder) */
 
