@@ -1,4 +1,6 @@
-ESTABA AGREGANDO LOS SVG SELECTED DEL SIDEBAR
+Tengo que hacer que el aura azul que aparece cuando haces drag over, se ponga por encima de los objetos y que sea azul/celeste transparente.
+
+Abría que manejar cuando se sube un pdf por ejemplo que es super común
 
 Componentes dibujados
 

@@ -7,6 +7,8 @@ import {
   hideCloudUploadingReducer,
   showCloudUploadingReducer,
 } from "../../../../../store/style/styleSlice"
+import { uploadManyFilesAPI } from "../../../../../services/files"
+import { uploadManyFilesReducer } from "../../../../../store/folder/folderSlice"
 
 export default function DropArea({
   children,
@@ -17,7 +19,7 @@ export default function DropArea({
 }) {
   const anotherRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
-  const { childFolders } = useAppSelector((state) => state.folder)
+  const storeFolder = useAppSelector((store) => store.folder)
 
   /* DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>; */
   const refDropArea = useRef<HTMLDivElement>(null)
@@ -25,7 +27,30 @@ export default function DropArea({
   const refDriveEmpty = useRef<HTMLDivElement>(null)
   const refDragText = useRef<HTMLDivElement>(null)
 
-  const { files } = useAppSelector((state) => state.folder)
+  /* export const uploadMany = createAsyncThunk(
+    "folder/uploadMany",
+    async ({ formData, folderId }: UploadManyParams, thunkApi) => {
+        try {
+            const res = await axios.post(
+                `${API_REST}/api/files/uploadMany/folder/${folderId}`,
+                formData,
+                {
+                    withCredentials: true,
+                }
+            );
+            return res.data;
+        } catch (err: any) {
+            return thunkApi.rejectWithValue(err.response.data);
+        }
+    }
+); */
+
+  const uploadManyFilesFetch = async (formData: FormData) => {
+    try {
+      const res = await uploadManyFilesAPI({ formData })
+      dispatch(uploadManyFilesReducer(res.data))
+    } catch (err: any) {}
+  }
 
   const showFiles = (htmlFiles: FileList) => {
     const formData = new FormData()
@@ -38,18 +63,14 @@ export default function DropArea({
       }
     }
 
-    //dispatch(uploadMany(formData));
-
-    if (childFolders && childFolders.length >= 1) {
-      /* dispatch(
-        uploadMany({
-          formData,
-          folderId: childFolders[childFolders.length - 1].id,
-        })
-      ) */
-    } else {
-      // dispatch(uploadMany({ formData, folderId: null }))
+    if (storeFolder.childFolders.length !== 0) {
+      formData.append(
+        "folderId",
+        storeFolder.childFolders[storeFolder.childFolders.length - 1].id
+      )
     }
+
+    uploadManyFilesFetch(formData)
   }
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -99,9 +120,9 @@ export default function DropArea({
     e.preventDefault()
     e.stopPropagation()
     refDropArea.current && refDropArea.current.classList.remove("active")
-    refCloudUploading.current &&
-      refCloudUploading.current.classList.remove("active")
-    if (refDragText.current) refDragText.current.textContent = ""
+    /*  refCloudUploading.current &&
+      refCloudUploading.current.classList.remove("active") */
+    /* if (refDragText.current) refDragText.current.textContent = "" */
 
     showFiles(e.dataTransfer.files)
   }
@@ -109,9 +130,9 @@ export default function DropArea({
   const handleChangeInputFile = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
 
-    e.target.files !== null &&
-      e.target.files.length >= 1 &&
+    if (e.target.files !== null && e.target.files.length >= 1) {
       showFiles(e.target.files)
+    }
   }
 
   return (

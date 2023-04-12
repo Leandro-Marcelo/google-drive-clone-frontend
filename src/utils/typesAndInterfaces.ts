@@ -51,6 +51,24 @@ export interface UpdateFileByIdParams {
   data: UpdateFileDBInput
 }
 
+export interface UploadManyFilesParams {
+  formData: FormData
+}
+
+export type UploadedFile =
+  | {
+      status: "fulfilled"
+      value: File
+    }
+  | {
+      status: "rejected"
+      reason: {
+        id: string
+        originalName: string
+        message: string
+      }
+    }
+
 // FOLDER
 
 export type CreateFolderDBInput = Pick<

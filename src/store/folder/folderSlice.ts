@@ -4,6 +4,7 @@ import {
   Folder,
   UpdateFileByIdParams,
   UpdateFolderByIdParams,
+  UploadedFile,
 } from "../../utils/typesAndInterfaces"
 
 export interface ReduxState {
@@ -131,6 +132,26 @@ export const foldersSlice = createSlice({
         state.childFolders = [...state.childFolders, action.payload]
       }
     },
+
+    uploadManyFilesReducer(state, action: PayloadAction<UploadedFile[]>) {
+      const uploadedFiles: UploadedFile[] = action.payload
+      const fullfilledFiles: File[] = []
+      const rejectedFiles: string[] = []
+
+      uploadedFiles.forEach((file) => {
+        if (file.status === "rejected") {
+          rejectedFiles.push(file.reason.message)
+        } else {
+          fullfilledFiles.push(file.value)
+        }
+      })
+      const updatedFiles = [...state.files, ...fullfilledFiles]
+
+      return {
+        ...state,
+        files: updatedFiles,
+      }
+    },
   },
 
   extraReducers: (builder) => {},
@@ -145,6 +166,7 @@ export const {
   updateFolderByIdReducer,
   createFolderReducer,
   updateChildFoldersReducer,
+  uploadManyFilesReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer
