@@ -89,3 +89,12 @@ export interface UpdateFolderByIdParams {
 export interface GetFolderContents {
   folderId: string
 }
+
+// * TYPES CTX MENU
+
+export type CtxMenuType = "file" | "folder"
+
+export interface UpdateIsShowCtxMenuReducer {
+  type: CtxMenuType
+  isShow: boolean
+}

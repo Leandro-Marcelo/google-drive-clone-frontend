@@ -1,52 +1,22 @@
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 /* import { setFileToUpdate } from "../store/folder/folderSlice"
 import { deleteManyThunk } from "../store/folder/folderThunk" */
-import ContextMenu from "./ContextMenu"
 import fileNameIcon from "../../../../../assets/imgs/photoImg.png"
 import { File } from "../../../../../utils/typesAndInterfaces"
 import { getSvg } from "../../../../../utils/getSvg"
 import Tooltip from "../../../../../components/Tooltip"
-import { setFileToUpdateReducer } from "../../../../../store/folder/folderSlice"
-import { openModalUpdateFile } from "../../../../../utils/openModal"
-import { useEffect, useState } from "react"
+import {
+  setFileToUpdateReducer,
+  updateIsShowCtxMenuReducer,
+  updatePositionCtxMenuReducer,
+} from "../../../../../store/folder/folderSlice"
 /* import { openModalUpdateFile } from "../utils/openModal" */
 
-interface Props {
-  /* setShow: React.Dispatch<React.SetStateAction<boolean>>; */
-  initialState: {
-    x: number
-    y: number
-    fileSelected: string
-    folderSelected: string
-  }
+interface Props {}
 
-  points: {
-    x: number
-    y: number
-    fileSelected: string
-    folderSelected: string
-  }
-  setPoints: any
-}
-
-export default function FileContainer({
-  initialState,
-  points,
-  setPoints,
-}: Props) {
+export default function FileContainer({}: Props) {
   const dispatch = useAppDispatch()
   const { files } = useAppSelector((state) => state.folder)
-
-  useEffect(() => {
-    const handleClick = () => {
-      setPoints({
-        ...initialState,
-        fileSelected: "",
-      })
-    }
-    window.addEventListener("click", handleClick)
-    return () => window.removeEventListener("click", handleClick)
-  }, [])
 
   return (
     /* px-2 */
@@ -61,19 +31,34 @@ export default function FileContainer({
           >
             {/* bg-blue-500 */}
             <div
-              className=" px-3 pb-3 py-1 relative cursor-default " /* onClick={() => setIsClicked(!isClicked)} */
+              className=" px-3 pb-3 py-1 relative cursor-default" /* onClick={() => setIsClicked(!isClicked)} */
               onContextMenu={(e) => {
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
                 e.stopPropagation()
                 // ESTO ES PARA QUE NO SE HABRA EL CONTEXT MENU POR DEFECTO DE LOS NAVEGADORES
                 e.preventDefault()
-                setPoints({
-                  ...initialState,
-                  x: e.pageX,
-                  y: e.pageY,
-                  fileSelected: file.id,
-                  dropAreaSelected: "",
-                })
+
+                dispatch(
+                  setFileToUpdateReducer({
+                    fileId: file.id,
+                    data: {
+                      originalName: file.originalName,
+                      folderId: file.folderId,
+                    },
+                  })
+                )
+                dispatch(
+                  updatePositionCtxMenuReducer({
+                    x: e.pageX,
+                    y: e.pageY,
+                  })
+                )
+                dispatch(
+                  updateIsShowCtxMenuReducer({
+                    type: "file",
+                    isShow: true,
+                  })
+                )
               }}
             >
               {/* p-4 */}
@@ -129,55 +114,6 @@ export default function FileContainer({
                 className="h-[200px] w-full rounded-md object-cover "
               />
             </div>
-            {points.fileSelected === file.id && (
-              <ContextMenu y={points.y} x={points.x}>
-                <ul className="rounded-md bg-white py-4">
-                  {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Preview {file.id}
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Get Link
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Move to
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Add to Starred or Tag
-                                    </li> */}
-
-                  <li
-                    className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                    onClick={() => {
-                      dispatch(
-                        setFileToUpdateReducer({
-                          fileId: file.id,
-                          data: {
-                            originalName: file.originalName,
-                            folderId: file.folderId,
-                          },
-                        })
-                      )
-                      openModalUpdateFile()
-                      setPoints({
-                        ...initialState,
-                        fileSelected: "",
-                      })
-                    }}
-                  >
-                    Rename
-                  </li>
-                  {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Download
-                                    </li> */}
-                  <li
-                    className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                    /* onClick={() => handleRemove(file.fileName)} */
-                  >
-                    Remove
-                  </li>
-                </ul>
-              </ContextMenu>
-            )}
           </div>
         ))}
     </div>

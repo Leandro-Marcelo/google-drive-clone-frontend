@@ -4,32 +4,15 @@ import { getSvg } from "../../../../../utils/getSvg"
 import ContextMenu from "./ContextMenu"
 import {
   updateChildFoldersReducer,
-  setFolderToUpdate,
+  updateIsShowCtxMenuReducer,
+  updatePositionCtxMenuReducer,
+  setFolderToUpdateReducer,
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
 
-interface Props {
-  /* setShow: React.Dispatch<React.SetStateAction<boolean>>; */
-  initialState: {
-    x: number
-    y: number
-    fileSelected: string
-    folderSelected: string
-  }
-  points: {
-    x: number
-    y: number
-    fileSelected: string
-    folderSelected: string
-  }
-  setPoints: any
-}
+interface Props {}
 
-export default function FolderContainer({
-  initialState,
-  points,
-  setPoints,
-}: Props) {
+export default function FolderContainer({}: Props) {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
 
@@ -65,12 +48,28 @@ export default function FolderContainer({
                 e.preventDefault()
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
                 e.stopPropagation()
-                setPoints({
-                  ...initialState,
-                  x: e.pageX,
-                  y: e.pageY,
-                  folderSelected: folder.id,
-                })
+
+                dispatch(
+                  setFolderToUpdateReducer({
+                    folderId: folder.id,
+                    data: {
+                      originalName: folder.originalName,
+                      parentFolderId: folder.parentFolderId,
+                    },
+                  })
+                )
+                dispatch(
+                  updatePositionCtxMenuReducer({
+                    x: e.pageX,
+                    y: e.pageY,
+                  })
+                )
+                dispatch(
+                  updateIsShowCtxMenuReducer({
+                    type: "folder",
+                    isShow: true,
+                  })
+                )
               }}
               /* px-3 pb-3 py-1 relative cursor-default */
               /* z-100 relative flex items-center */
@@ -140,63 +139,8 @@ export default function FolderContainer({
                 </div>
               </div>
             </div>
-            {points.folderSelected === folder.id && (
-              <ContextMenu y={points.y} x={points.x}>
-                <ul className="cardShadow rounded-md bg-white py-4">
-                  {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Get Link {folder.id}
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Move to
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Add to Starred or Tag
-                                    </li> */}
-
-                  <li
-                    className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                    onClick={() => {
-                      dispatch(
-                        setFolderToUpdate({
-                          folderId: folder.id,
-                          data: {
-                            originalName: folder.originalName,
-                            parentFolderId: folder.parentFolderId,
-                          },
-                        })
-                      )
-                      openModalCreateUpdateFolder()
-                    }}
-                  >
-                    Rename
-                  </li>
-                  {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Change Color
-                                    </li>
-                                    <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                        Download
-                                    </li> */}
-                  <li
-                    className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                    // onClick={() => handleDelete(folder.id)}
-                  >
-                    Remove
-                  </li>
-                </ul>
-              </ContextMenu>
-            )}
           </div>
         ))}
     </div>
   )
 }
-
-/* 
-
-
-<Folder
-                        key={folder.id}
-                        id={folder.id}
-                        originalName={folder.originalName}
-                    />
-*/

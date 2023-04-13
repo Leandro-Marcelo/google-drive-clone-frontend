@@ -4,6 +4,7 @@ import {
   Folder,
   UpdateFileByIdParams,
   UpdateFolderByIdParams,
+  UpdateIsShowCtxMenuReducer,
   UploadedFile,
 } from "../../utils/typesAndInterfaces"
 
@@ -24,9 +25,22 @@ export interface FolderState extends ReduxState {
   childFolders: ChildFolder[]
   folderToUpdate: UpdateFolderByIdParams | null
   fileToUpdate: UpdateFileByIdParams | null
+
+  // * CTX MENU
+
+  positionCtxMenu: {
+    x: number
+    y: number
+  }
+
+  isShowCtxMenu: {
+    file: boolean
+    folder: boolean
+  }
 }
 
 const initialState: FolderState = {
+  // ! ESTO DEL REDUX STATE NO SE ESTA USANDO
   // * REDUX STATE
   loading: false,
   message: "",
@@ -37,6 +51,18 @@ const initialState: FolderState = {
   childFolders: [],
   folderToUpdate: null,
   fileToUpdate: null,
+
+  // * CTX MENU
+
+  positionCtxMenu: {
+    x: 0,
+    y: 0,
+  },
+
+  isShowCtxMenu: {
+    file: false,
+    folder: false,
+  },
 }
 
 export const foldersSlice = createSlice({
@@ -56,7 +82,7 @@ export const foldersSlice = createSlice({
         folders: action.payload.folders,
       }
     },
-    setFolderToUpdate(
+    setFolderToUpdateReducer(
       state,
       action: PayloadAction<UpdateFolderByIdParams | null>
     ) {
@@ -152,6 +178,43 @@ export const foldersSlice = createSlice({
         files: updatedFiles,
       }
     },
+
+    updateIsShowCtxMenuReducer(
+      state,
+      action: PayloadAction<UpdateIsShowCtxMenuReducer>
+    ) {
+      const { type, isShow } = action.payload
+
+      const resetCtxMenu = {
+        file: false,
+        folder: false,
+      }
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        isShowCtxMenu: {
+          ...resetCtxMenu,
+          [type]: isShow,
+        },
+      }
+
+      return updatedFolderRTKState
+    },
+
+    updatePositionCtxMenuReducer(
+      state,
+      action: PayloadAction<{ x: number; y: number }>
+    ) {
+      const { x, y } = action.payload
+
+      return {
+        ...state,
+        positionCtxMenu: {
+          x,
+          y,
+        },
+      }
+    },
   },
 
   extraReducers: (builder) => {},
@@ -162,11 +225,13 @@ export const {
   getRootFilesAndFoldersReducer,
   setFileToUpdateReducer,
   updateFileByIdReducer,
-  setFolderToUpdate,
+  setFolderToUpdateReducer,
   updateFolderByIdReducer,
   createFolderReducer,
   updateChildFoldersReducer,
   uploadManyFilesReducer,
+  updateIsShowCtxMenuReducer,
+  updatePositionCtxMenuReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

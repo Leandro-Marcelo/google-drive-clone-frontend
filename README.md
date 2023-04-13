@@ -1,3 +1,5 @@
+Luego, puedes combinar estos slices en tu store de Redux utilizando la función combineReducers de Redux, y acceder a ellos desde tus componentes de React utilizando los hooks useSelector y useDispatch de la librería react-redux.
+
 Tengo que hacer que el aura azul que aparece cuando haces drag over, se ponga por encima de los objetos y que sea azul/celeste transparente.
 
 Abría que manejar cuando se sube un pdf por ejemplo que es super común

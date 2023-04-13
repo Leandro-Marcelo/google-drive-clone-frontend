@@ -6,7 +6,10 @@ import MessageAlertStorage from "./components/MessageAlertStorage"
 import MyFilesAndFolders from "./components/MyFilesAndFolders"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../store/hook"
-import { getRootFilesAndFoldersReducer } from "../../../../store/folder/folderSlice"
+import {
+  getRootFilesAndFoldersReducer,
+  updateIsShowCtxMenuReducer,
+} from "../../../../store/folder/folderSlice"
 import { getRootFilesAPI } from "../../../../services/files"
 import {
   getFolderContentsAPI,
@@ -15,6 +18,7 @@ import {
 
 import { getSvg } from "../../../../utils/getSvg"
 import CloudUploadingDragOver from "./components/CloudUploadingDragOver"
+import CtxMenus from "./components/CtxMenus"
 
 const Index = () => {
   const dispatch = useAppDispatch()
@@ -68,6 +72,19 @@ const Index = () => {
     return () => {}
   }, [storeFolder.childFolders])
 
+  useEffect(() => {
+    const handleCloseCtxMenu = () => {
+      dispatch(
+        updateIsShowCtxMenuReducer({
+          type: "folder",
+          isShow: false,
+        })
+      )
+    }
+    window.addEventListener("click", handleCloseCtxMenu)
+    return () => window.removeEventListener("click", handleCloseCtxMenu)
+  }, [])
+
   return (
     <>
       <div className="flex max-h-screen min-h-screen relative">
@@ -105,13 +122,11 @@ const Index = () => {
           {/* ./ (files-folders-body-and-others-apps.png) */}
         </div>
         {/* ./ (all-without-left-sidebar.png) */}
+
+        {/* CTX MENU */}
+        <CtxMenus />
       </div>
     </>
   )
 }
 export default Index
-
-/* <div>
-              <div></div>  
-              <div></div>  
-            </div> */

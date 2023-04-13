@@ -10,13 +10,7 @@ import {
 import { uploadManyFilesAPI } from "../../../../../services/files"
 import { uploadManyFilesReducer } from "../../../../../store/folder/folderSlice"
 
-export default function DropArea({
-  children,
-  refInputFile,
-}: {
-  children: React.ReactNode
-  refInputFile: any
-}) {
+export default function DropArea({ refInputFile }: { refInputFile: any }) {
   const anotherRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
@@ -136,18 +130,11 @@ export default function DropArea({
   }
 
   return (
-    <div className="relative bg-yellow-500">
-      {/* height: 500px;
-   width: 700px;
-   border-radius: 5px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-   position: absolute; */}
-      {/* items-center justify-center */}
+    /*  z-50 */
+    <div className="relative">
       <div
-        className="absolute flex min-h-[100vh] w-full flex-col drop-area"
+        /* bg-purple-500 */
+        className="absolute flex min-h-[100vh] w-full flex-col drop-area "
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -184,8 +171,8 @@ export default function DropArea({
           onChange={handleChangeInputFile}
           ref={refInputFile}
         />
-        {children}
       </div>
+
       {/* <div
         className=""
         onDragOver={handleDragOver}

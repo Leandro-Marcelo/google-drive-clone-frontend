@@ -56,7 +56,7 @@ const MyFilesAndFolders = () => {
         /* bg-green-500 */
         className={`   ${
           "hasStorageFull" === "hasStorageFull" ? `min-h-[87%]` : `min-h-[93%]`
-        }`}
+        } `}
         onContextMenu={(e) => {
           e.preventDefault()
           e.stopPropagation()
@@ -70,45 +70,56 @@ const MyFilesAndFolders = () => {
           })
         }}
       >
-        <DropArea refInputFile={refInputFile}>
-          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-            Folders
-          </h4>
-          <FolderContainer
-            initialState={initialState}
-            points={points}
-            setPoints={setPoints}
-          />
-          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-            Files
-          </h4>
-          <FileContainer
-            initialState={initialState}
-            points={points}
-            setPoints={setPoints}
-          />
-          {points.dropAreaSelected === "newFileOrFolder" && (
-            <ContextMenu y={points.y} x={points.x}>
-              <ul className="rounded-md bg-white py-4">
-                <li
-                  className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                  onClick={() => openModalCreateUpdateFolder()}
-                >
-                  New Folder
-                </li>
-                <li
-                  className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                  /* onClick={handleClickInputFile} */
-                >
-                  File Upload
-                </li>
-                {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                                    Folder Upload
-                                </li> */}
-              </ul>
-            </ContextMenu>
-          )}
-        </DropArea>
+        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
+          Folders
+        </h4>
+        <FolderContainer />
+        <DropArea refInputFile={refInputFile}></DropArea>
+        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
+          Files
+        </h4>
+        <FileContainer />
+        {points.dropAreaSelected === "newFileOrFolder" && (
+          <ContextMenu y={points.y} x={points.x}>
+            <ul className="rounded-md bg-white py-4">
+              <li
+                className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+                onClick={() => openModalCreateUpdateFolder()}
+              >
+                New Folder
+              </li>
+              <li
+                className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+                onClick={handleClickInputFile}
+              >
+                File Upload
+              </li>
+              <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+                Folder Upload
+              </li>
+            </ul>
+          </ContextMenu>
+        )}
+
+        {/* <ContextMenu y={points.y} x={points.x}>
+          <ul className="rounded-md bg-white py-4">
+            <li
+              className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+              onClick={() => openModalCreateUpdateFolder()}
+            >
+              New Folder
+            </li>
+            <li
+              className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+              onClick={handleClickInputFile}
+            >
+              File Upload
+            </li>
+            <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+              Folder Upload
+            </li>
+          </ul>
+        </ContextMenu> */}
       </div>
     </>
   )
