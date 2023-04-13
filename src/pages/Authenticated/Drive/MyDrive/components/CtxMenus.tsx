@@ -1,7 +1,4 @@
-import {
-  setFileToUpdateReducer,
-  setFolderToUpdateReducer,
-} from "../../../../../store/folder/folderSlice"
+import { setFolderToUpdateReducer } from "../../../../../store/folder/folderSlice"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
   openModalCreateUpdateFolder,
@@ -122,6 +119,33 @@ const CtxMenus = () => {
               // onClick={() => handleDelete(folder.id)}
             >
               Remove
+            </li>
+          </ul>
+        </ContextMenu>
+      )}
+
+      {/* Outside of files and folder */}
+
+      {storeFolder.isShowCtxMenu.outside && (
+        <ContextMenu
+          y={storeFolder.positionCtxMenu.y}
+          x={storeFolder.positionCtxMenu.x}
+        >
+          <ul className="rounded-md bg-white py-4">
+            <li
+              className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+              onClick={() => openModalCreateUpdateFolder()}
+            >
+              New Folder
+            </li>
+            <li
+              className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
+              // onClick={handleClickInputFile}
+            >
+              File Upload
+            </li>
+            <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
+              Folder Upload
             </li>
           </ul>
         </ContextMenu>

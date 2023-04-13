@@ -7,33 +7,19 @@ import FileContainer from "./FileContainer"
 import FolderContainer from "./FolderContainer"
 import { openModalCreateUpdateFolder } from "../../../../../utils/openModal"
 import DropArea from "./DropArea"
-
-interface InitialState {
-  x: number
-  y: number
-  fileSelected: string
-  folderSelected: string
-  dropAreaSelected: "newFileOrFolder" | "folder" | "file" | ""
-}
+import {
+  updateIsShowCtxMenuReducer,
+  updatePositionCtxMenuReducer,
+} from "../../../../../store/folder/folderSlice"
 
 const MyFilesAndFolders = () => {
   const refInputFile = useRef<HTMLInputElement>(null)
-  const handleClickInputFile = () => {
+  /* const handleClickInputFile = () => {
     refInputFile.current && refInputFile.current.click()
-  }
+  } */
 
   const dispatch = useAppDispatch()
   /*  const { childFolders } = useAppSelector((state) => state.folder) */
-
-  const initialState: InitialState = {
-    x: 0,
-    y: 0,
-    fileSelected: "",
-    folderSelected: "",
-    dropAreaSelected: "",
-  }
-
-  const [points, setPoints] = useState(initialState)
 
   return (
     <>
@@ -60,66 +46,32 @@ const MyFilesAndFolders = () => {
         onContextMenu={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          setPoints({
-            ...initialState,
-            x: e.pageX,
-            y: e.pageY,
-            fileSelected: "",
-            folderSelected: "",
-            dropAreaSelected: "newFileOrFolder",
-          })
+
+          dispatch(
+            updatePositionCtxMenuReducer({
+              x: e.pageX,
+              y: e.pageY,
+            })
+          )
+          dispatch(
+            updateIsShowCtxMenuReducer({
+              type: "outside",
+              isShow: true,
+            })
+          )
         }}
       >
-        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-          Folders
-        </h4>
-        <FolderContainer />
-        <DropArea refInputFile={refInputFile}></DropArea>
-        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-          Files
-        </h4>
+        <DropArea refInputFile={refInputFile}>
+          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
+            Folders
+          </h4>
+          <FolderContainer />
+          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
+            Files
+          </h4>
+        </DropArea>
+        {/* EL FILE NO DEJA VERSE EL AZUL QUE APARECE AL REDEDOR CUANDO HACEMOS DRAG OVER */}
         <FileContainer />
-        {points.dropAreaSelected === "newFileOrFolder" && (
-          <ContextMenu y={points.y} x={points.x}>
-            <ul className="rounded-md bg-white py-4">
-              <li
-                className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                onClick={() => openModalCreateUpdateFolder()}
-              >
-                New Folder
-              </li>
-              <li
-                className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-                onClick={handleClickInputFile}
-              >
-                File Upload
-              </li>
-              <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-                Folder Upload
-              </li>
-            </ul>
-          </ContextMenu>
-        )}
-
-        {/* <ContextMenu y={points.y} x={points.x}>
-          <ul className="rounded-md bg-white py-4">
-            <li
-              className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-              onClick={() => openModalCreateUpdateFolder()}
-            >
-              New Folder
-            </li>
-            <li
-              className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-              onClick={handleClickInputFile}
-            >
-              File Upload
-            </li>
-            <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
-              Folder Upload
-            </li>
-          </ul>
-        </ContextMenu> */}
       </div>
     </>
   )

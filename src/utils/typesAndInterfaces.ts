@@ -92,9 +92,9 @@ export interface GetFolderContents {
 
 // * TYPES CTX MENU
 
-export type CtxMenuType = "file" | "folder"
+export type IsShowCtxMenuType = "file" | "folder" | "outside"
 
 export interface UpdateIsShowCtxMenuReducer {
-  type: CtxMenuType
+  type: IsShowCtxMenuType
   isShow: boolean
 }

@@ -1,4 +1,4 @@
-import { ChangeEvent, DragEvent, useEffect, useRef } from "react"
+import { ChangeEvent, DragEvent, ReactNode, useEffect, useRef } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 // import { uploadMany } from "../redux/states/folder"
 import { getSvg } from "../../../../../utils/getSvg"
@@ -10,7 +10,13 @@ import {
 import { uploadManyFilesAPI } from "../../../../../services/files"
 import { uploadManyFilesReducer } from "../../../../../store/folder/folderSlice"
 
-export default function DropArea({ refInputFile }: { refInputFile: any }) {
+export default function DropArea({
+  refInputFile,
+  children,
+}: {
+  refInputFile: any
+  children: ReactNode
+}) {
   const anotherRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
@@ -131,10 +137,10 @@ export default function DropArea({ refInputFile }: { refInputFile: any }) {
 
   return (
     /*  z-50 */
-    <div className="relative">
+    <div className="relative z-50">
       <div
         /* bg-purple-500 */
-        className="absolute flex min-h-[100vh] w-full flex-col drop-area "
+        className="absolute flex min-h-[100vh] w-full flex-col drop-area"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -172,6 +178,7 @@ export default function DropArea({ refInputFile }: { refInputFile: any }) {
           ref={refInputFile}
         />
       </div>
+      {children}
 
       {/* <div
         className=""

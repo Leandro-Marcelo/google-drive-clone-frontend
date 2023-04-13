@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import {
   File,
   Folder,
+  IsShowCtxMenuType,
   UpdateFileByIdParams,
   UpdateFolderByIdParams,
   UpdateIsShowCtxMenuReducer,
@@ -36,6 +37,7 @@ export interface FolderState extends ReduxState {
   isShowCtxMenu: {
     file: boolean
     folder: boolean
+    outside: boolean
   }
 }
 
@@ -62,6 +64,7 @@ const initialState: FolderState = {
   isShowCtxMenu: {
     file: false,
     folder: false,
+    outside: false,
   },
 }
 
@@ -173,10 +176,12 @@ export const foldersSlice = createSlice({
       })
       const updatedFiles = [...state.files, ...fullfilledFiles]
 
-      return {
+      const updatedFolderRTKState: FolderState = {
         ...state,
         files: updatedFiles,
       }
+
+      return updatedFolderRTKState
     },
 
     updateIsShowCtxMenuReducer(
@@ -188,6 +193,7 @@ export const foldersSlice = createSlice({
       const resetCtxMenu = {
         file: false,
         folder: false,
+        outside: false,
       }
 
       const updatedFolderRTKState: FolderState = {

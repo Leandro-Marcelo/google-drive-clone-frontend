@@ -31,7 +31,8 @@ export default function FileContainer({}: Props) {
           >
             {/* bg-blue-500 */}
             <div
-              className=" px-3 pb-3 py-1 relative cursor-default" /* onClick={() => setIsClicked(!isClicked)} */
+              className=" px-3 pb-3 py-1 relative cursor-default"
+              // onClick={() => setIsClicked(!isClicked)}
               onContextMenu={(e) => {
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
                 e.stopPropagation()
@@ -61,22 +62,14 @@ export default function FileContainer({}: Props) {
                 )
               }}
             >
-              {/* p-4 */}
-              {/* overflow-hidden text-ellipsis whitespace-nowrap rounded-b-md border-b-1 border-l-1 border-r-1 border-solid border-[#ccc]  group-hover:bg-[#f5f5f5] flex gap-2 items-center bg-red-500 */}
-              {/* overflow-hidden */}
-              {/* group-hover:bg-[#f5f5f5]  */}
               <div
                 className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1`}
               >
-                {/* //! ACA DEBERÍAMOS QUITARLE LA EXNTESIÓN PORQUE HAY GENTE QUE SUBE IMAGENES CON . */}
-                {/* flex-1 */}
                 <div className="flex items-center gap-4 pl-3   w-[90%]">
                   <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
-                  {/* flex-1 */}
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
                   >
-                    {/* flex-1 */}
                     <span className=" text-[13px] ">{file.originalName}</span>
                     <div
                       className={`absolute  rounded text-white hidden transition-all duration-300 group-hover/tooltip:block top-8 left-6`}
