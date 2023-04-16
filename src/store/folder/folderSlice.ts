@@ -73,12 +73,11 @@ const initialState: FolderState = {
     outside: false,
   },
 
-  // * CHECKBOX 
+  // * CHECKBOX
 
   checkedIds: new Set<string>(),
   totalFilesPlusFolders: 0,
   topCheckboxState: false,
-  
 }
 
 /*  const topCheckbox: any = useRef<any>()
@@ -110,7 +109,7 @@ const initialState: FolderState = {
     }
   } */
 
-  enableMapSet()
+enableMapSet()
 
 export const foldersSlice = createSlice({
   name: "folders",
@@ -123,12 +122,12 @@ export const foldersSlice = createSlice({
         folders: Folder[]
       }>
     ) {
-
       const updatedFolderRTKState: FolderState = {
         ...state,
         files: action.payload.files,
         folders: action.payload.folders,
-        totalFilesPlusFolders: action.payload.files.length + action.payload.folders.length
+        totalFilesPlusFolders:
+          action.payload.files.length + action.payload.folders.length,
       }
 
       return updatedFolderRTKState
@@ -285,7 +284,19 @@ export const foldersSlice = createSlice({
       console.log("state.totalFilesPlusFolders")
       console.log(state.totalFilesPlusFolders)
       // const updatedTopCheckboxState = 0 < updatedNumCheckedIds && updatedNumCheckedIds < state.totalFilesPlusFolders
-        
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        checkedIds: updatedCheckedIds,
+      }
+
+      return updatedFolderRTKState
+    },
+
+    checkSpecificIdReducer(state, action: PayloadAction<string>) {
+      const updatedCheckedIds = new Set<string>()
+      updatedCheckedIds.add(action.payload)
+
       const updatedFolderRTKState: FolderState = {
         ...state,
         checkedIds: updatedCheckedIds,
@@ -295,7 +306,7 @@ export const foldersSlice = createSlice({
     },
 
     handleCheckAllIdsReducer(state, action: PayloadAction<boolean>) {
-       if (action.payload) {
+      if (action.payload) {
         const filesIds = state.files.map((file) => file.id)
         const foldersIds = state.folders.map((folder) => folder.id)
 
@@ -303,17 +314,25 @@ export const foldersSlice = createSlice({
           ...state,
           checkedIds: new Set([...filesIds, ...foldersIds]),
         }
-      return updatedFolderRTKState
-    } else {
+        return updatedFolderRTKState
+      } else {
+        const updatedFolderRTKState: FolderState = {
+          ...state,
+          checkedIds: new Set<string>(),
+        }
 
+        return updatedFolderRTKState
+      }
+    },
+
+    resetCheckedIdsReducer(state) {
       const updatedFolderRTKState: FolderState = {
         ...state,
         checkedIds: new Set<string>(),
       }
 
       return updatedFolderRTKState
-    }
-    }
+    },
   },
 
   extraReducers: (builder) => {},
@@ -332,7 +351,9 @@ export const {
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
   handleCheckIdReducer,
-  handleCheckAllIdsReducer
+  handleCheckAllIdsReducer,
+  checkSpecificIdReducer,
+  resetCheckedIdsReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

@@ -8,6 +8,7 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../store/hook"
 import {
   getRootFilesAndFoldersReducer,
+  resetCheckedIdsReducer,
   updateIsShowCtxMenuReducer,
 } from "../../../../store/folder/folderSlice"
 import { getRootFilesAPI } from "../../../../services/files"
@@ -82,8 +83,14 @@ const Index = () => {
         })
       )
     }
-    window.addEventListener("click", handleCloseCtxMenu)
-    return () => window.removeEventListener("click", handleCloseCtxMenu)
+
+    const cleanUp = (e: MouseEvent) => {
+      handleCloseCtxMenu()
+      dispatch(resetCheckedIdsReducer())
+    }
+
+    window.addEventListener("click", cleanUp)
+    return () => window.removeEventListener("click", cleanUp)
   }, [])
 
   return (

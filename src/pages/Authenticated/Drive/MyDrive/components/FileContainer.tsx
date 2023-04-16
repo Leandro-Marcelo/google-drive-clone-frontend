@@ -6,6 +6,7 @@ import { File } from "../../../../../utils/typesAndInterfaces"
 import { getSvg } from "../../../../../utils/getSvg"
 import Tooltip from "../../../../../components/Tooltip"
 import {
+  checkSpecificIdReducer,
   handleCheckIdReducer,
   setFileToUpdateReducer,
   updateIsShowCtxMenuReducer,
@@ -21,21 +22,32 @@ export default function FileContainer({}: Props) {
   const storeFolder = useAppSelector((state) => state.folder)
 
   return (
-    /* px-2 */
-    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  xl:grid-cols-3 2xl:grid-cols-6 z-10 relative" onDragOver={(e) => {
-      dispatch(setIsDraggingFileReducer(true))
-    }}>
-      {
-        storeFolder.files.length >= 0 &&
+    <div
+      /* Le damos z-10 y relative para que cuando el usuario este drageando un archivo, poner el drop-area a z-20 y se ponga por encima de todo */
+      className=" grid  w-full   grid-cols-2 justify-between   gap-2  xl:grid-cols-3 2xl:grid-cols-6 z-10 relative"
+      onDragOver={(e) => {
+        dispatch(setIsDraggingFileReducer(true))
+      }}
+    >
+      {storeFolder.files.length >= 0 &&
         storeFolder.files.map((file) => (
           <div
             key={file.id}
             /* rounded-md border-[1px] border-solid border-[#DADCE0] */
-            className={`rounded-xl ${storeFolder.checkedIds.has(file.id) ? `bg-[#C2E7FF]` : `bg-[#F2F6FC] hover:bg-[#f5f5f5]`}  group/showCheckbox`}
+            className={`rounded-xl ${
+              storeFolder.checkedIds.has(file.id)
+                ? `bg-[#C2E7FF]`
+                : `bg-[#F2F6FC] hover:bg-[#f5f5f5]`
+            }  group/showCheckbox`}
+            onClick={(e) => {
+              e.stopPropagation()
+              dispatch(checkSpecificIdReducer(file.id))
+            }}
           >
             {/* bg-blue-500 */}
             <div
-              className=" px-3 pb-3 py-1 relative cursor-default"
+              /* px-3 pb-3 py-1  */
+              className="px-[10px] relative cursor-default"
               // onClick={() => setIsClicked(!isClicked)}
               onContextMenu={(e) => {
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
@@ -67,34 +79,46 @@ export default function FileContainer({}: Props) {
               }}
             >
               <div
-                className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1`}
+                /* mb-1 w-full py-1 */
+                className={` text-ellipsis whitespace-nowrap   flex items-center w-full py-[6px]`}
               >
-                <div className="flex items-center gap-4 pl-3   w-[90%]">
-            
-
-                    {storeFolder.checkedIds.has(file.id) ? <div className="" onClick={(e) => {
-                    e.stopPropagation()
-                    dispatch(
-                      handleCheckIdReducer(file.id)
-                    )
-                  }}>
-                    {getSvg({ type: `checkboxChecked`, width: "20px", height: "20px" })}
-                  </div> : <>
-                 
-                   <div className="hidden group-hover/showCheckbox:flex" onClick={(e) => {
-                    e.stopPropagation()
-                    dispatch(
-                      handleCheckIdReducer(file.id)
-                    )
-                  }}>
-                    {getSvg({ type: `${storeFolder.checkedIds.has(file.id) ? "checkboxChecked" : "checkboxFileFolder"}`, width: "20px", height: "20px" })}
-                  </div>
-                  <div className="group-hover/showCheckbox:hidden">
-                                      <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
-
-                  </div>
-                 </>}
-
+                <div className="flex items-center gap-4 w-[90%]">
+                  {storeFolder.checkedIds.has(file.id) ? (
+                    <div className="p-2">
+                      {getSvg({
+                        type: `checkboxChecked`,
+                        width: "20px",
+                        height: "20px",
+                      })}
+                    </div>
+                  ) : (
+                    <div
+                      className="hover:bg-[#3c404314]   p-2 rounded-full cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        dispatch(handleCheckIdReducer(file.id))
+                      }}
+                    >
+                      <div className="hidden group-hover/showCheckbox:flex">
+                        {getSvg({
+                          type: `${
+                            storeFolder.checkedIds.has(file.id)
+                              ? "checkboxChecked"
+                              : "checkboxFileFolder"
+                          }`,
+                          width: "20px",
+                          height: "20px",
+                        })}
+                      </div>
+                      <div className="group-hover/showCheckbox:hidden h-[20px] w-[20px]  flex items-center justify-center">
+                        <img
+                          src={fileNameIcon}
+                          alt=""
+                          className="h-[16px] w-[16px]"
+                        />{" "}
+                      </div>
+                    </div>
+                  )}
 
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
