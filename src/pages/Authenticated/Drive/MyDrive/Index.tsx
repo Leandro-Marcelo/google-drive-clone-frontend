@@ -86,7 +86,10 @@ const Index = () => {
 
   return (
     <>
-      <div className="flex max-h-screen min-h-screen relative">
+      {/* El select-none es para que cuando se haga varios click a una
+              imagen o a un checkbox, no se ponga el parafro seleccionado,
+              basiicamente azuilito */}
+      <div className="flex max-h-screen min-h-screen relative  select-none">
         <CloudUploadingDragOver />
         <LeftSideBar />
         {/* (all-without-left-sidebar.png)  */}
@@ -96,7 +99,8 @@ const Index = () => {
           <div className="flex h-[93%] bg-[#F7F9FC] ">
             <div className="h-full flex flex-1">
               {/* (files-folders-body.png) */}
-              <div className="w-full   h-[98%] bg-white rounded-2xl">
+
+              <div className="w-full   h-[98%] bg-white rounded-2xl ">
                 <FileActions />
                 {/* message-warning-storage-and-preview-file */}
                 {/* bg-white rounded-xl */}

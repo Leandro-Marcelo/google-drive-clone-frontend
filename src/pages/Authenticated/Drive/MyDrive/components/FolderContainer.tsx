@@ -103,7 +103,14 @@ export default function FolderContainer({}: Props) {
                 {/* pl-3    */}
                 <div className="flex items-center gap-4 w-[90%]">
                   {storeFolder.checkedIds.has(folder.id) ? (
-                    <div className="p-2">
+                    <div
+                      className="p-2 hover:bg-[#3c404314] rounded-full cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        dispatch(handleCheckIdReducer(folder.id))
+                        dispatch(resetIsShowCtxMenuReducer())
+                      }}
+                    >
                       {getSvg({
                         type: `checkboxChecked`,
                         width: "20px",

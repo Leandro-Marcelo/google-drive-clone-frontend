@@ -86,7 +86,14 @@ export default function FileContainer({}: Props) {
               >
                 <div className="flex items-center gap-4 w-[90%]">
                   {storeFolder.checkedIds.has(file.id) ? (
-                    <div className="p-2">
+                    <div
+                      className="p-2 hover:bg-[#3c404314] rounded-full"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        dispatch(handleCheckIdReducer(file.id))
+                        dispatch(resetIsShowCtxMenuReducer())
+                      }}
+                    >
                       {getSvg({
                         type: `checkboxChecked`,
                         width: "20px",
@@ -126,7 +133,7 @@ export default function FileContainer({}: Props) {
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
                   >
-                    <span className=" text-[13px] ">{file.originalName}</span>
+                    <span className=" text-[13px]">{file.originalName}</span>
                     <div
                       className={`absolute  rounded text-white hidden transition-all duration-300 group-hover/tooltip:block top-8 left-6`}
                     >

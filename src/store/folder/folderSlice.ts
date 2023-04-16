@@ -315,11 +315,7 @@ export const foldersSlice = createSlice({
     },
 
     handleCheckAllIdsReducer(state, action: PayloadAction<void>) {
-      console.log("state.checkedIds.size === state.totalFilesPlusFolders")
-      console.log(state.checkedIds.size === state.totalFilesPlusFolders)
-
       if (!(state.checkedIds.size === state.totalFilesPlusFolders)) {
-        console.log("ENTRO ACA")
         const filesIds = state.files.map((file) => file.id)
         const foldersIds = state.folders.map((folder) => folder.id)
 
