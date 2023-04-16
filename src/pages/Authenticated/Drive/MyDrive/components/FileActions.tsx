@@ -6,6 +6,7 @@ import {
   handleCheckAllIdsReducer,
   updateChildFoldersReducer,
 } from "../../../../../store/folder/folderSlice"
+import folderMovePNG from "../../../../../assets/imgs/folderMove.png"
 
 const FileActions = () => {
   const dispatch = useAppDispatch()
@@ -72,13 +73,30 @@ const FileActions = () => {
             </div>
           </Tooltip>
 
-          <Tooltip text="Share" direction="top-10 -left-4" textNoWrap={true}>
+          <Tooltip text="Download" direction="top-10 -left-4" textNoWrap={true}>
             <div>
               {getSvg({
-                type: "preview",
+                type: "download",
                 fill: "#1F1F1F",
                 width: "20px",
                 height: "20px",
+              })}
+            </div>
+          </Tooltip>
+
+          <Tooltip text="Move to" direction="top-10 -left-4" textNoWrap={true}>
+            {/* <div className="w-[18px] h-[18px]">
+              <img
+                src={folderMovePNG}
+                alt="folder move"
+                className="max-w-full"
+              />
+            </div> */}
+            <div className="">
+              {getSvg({
+                type: "folderMove",
+                width: "18px",
+                height: "18px",
               })}
             </div>
           </Tooltip>
