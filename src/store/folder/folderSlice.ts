@@ -44,7 +44,6 @@ export interface FolderState extends ReduxState {
 
   checkedIds: Set<string>
   totalFilesPlusFolders: number
-  topCheckboxState: boolean
 }
 
 const initialState: FolderState = {
@@ -77,7 +76,6 @@ const initialState: FolderState = {
 
   checkedIds: new Set<string>(),
   totalFilesPlusFolders: 0,
-  topCheckboxState: false,
 }
 
 /*  const topCheckbox: any = useRef<any>()
@@ -296,13 +294,6 @@ export const foldersSlice = createSlice({
         updatedCheckedIds.add(action.payload)
       }
 
-      let updatedNumCheckedIds = updatedCheckedIds.size
-      console.log("updatedNumCheckedIds")
-      console.log(updatedNumCheckedIds)
-      console.log("state.totalFilesPlusFolders")
-      console.log(state.totalFilesPlusFolders)
-      // const updatedTopCheckboxState = 0 < updatedNumCheckedIds && updatedNumCheckedIds < state.totalFilesPlusFolders
-
       const updatedFolderRTKState: FolderState = {
         ...state,
         checkedIds: updatedCheckedIds,
@@ -323,8 +314,12 @@ export const foldersSlice = createSlice({
       return updatedFolderRTKState
     },
 
-    handleCheckAllIdsReducer(state, action: PayloadAction<boolean>) {
-      if (action.payload) {
+    handleCheckAllIdsReducer(state, action: PayloadAction<void>) {
+      console.log("state.checkedIds.size === state.totalFilesPlusFolders")
+      console.log(state.checkedIds.size === state.totalFilesPlusFolders)
+
+      if (!(state.checkedIds.size === state.totalFilesPlusFolders)) {
+        console.log("ENTRO ACA")
         const filesIds = state.files.map((file) => file.id)
         const foldersIds = state.folders.map((folder) => folder.id)
 

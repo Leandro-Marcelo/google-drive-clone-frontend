@@ -34,14 +34,8 @@ const FileActions = () => {
         <div
           className="flex items-center gap-3 pl-3"
           onClick={(e) => {
-            dispatch(
-              handleCheckAllIdsReducer(
-                storeFolder.checkedIds.size ===
-                  storeFolder.totalFilesPlusFolders
-                  ? false
-                  : true
-              )
-            )
+            e.stopPropagation()
+            dispatch(handleCheckAllIdsReducer())
           }}
         >
           <Tooltip
