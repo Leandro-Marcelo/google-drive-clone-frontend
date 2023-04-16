@@ -5,21 +5,22 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
   handleCheckAllIdsReducer,
   updateChildFoldersReducer,
+  updateFilesToSoftDeletedFilesReducer,
 } from "../../../../../store/folder/folderSlice"
 import folderMovePNG from "../../../../../assets/imgs/folderMove.png"
+import { softDeleteManyFilesAPI } from "../../../../../services/files"
 
 const FileActions = () => {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
 
-  const [fileOrFolderSelected, setFileOrFolderSelected] = useState(true)
-
-  const [checked, setChecked] = useState(false)
-  const [indeterminate, setIndeterminate] = useState(true)
-
-  const handleCheckboxChange = (e: any) => {
-    setChecked(e.target.checked)
-    setIndeterminate(false)
+  const handleUpdateFilesToSoftDeletedFiles = async () => {
+    try {
+      const res = await softDeleteManyFilesAPI(
+        Array.from(storeFolder.checkedIds)
+      )
+      dispatch(updateFilesToSoftDeletedFilesReducer(res.data))
+    } catch (err) {}
   }
 
   return (
@@ -32,17 +33,15 @@ const FileActions = () => {
     >
       {storeFolder.checkedIds.size > 0 ? (
         /* pl-4  */
-        <div
-          className="flex items-center gap-3 pl-3"
-          onClick={(e) => {
-            e.stopPropagation()
-            dispatch(handleCheckAllIdsReducer())
-          }}
-        >
+        <div className="flex items-center gap-3 pl-3">
           <Tooltip
             text="Select all files on screen"
             direction="top-10 -left-4"
             textNoWrap={true}
+            onClick={(e) => {
+              e.stopPropagation()
+              dispatch(handleCheckAllIdsReducer())
+            }}
           >
             <div>
               {getSvg({
@@ -85,13 +84,6 @@ const FileActions = () => {
           </Tooltip>
 
           <Tooltip text="Move to" direction="top-10 -left-4" textNoWrap={true}>
-            {/* <div className="w-[18px] h-[18px]">
-              <img
-                src={folderMovePNG}
-                alt="folder move"
-                className="max-w-full"
-              />
-            </div> */}
             <div className="">
               {getSvg({
                 type: "folderMove",
@@ -101,7 +93,15 @@ const FileActions = () => {
             </div>
           </Tooltip>
 
-          <Tooltip text="Remove" direction="top-10 -left-4" textNoWrap={true}>
+          <Tooltip
+            text="Remove"
+            direction="top-10 -left-4"
+            textNoWrap={true}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleUpdateFilesToSoftDeletedFiles()
+            }}
+          >
             <div>
               {getSvg({
                 type: "trash",

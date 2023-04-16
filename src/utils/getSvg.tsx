@@ -583,18 +583,6 @@ MEI+zj0AAAAASUVORK5CYII="
         </svg>
       )
 
-    case "checkboxFileFolder":
-      return (
-        <svg
-          width={item.width ? item.width : "24px"}
-          height={item.height ? item.height : "24px"}
-          viewBox="0 0 24 24"
-          focusable="false"
-        >
-          <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path>
-        </svg>
-      )
-
     case "download":
       return (
         <svg
@@ -607,39 +595,12 @@ MEI+zj0AAAAASUVORK5CYII="
           <path
             d="M20 15V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18L4 15M8 11L12 15M12 15L16 11M12 15V3"
             stroke="#000000"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       )
-
-    /* case "folderMove":
-      return (
-        <svg
-          fill="transparent"
-          viewBox="0 0 32 32"
-          id="icon"
-          xmlns="http://www.w3.org/2000/svg"
-          stroke="#1F1F1F"
-          width={item.width ? item.width : "20px"}
-          height={item.height ? item.height : "20px"}
-        >
-          <g id="SVGRepo_iconCarrier">
-            <polygon
-              points="18 13 16.59 14.41 19.17 17 10 17 10 19 19.17 19 16.59 21.59 18 23 23 18 18 13"
-              stroke="#1F1F1F"
-              fill="#1F1F1F"
-            ></polygon>{" "}
-            <path
-              d="M11.1716,6l3.4142,3.4142L15.1716,10H28V26H4V6h7.1716m0-2H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V10a2,2,0,0,0-2-2H16L12.5858,4.5858A2,2,0,0,0,11.1716,4Z"
-              stroke="#1F1F1F"
-              fill="#1F1F1F"
-              strokeWidth="0.4"
-            ></path>{" "}
-          </g>
-        </svg>
-      ) */
 
     case "folderMove":
       return (
@@ -670,15 +631,3 @@ MEI+zj0AAAAASUVORK5CYII="
       )
   }
 }
-
-/* export const svgTest = {
-    arrowLeft: () => {
-        return <div>holaxd</div>;
-    },
-}; */
-
-/* {
-    arrowLeft: () => {
-        return <div>holaxd</div>;
-    };
-} */

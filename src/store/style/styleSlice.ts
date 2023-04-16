@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 // const CURRENT_USER_RESET: CurrentUser | null = null
 
 export interface StyleRtkState {
-  IsDraggingFile: boolean
+  isDraggingFile: boolean
 }
 const STYLE_STATE_RESET: StyleRtkState = {
-  IsDraggingFile: false,
+  isDraggingFile: false,
 }
 
 const initialState = STYLE_STATE_RESET
@@ -17,7 +17,7 @@ export const stylesSlice = createSlice({
     setIsDraggingFileReducer: (state, action: PayloadAction<boolean>) => {
       const updatedStyleRTKState: StyleRtkState = {
         ...state,
-        IsDraggingFile: action.payload,
+        isDraggingFile: action.payload,
       }
 
       return updatedStyleRTKState

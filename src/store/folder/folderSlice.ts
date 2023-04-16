@@ -24,6 +24,7 @@ export interface ChildFolder {
 
 export interface FolderState extends ReduxState {
   files: File[]
+  softDeletedFiles: File[]
   folders: Folder[]
   childFolders: ChildFolder[]
   folderToUpdate: UpdateFolderByIdParams | null
@@ -54,6 +55,7 @@ const initialState: FolderState = {
   status: "",
   // * FOLDER STATE
   files: [],
+  softDeletedFiles: [],
   folders: [],
   childFolders: [],
   folderToUpdate: null,
@@ -342,6 +344,45 @@ export const foldersSlice = createSlice({
 
       return updatedFolderRTKState
     },
+
+    updateFilesToSoftDeletedFilesReducer(
+      state,
+      action: PayloadAction<UploadedFile[]>
+    ) {
+      const uploadedFiles: UploadedFile[] = action.payload
+      const fullfilledFiles: File[] = []
+      const rejectedFiles: string[] = []
+
+      uploadedFiles.forEach((file) => {
+        if (file.status === "rejected") {
+          rejectedFiles.push(file.reason.message)
+        } else {
+          fullfilledFiles.push(file.value)
+        }
+      })
+
+      const fulfilledFilesIds = fullfilledFiles.map((file) => file.id)
+      const updatedFiles = state.files.filter((file) => {
+        if (fulfilledFilesIds.includes(file.id)) {
+          return false
+        } else {
+          return true
+        }
+      })
+
+      const updatedTotalFilesPlusFolders =
+        updatedFiles.length + state.folders.length
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        files: updatedFiles,
+        softDeletedFiles: fullfilledFiles,
+        totalFilesPlusFolders: updatedTotalFilesPlusFolders,
+        checkedIds: new Set<string>(),
+      }
+
+      return updatedFolderRTKState
+    },
   },
 
   extraReducers: (builder) => {},
@@ -364,6 +405,9 @@ export const {
   checkSpecificIdReducer,
   resetCheckedIdsReducer,
   resetIsShowCtxMenuReducer,
+
+  // * SOFT DELETE FILES
+  updateFilesToSoftDeletedFilesReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

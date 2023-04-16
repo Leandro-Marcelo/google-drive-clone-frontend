@@ -6,6 +6,7 @@ export interface Props {
   direction: string
   textNoWrap: boolean
   hoverPadding?: string
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
 const Tooltip = ({
@@ -14,6 +15,7 @@ const Tooltip = ({
   direction,
   textNoWrap,
   hoverPadding,
+  onClick,
 }: Props) => {
   const mainContainer = `${
     hoverPadding ? hoverPadding : "p-2"
@@ -26,7 +28,10 @@ const Tooltip = ({
   }`
 
   return (
-    <div className={mainContainer}>
+    <div
+      className={mainContainer}
+      onClick={(e) => (onClick ? onClick(e) : () => {})}
+    >
       {children}
       <div className={tooltipContainer}>
         <div className="flex max-w-xs flex-col items-center">

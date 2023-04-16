@@ -10,9 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 // import { uploadMany } from "../redux/states/folder"
 import { getSvg } from "../../../../../utils/getSvg"
 import cloudUploading from "../../../../../assets/cloudUploading.gif"
-import {
-  setIsDraggingFileReducer,
-} from "../../../../../store/style/styleSlice"
+import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
 import { uploadManyFilesAPI } from "../../../../../services/files"
 import { uploadManyFilesReducer } from "../../../../../store/folder/folderSlice"
 
@@ -152,7 +150,7 @@ export default function DropArea({ refInputFile }: { refInputFile: any }) {
       /* bg-yellow-500 */
       /* min-h-full or min-h-screen */
       className={`absolute  w-full h-full drop-area  ${
-        storeStyle.IsDraggingFile ? "z-20" : ""
+        storeStyle.isDraggingFile ? "z-20" : ""
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}

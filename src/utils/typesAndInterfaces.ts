@@ -28,6 +28,7 @@ export interface File {
   userId: string
   updatedAt: Date
   imgSrc: string
+  softDeleted: boolean
 }
 
 // OTHERS
