@@ -2,7 +2,10 @@ import React, { useState } from "react"
 import Tooltip from "../../../../../components/Tooltip"
 import { getSvg } from "../../../../../utils/getSvg"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
-import { handleCheckAllIdsReducer, updateChildFoldersReducer } from "../../../../../store/folder/folderSlice"
+import {
+  handleCheckAllIdsReducer,
+  updateChildFoldersReducer,
+} from "../../../../../store/folder/folderSlice"
 
 const FileActions = () => {
   const dispatch = useAppDispatch()
@@ -26,11 +29,21 @@ const FileActions = () => {
         e.preventDefault()
       }}
     >
-      {fileOrFolderSelected ? (
+      {storeFolder.checkedIds.size > 0 ? (
         /* pl-4  */
-        <div className="flex items-center gap-3 pl-3" onClick={(e) => {
-              dispatch(handleCheckAllIdsReducer(storeFolder.checkedIds.size === storeFolder.totalFilesPlusFolders ? false : true))
-            }}>
+        <div
+          className="flex items-center gap-3 pl-3"
+          onClick={(e) => {
+            dispatch(
+              handleCheckAllIdsReducer(
+                storeFolder.checkedIds.size ===
+                  storeFolder.totalFilesPlusFolders
+                  ? false
+                  : true
+              )
+            )
+          }}
+        >
           <Tooltip
             text="Select all files on screen"
             direction="top-10 -left-4"
@@ -38,14 +51,21 @@ const FileActions = () => {
           >
             <div>
               {getSvg({
-                type: `${storeFolder.checkedIds.size === storeFolder.totalFilesPlusFolders ? "checkboxChecked" : "checkboxIndeterminate"}`,
+                type: `${
+                  storeFolder.checkedIds.size ===
+                  storeFolder.totalFilesPlusFolders
+                    ? "checkboxChecked"
+                    : "checkboxIndeterminate"
+                }`,
                 width: "20px",
                 height: "20px",
               })}
             </div>
           </Tooltip>
 
-          <div className="text-[#1F1F1F] font-semibold">{storeFolder.checkedIds.size} selected</div>
+          <div className="text-[#1F1F1F] font-semibold">
+            {storeFolder.checkedIds.size} selected
+          </div>
 
           <Tooltip text="Share" direction="top-10 -left-4" textNoWrap={true}>
             <div>

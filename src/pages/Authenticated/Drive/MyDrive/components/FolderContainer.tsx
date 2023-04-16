@@ -9,6 +9,7 @@ import {
   setFolderToUpdateReducer,
   handleCheckIdReducer,
   checkSpecificIdReducer,
+  resetIsShowCtxMenuReducer,
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
 import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
@@ -56,6 +57,7 @@ export default function FolderContainer({}: Props) {
             onClick={(e) => {
               e.stopPropagation()
               dispatch(checkSpecificIdReducer(folder.id))
+              dispatch(resetIsShowCtxMenuReducer())
             }}
           >
             <div
@@ -114,6 +116,7 @@ export default function FolderContainer({}: Props) {
                       onClick={(e) => {
                         e.stopPropagation()
                         dispatch(handleCheckIdReducer(folder.id))
+                        dispatch(resetIsShowCtxMenuReducer())
                       }}
                     >
                       {/* p-1 */}

@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hook"
 import {
   getRootFilesAndFoldersReducer,
   resetCheckedIdsReducer,
-  updateIsShowCtxMenuReducer,
+  resetIsShowCtxMenuReducer,
 } from "../../../../store/folder/folderSlice"
 import { getRootFilesAPI } from "../../../../services/files"
 import {
@@ -75,17 +75,8 @@ const Index = () => {
   }, [storeFolder.childFolders])
 
   useEffect(() => {
-    const handleCloseCtxMenu = () => {
-      dispatch(
-        updateIsShowCtxMenuReducer({
-          type: "folder",
-          isShow: false,
-        })
-      )
-    }
-
     const cleanUp = (e: MouseEvent) => {
-      handleCloseCtxMenu()
+      dispatch(resetIsShowCtxMenuReducer())
       dispatch(resetCheckedIdsReducer())
     }
 

@@ -8,6 +8,7 @@ import Tooltip from "../../../../../components/Tooltip"
 import {
   checkSpecificIdReducer,
   handleCheckIdReducer,
+  resetIsShowCtxMenuReducer,
   setFileToUpdateReducer,
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
@@ -42,6 +43,7 @@ export default function FileContainer({}: Props) {
             onClick={(e) => {
               e.stopPropagation()
               dispatch(checkSpecificIdReducer(file.id))
+              dispatch(resetIsShowCtxMenuReducer())
             }}
           >
             {/* bg-blue-500 */}
@@ -97,6 +99,7 @@ export default function FileContainer({}: Props) {
                       onClick={(e) => {
                         e.stopPropagation()
                         dispatch(handleCheckIdReducer(file.id))
+                        dispatch(resetIsShowCtxMenuReducer())
                       }}
                     >
                       <div className="hidden group-hover/showCheckbox:flex">

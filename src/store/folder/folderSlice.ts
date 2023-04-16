@@ -226,6 +226,7 @@ export const foldersSlice = createSlice({
       const updatedFolderRTKState: FolderState = {
         ...state,
         files: updatedFiles,
+        totalFilesPlusFolders: updatedFiles.length + state.folders.length,
       }
 
       return updatedFolderRTKState
@@ -248,6 +249,23 @@ export const foldersSlice = createSlice({
         isShowCtxMenu: {
           ...resetCtxMenu,
           [type]: isShow,
+        },
+      }
+
+      return updatedFolderRTKState
+    },
+
+    resetIsShowCtxMenuReducer(state) {
+      const resetCtxMenu = {
+        file: false,
+        folder: false,
+        outside: false,
+      }
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        isShowCtxMenu: {
+          ...resetCtxMenu,
         },
       }
 
@@ -354,6 +372,7 @@ export const {
   handleCheckAllIdsReducer,
   checkSpecificIdReducer,
   resetCheckedIdsReducer,
+  resetIsShowCtxMenuReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer
