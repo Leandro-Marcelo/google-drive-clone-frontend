@@ -9,6 +9,8 @@ import {
   UploadedFile,
 } from "../../utils/typesAndInterfaces"
 
+import { enableMapSet } from "immer"
+
 export interface ReduxState {
   status: string
   message: string
@@ -39,6 +41,10 @@ export interface FolderState extends ReduxState {
     folder: boolean
     outside: boolean
   }
+
+  checkedIds: Set<string>
+  totalFilesPlusFolders: number
+  topCheckboxState: boolean
 }
 
 const initialState: FolderState = {
@@ -66,7 +72,45 @@ const initialState: FolderState = {
     folder: false,
     outside: false,
   },
+
+  // * CHECKBOX 
+
+  checkedIds: new Set<string>(),
+  totalFilesPlusFolders: 0,
+  topCheckboxState: false,
+  
 }
+
+/*  const topCheckbox: any = useRef<any>()
+  const [checkedIds, setCheckedIds] = useState(new Set<string>())
+  let openIssues = issues.filter(({ status }) => status === "open")
+  let numOpenIssues = openIssues.length
+  // por que aca le cambie el nombre a checkedIssues
+  let numCheckedIds = checkedIds.size
+
+  const handleOnChange = (id: string) => {
+    const updatedCheckedIds = new Set(checkedIds)
+    if (updatedCheckedIds.has(id)) {
+      updatedCheckedIds.delete(id)
+    } else {
+      updatedCheckedIds.add(id)
+    }
+
+    let updatedNumCheckedIds = updatedCheckedIds.size
+    topCheckbox.current.indeterminate =
+      0 < updatedNumCheckedIds && updatedNumCheckedIds < numOpenIssues
+    setCheckedIds(updatedCheckedIds)
+  }
+
+  const handleSelectDeselectAll = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setCheckedIds(new Set(openIssues.map((oI) => oI.id)))
+    } else {
+      setCheckedIds(new Set())
+    }
+  } */
+
+  enableMapSet()
 
 export const foldersSlice = createSlice({
   name: "folders",
@@ -79,11 +123,15 @@ export const foldersSlice = createSlice({
         folders: Folder[]
       }>
     ) {
-      return {
+
+      const updatedFolderRTKState: FolderState = {
         ...state,
         files: action.payload.files,
         folders: action.payload.folders,
+        totalFilesPlusFolders: action.payload.files.length + action.payload.folders.length
       }
+
+      return updatedFolderRTKState
     },
     setFolderToUpdateReducer(
       state,
@@ -221,6 +269,51 @@ export const foldersSlice = createSlice({
         },
       }
     },
+
+    /* CHECK BOX */
+    handleCheckIdReducer(state, action: PayloadAction<string>) {
+      const updatedCheckedIds = new Set(state.checkedIds)
+      if (updatedCheckedIds.has(action.payload)) {
+        updatedCheckedIds.delete(action.payload)
+      } else {
+        updatedCheckedIds.add(action.payload)
+      }
+
+      let updatedNumCheckedIds = updatedCheckedIds.size
+      console.log("updatedNumCheckedIds")
+      console.log(updatedNumCheckedIds)
+      console.log("state.totalFilesPlusFolders")
+      console.log(state.totalFilesPlusFolders)
+      // const updatedTopCheckboxState = 0 < updatedNumCheckedIds && updatedNumCheckedIds < state.totalFilesPlusFolders
+        
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        checkedIds: updatedCheckedIds,
+      }
+
+      return updatedFolderRTKState
+    },
+
+    handleCheckAllIdsReducer(state, action: PayloadAction<boolean>) {
+       if (action.payload) {
+        const filesIds = state.files.map((file) => file.id)
+        const foldersIds = state.folders.map((folder) => folder.id)
+
+        const updatedFolderRTKState: FolderState = {
+          ...state,
+          checkedIds: new Set([...filesIds, ...foldersIds]),
+        }
+      return updatedFolderRTKState
+    } else {
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        checkedIds: new Set<string>(),
+      }
+
+      return updatedFolderRTKState
+    }
+    }
   },
 
   extraReducers: (builder) => {},
@@ -238,6 +331,8 @@ export const {
   uploadManyFilesReducer,
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
+  handleCheckIdReducer,
+  handleCheckAllIdsReducer
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

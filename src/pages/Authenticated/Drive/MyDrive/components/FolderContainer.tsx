@@ -7,8 +7,10 @@ import {
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
   setFolderToUpdateReducer,
+  handleCheckIdReducer,
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
+import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
 
 interface Props {}
 
@@ -33,13 +35,15 @@ export default function FolderContainer({}: Props) {
   } */
 
   return (
-    <div className="grid w-full  grid-cols-2   justify-between gap-2    xl:grid-cols-3 2xl:grid-cols-6">
+    <div className="grid w-full  grid-cols-2   justify-between gap-2    xl:grid-cols-3 2xl:grid-cols-6  z-10 relative" onDragOver={(e) => {
+      dispatch(setIsDraggingFileReducer(true))
+    }}>
       {storeFolder.folders.length >= 0 &&
         storeFolder.folders.map((folder) => (
           <div
             key={folder.id}
             /* border-[1px] border-solid border-[#DADCE0] */
-            className="rounded-xl bg-[#F2F6FC] hover:bg-[#f5f5f5] "
+            className={`rounded-xl  ${storeFolder.checkedIds.has(folder.id) ? `bg-[#C2E7FF]` : `bg-[#F2F6FC] hover:bg-[#f5f5f5]`}  group/showCheckbox`}
           >
             <div
               className={"px-3 py-[6px] relative cursor-default "}
@@ -78,10 +82,33 @@ export default function FolderContainer({}: Props) {
                 className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1 `}
               >
                 {/* //! ACA DEBERÍAMOS QUITARLE LA EXNTESIÓN PORQUE HAY GENTE QUE SUBE IMAGENES CON . */}
-                {/* flex-1 */}
+        
                 <div className="flex items-center gap-4 pl-3   w-[90%]">
-                  {getSvg({ type: "folder", width: "20px", height: "20px" })}
-                  {/* flex-1 */}
+                 {storeFolder.checkedIds.has(folder.id) ? <div className="" onClick={(e) => {
+                    e.stopPropagation()
+                    dispatch(
+                      handleCheckIdReducer(folder.id)
+                    )
+                  }}>
+                    {getSvg({ type: `checkboxChecked`, width: "20px", height: "20px" })}
+                  </div> : <>
+                 
+                  <div className="hidden group-hover/showCheckbox:flex" onClick={(e) => {
+                    e.stopPropagation()
+                    dispatch(
+                      handleCheckIdReducer(folder.id)
+                    )
+                  }}>
+                    {getSvg({ type: `checkboxFileFolder`, width: "20px", height: "20px" })}
+                  </div>
+                  <div className="group-hover/showCheckbox:hidden">
+                    {getSvg({ type: "folder", width: "20px", height: "20px" })}
+                  </div>
+                 </>}
+
+                  
+                  
+        
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
                     onDoubleClick={(e) => {
@@ -93,7 +120,7 @@ export default function FolderContainer({}: Props) {
                       )
                     }}
                   >
-                    {/* flex-1 */}
+   
                     <span className=" text-[13px] ">{folder.originalName}</span>
                     <div
                       className={`absolute  rounded text-white hidden transition-all duration-300 group-hover/tooltip:block top-8 left-6`}

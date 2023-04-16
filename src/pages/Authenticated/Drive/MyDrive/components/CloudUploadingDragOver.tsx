@@ -10,7 +10,7 @@ const CloudUploadingDragOver = () => {
     <div
       className="absolute bottom-6 w-full flex z-50 flex-col"
       style={{
-        display: storeStyle.showCloudUploading ? "block" : "none",
+        display: storeStyle.IsDraggingFile ? "block" : "none",
       }}
     >
       <div className="flex justify-center">

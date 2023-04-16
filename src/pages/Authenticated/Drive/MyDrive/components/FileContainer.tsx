@@ -6,28 +6,32 @@ import { File } from "../../../../../utils/typesAndInterfaces"
 import { getSvg } from "../../../../../utils/getSvg"
 import Tooltip from "../../../../../components/Tooltip"
 import {
+  handleCheckIdReducer,
   setFileToUpdateReducer,
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
 } from "../../../../../store/folder/folderSlice"
+import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
 /* import { openModalUpdateFile } from "../utils/openModal" */
 
 interface Props {}
 
 export default function FileContainer({}: Props) {
   const dispatch = useAppDispatch()
-  const { files } = useAppSelector((state) => state.folder)
+  const storeFolder = useAppSelector((state) => state.folder)
 
   return (
     /* px-2 */
-    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  xl:grid-cols-3 2xl:grid-cols-6 ">
-      {files &&
-        files.length >= 0 &&
-        files.map((file) => (
+    <div className=" grid  w-full   grid-cols-2 justify-between   gap-2  xl:grid-cols-3 2xl:grid-cols-6 z-10 relative" onDragOver={(e) => {
+      dispatch(setIsDraggingFileReducer(true))
+    }}>
+      {
+        storeFolder.files.length >= 0 &&
+        storeFolder.files.map((file) => (
           <div
             key={file.id}
             /* rounded-md border-[1px] border-solid border-[#DADCE0] */
-            className="rounded-xl bg-[#F2F6FC] hover:bg-[#f5f5f5] "
+            className={`rounded-xl ${storeFolder.checkedIds.has(file.id) ? `bg-[#C2E7FF]` : `bg-[#F2F6FC] hover:bg-[#f5f5f5]`}  group/showCheckbox`}
           >
             {/* bg-blue-500 */}
             <div
@@ -66,7 +70,32 @@ export default function FileContainer({}: Props) {
                 className={` text-ellipsis whitespace-nowrap   flex items-center mb-1 w-full py-1`}
               >
                 <div className="flex items-center gap-4 pl-3   w-[90%]">
-                  <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
+            
+
+                    {storeFolder.checkedIds.has(file.id) ? <div className="" onClick={(e) => {
+                    e.stopPropagation()
+                    dispatch(
+                      handleCheckIdReducer(file.id)
+                    )
+                  }}>
+                    {getSvg({ type: `checkboxChecked`, width: "20px", height: "20px" })}
+                  </div> : <>
+                 
+                   <div className="hidden group-hover/showCheckbox:flex" onClick={(e) => {
+                    e.stopPropagation()
+                    dispatch(
+                      handleCheckIdReducer(file.id)
+                    )
+                  }}>
+                    {getSvg({ type: `${storeFolder.checkedIds.has(file.id) ? "checkboxChecked" : "checkboxFileFolder"}`, width: "20px", height: "20px" })}
+                  </div>
+                  <div className="group-hover/showCheckbox:hidden">
+                                      <img src={fileNameIcon} alt="" className="h-4 w-4" />{" "}
+
+                  </div>
+                 </>}
+
+
                   <div
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
                   >

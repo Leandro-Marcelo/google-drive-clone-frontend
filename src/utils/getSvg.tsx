@@ -570,6 +570,16 @@ MEI+zj0AAAAASUVORK5CYII="
           <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
         </svg>
       )
+
+
+      case "checkboxFileFolder":
+      return (
+       <svg    width={item.width ? item.width : "24px"}
+          height={item.height ? item.height : "24px"} viewBox="0 0 24 24" focusable="false"  ><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path></svg>
+      )
+
+
+      
   }
 }
 

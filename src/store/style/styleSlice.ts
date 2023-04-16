@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 // const CURRENT_USER_RESET: CurrentUser | null = null
 
 export interface StyleRtkState {
-  showCloudUploading: boolean
+  IsDraggingFile: boolean
 }
 const STYLE_STATE_RESET: StyleRtkState = {
-  showCloudUploading: false,
+  IsDraggingFile: false,
 }
 
 const initialState = STYLE_STATE_RESET
@@ -14,22 +14,21 @@ export const stylesSlice = createSlice({
   name: "styles",
   initialState,
   reducers: {
-    showCloudUploadingReducer: (state, action: PayloadAction<void>) => {
-      return {
+    setIsDraggingFileReducer: (state, action: PayloadAction<boolean>) => {
+      const updatedStyleRTKState: StyleRtkState = {
         ...state,
-        showCloudUploading: true,
+        IsDraggingFile: action.payload,
       }
-    },
-    hideCloudUploadingReducer: (state, action: PayloadAction<void>) => {
-      return {
-        ...state,
-        showCloudUploading: false,
-      }
+
+      return updatedStyleRTKState
     },
   },
 })
 
-export const { showCloudUploadingReducer, hideCloudUploadingReducer } =
-  stylesSlice.actions
+export const {
+  /* showCloudUploadingReducer,
+  hideCloudUploadingReducer, */
+  setIsDraggingFileReducer,
+} = stylesSlice.actions
 
 export default stylesSlice.reducer

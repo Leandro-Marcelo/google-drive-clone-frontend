@@ -19,6 +19,7 @@ import {
 import { getSvg } from "../../../../utils/getSvg"
 import CloudUploadingDragOver from "./components/CloudUploadingDragOver"
 import CtxMenus from "./components/CtxMenus"
+import MessageWarningStorage from "./components/MessageWarningStorage"
 
 const Index = () => {
   const dispatch = useAppDispatch()
@@ -101,12 +102,15 @@ const Index = () => {
                 <FileActions />
                 {/* message-warning-storage-and-preview-file */}
                 {/* bg-white rounded-xl */}
+                {/* bg-yellow-500 */}
                 <div className="flex h-[92.5%] ">
                   {/* <MessageWarningStorage /> */}
-                  {/* overflow-y-scroll */}
-                  <div className="w-full overflow-y-auto  px-4 h-full">
+                  {/* bg-green-500 */}
+                  <div className="w-full overflow-y-auto  h-full ">
                     {"hasStorageFull" === "hasStorageFull" ? (
-                      <MessageAlertStorage />
+                      <div className="px-4">
+                        <MessageAlertStorage />
+                      </div>
                     ) : null}
                     <MyFilesAndFolders />
                   </div>

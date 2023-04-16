@@ -11,6 +11,7 @@ import {
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
 } from "../../../../../store/folder/folderSlice"
+import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
 
 const MyFilesAndFolders = () => {
   const refInputFile = useRef<HTMLInputElement>(null)
@@ -24,7 +25,8 @@ const MyFilesAndFolders = () => {
   return (
     <>
       {/* TODO Crear las imagenes que van debajo de Suggested */}
-      <div
+      <div className="px-4">
+        <div
         className="h-[7%] py-4 pl-1 pr-7 text-sm font-semibold text-[#5f6368] "
         onContextMenu={(e) => {
           e.preventDefault()
@@ -33,16 +35,12 @@ const MyFilesAndFolders = () => {
       >
         Suggested
       </div>
+      </div>
       <div
-        /* className={` bg-green-500 ${
-          "81% of storage used" === "81% of storage used"
-            ? `min-h-[89%]`
-            : `min-h-[94%]`
-        } `} */
-        /* bg-green-500 */
-        className={`   ${
+        /* bg-red-500 */
+        className={`${
           "hasStorageFull" === "hasStorageFull" ? `min-h-[87%]` : `min-h-[93%]`
-        } `}
+        }   relative`}
         onContextMenu={(e) => {
           e.preventDefault()
           e.stopPropagation()
@@ -61,17 +59,23 @@ const MyFilesAndFolders = () => {
           )
         }}
       >
-        <DropArea refInputFile={refInputFile}>
-          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-            Folders
-          </h4>
-          <FolderContainer />
-          <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold">
-            Files
-          </h4>
-        </DropArea>
-        {/* EL FILE NO DEJA VERSE EL AZUL QUE APARECE AL REDEDOR CUANDO HACEMOS DRAG OVER */}
+        <DropArea refInputFile={refInputFile} />
+          <div className="flex flex-col px-4">
+            <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold relative z-10" onDragOver={(e) => {
+      dispatch(setIsDraggingFileReducer(true))
+    }}>
+          Folders
+        </h4>
+        <FolderContainer />
+        <h4 className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold relative z-10" onDragOver={(e) => {
+      dispatch(setIsDraggingFileReducer(true))
+    }}>
+          Files
+        </h4>
         <FileContainer />
+          </div>
+        
+        {/* EL FILE NO DEJA VERSE EL AZUL QUE APARECE AL REDEDOR CUANDO HACEMOS DRAG OVER */}
       </div>
     </>
   )

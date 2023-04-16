@@ -1,23 +1,25 @@
-import { ChangeEvent, DragEvent, ReactNode, useEffect, useRef } from "react"
+import {
+  ChangeEvent,
+  DragEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 // import { uploadMany } from "../redux/states/folder"
 import { getSvg } from "../../../../../utils/getSvg"
 import cloudUploading from "../../../../../assets/cloudUploading.gif"
 import {
-  hideCloudUploadingReducer,
-  showCloudUploadingReducer,
+  setIsDraggingFileReducer,
 } from "../../../../../store/style/styleSlice"
 import { uploadManyFilesAPI } from "../../../../../services/files"
 import { uploadManyFilesReducer } from "../../../../../store/folder/folderSlice"
 
-export default function DropArea({
-  refInputFile,
-  children,
-}: {
-  refInputFile: any
-  children: ReactNode
-}) {
-  const anotherRef = useRef<HTMLDivElement>(null)
+export default function DropArea({ refInputFile }: { refInputFile: any }) {
+  const storeStyle = useAppSelector((store) => store.style)
+
+  const containerRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
 
@@ -77,8 +79,13 @@ export default function DropArea({
     e.preventDefault()
     e.stopPropagation()
 
-    dispatch(showCloudUploadingReducer())
+    /*  if (containerRef && containerRef.current) {
+      containerRef.current.classList.add("zIndex50")
+    } */
+
+    /* refDropArea.current && refDropArea.current.classList.add("zIndex50") */
     refDropArea.current && refDropArea.current.classList.add("active")
+    /* dispatch(showCloudUploadingReducer()) */
 
     /* refCloudUploading.current &&
       refCloudUploading.current.classList.add("active") */
@@ -97,8 +104,10 @@ export default function DropArea({
     e.preventDefault()
     e.stopPropagation()
 
-    dispatch(hideCloudUploadingReducer())
     refDropArea.current && refDropArea.current.classList.remove("active")
+    /* dispatch(hideCloudUploadingReducer()) */
+    dispatch(setIsDraggingFileReducer(false))
+
     /* refCloudUploading.current &&
       refCloudUploading.current.classList.remove("active") */
 
@@ -119,7 +128,10 @@ export default function DropArea({
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
+
     refDropArea.current && refDropArea.current.classList.remove("active")
+    /* dispatch(hideCloudUploadingReducer()) */
+    dispatch(setIsDraggingFileReducer(false))
     /*  refCloudUploading.current &&
       refCloudUploading.current.classList.remove("active") */
     /* if (refDragText.current) refDragText.current.textContent = "" */
@@ -136,17 +148,18 @@ export default function DropArea({
   }
 
   return (
-    /*  z-50 */
-    <div className="relative z-50">
-      <div
-        /* bg-purple-500 */
-        className="absolute flex min-h-[100vh] w-full flex-col drop-area"
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        ref={refDropArea}
-      >
-        {/* <h2 className="text-[30px] font-medium text-black" ref={refDragText}>
+    <div
+      /* bg-yellow-500 */
+      /* min-h-full or min-h-screen */
+      className={`absolute  w-full h-full drop-area  ${
+        storeStyle.IsDraggingFile ? "z-20" : ""
+      }`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      ref={refDropArea}
+    >
+      {/* <h2 className="text-[30px] font-medium text-black" ref={refDragText}>
           {files && files.length === 0 && "A place for all of your files"}
         </h2>
 
@@ -154,11 +167,11 @@ export default function DropArea({
           {files && files.length === 0 && getSvg({ type: "driveEmpty" })}
         </div> */}
 
-        {/* <div ref={refCloudUploading} className="cloudUploading hidden">
+      {/* <div ref={refCloudUploading} className="cloudUploading hidden">
           <img src={cloudUploading} width={150} />
         </div> */}
 
-        {/* <div
+      {/* <div
           className="cloudUploading hidden relative "
           ref={refCloudUploading}
         >
@@ -167,26 +180,16 @@ export default function DropArea({
           </h1>
         </div> */}
 
-        {/* bottom-8 */}
+      {/* bottom-8 */}
 
-        <input
-          type="file"
-          id="inputFile"
-          hidden
-          multiple
-          onChange={handleChangeInputFile}
-          ref={refInputFile}
-        />
-      </div>
-      {children}
-
-      {/* <div
-        className=""
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        ref={refDropArea}
-      ></div> */}
+      <input
+        type="file"
+        id="inputFile"
+        hidden
+        multiple
+        onChange={handleChangeInputFile}
+        ref={refInputFile}
+      />
     </div>
   )
 }

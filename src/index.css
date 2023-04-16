@@ -6,18 +6,18 @@
    clip-path: polygon(100% 50%, 0 0, 100% 0, 50% 100%, 0 0)
  } */
 
- ::-webkit-scrollbar {
-   width: 8px;
- }
+::-webkit-scrollbar {
+  width: 8px;
+}
 
- ::-webkit-scrollbar-thumb {
-   background-color: #C7C7C7;
-   border-radius: 40px;
- }
+::-webkit-scrollbar-thumb {
+  background-color: #c7c7c7;
+  border-radius: 40px;
+}
 
- ::-webkit-scrollbar-track {
-   background-color: transparent;
- }
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 
 /*  .drop-area {
    height: 500px;
@@ -30,26 +30,25 @@
    position: absolute;
  } */
 
- .drop-area {}
+.drop-area {
+}
 
- /* Cuando yo tenga archivos y los coloque por encima del drag area es que se va a activar */
- .drop-area.active {
-   background-color: rgba(184, 212, 254, 0.3);
-   color: black;
-   border: 2px solid #618ac9;
-   border-radius: 10px;
- }
-
-
+/* Cuando yo tenga archivos y los coloque por encima del drag area es que se va a activar */
+.drop-area.active {
+  background-color: rgba(184, 212, 254, 0.3);
+  color: black;
+  border: 2px solid #618ac9;
+  border-radius: 10px;
+}
 
 /* NO SE SI SE UTILIZAN DE ACA HACIA ABAJO */
- .cloudUploading.active {
-   display: block;
- }
+.cloudUploading.active {
+  display: block;
+}
 
- .driveEmpty.active {
-   display: none;
- }
+.driveEmpty.active {
+  display: none;
+}
 
 /*  .drop-area span {
    font-size: 25px;
@@ -57,60 +56,66 @@
    color: #000;
  } */
 
- .btn {
-   padding: 10px 25px;
-   font-size: 20px;
-   border: 0;
-   outline: none;
-   border-radius: 5px;
-   cursor: pointer;
-   margin: 20px;
- }
+.btn {
+  padding: 10px 25px;
+  font-size: 20px;
+  border: 0;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px;
+}
 
- .btn-upload {
-   background-color: #5256ad;
-   color: #fff;
- }
+.btn-upload {
+  background-color: #5256ad;
+  color: #fff;
+}
 
- .btn-send {
-   background-color: #1890ff;
-   color: #fff;
- }
+.btn-send {
+  background-color: #1890ff;
+  color: #fff;
+}
 
- /* FILE CONTAINER -> capa dinamica para cuando subamos un archivo */
- .file-container {
-   display: flex;
-   align-items: center;
-   gap: 10px;
-   padding: 10px;
-   border: solid 1px #ddd;
- }
+/* FILE CONTAINER -> capa dinamica para cuando subamos un archivo */
+.file-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: solid 1px #ddd;
+}
 
- #preview {
-   margin-top: 10px;
- }
+#preview {
+  margin-top: 10px;
+}
 
- .status {
-   width: 100%;
-   display: flex;
-   justify-content: space-between;
- }
+.status {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 
- .status-text {
-   padding: 0 10px;
- }
+.status-text {
+  padding: 0 10px;
+}
 
- .success {
-   color: #52ad5a;
- }
+.success {
+  color: #52ad5a;
+}
 
- .failure {
-   color: #ff0000;
- }
+.failure {
+  color: #ff0000;
+}
 
- /* * ESTILOS PARA LA CARD QUE SE DESPLIEGA DEL CONTEXT MENU */
- .cardShadow {
-   box-shadow: 2px 2px 5px 2px rgba(204, 204, 204, 0.75);
-   -webkit-box-shadow: 2px 2px 5px 2px rgba(204, 204, 204, 0.75);
-   -moz-box-shadow: 2px 2px 5px 2px rgba(204, 204, 204, 0.75);
- }
+/* * ESTILOS PARA LA CARD QUE SE DESPLIEGA DEL CONTEXT MENU */
+.cardShadow {
+  box-shadow: 2px 2px 5px 2px rgba(204, 204, 204, 0.75);
+  -webkit-box-shadow: 2px 2px 5px 2px rgba(204, 204, 204, 0.75);
+  -moz-box-shadow: 2px 2px 5px 2px rgba(204, 204, 204, 0.75);
+}
+
+/* daspokda */
+
+.zIndex50 {
+  z-index: 50;
+}

@@ -2,13 +2,13 @@ import React, { useState } from "react"
 import Tooltip from "../../../../../components/Tooltip"
 import { getSvg } from "../../../../../utils/getSvg"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
-import { updateChildFoldersReducer } from "../../../../../store/folder/folderSlice"
+import { handleCheckAllIdsReducer, updateChildFoldersReducer } from "../../../../../store/folder/folderSlice"
 
 const FileActions = () => {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
 
-  const [fileOrFolderSelected, setFileOrFolderSelected] = useState(false)
+  const [fileOrFolderSelected, setFileOrFolderSelected] = useState(true)
 
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
@@ -28,7 +28,9 @@ const FileActions = () => {
     >
       {fileOrFolderSelected ? (
         /* pl-4  */
-        <div className="flex items-center gap-3 ">
+        <div className="flex items-center gap-3 pl-3" onClick={(e) => {
+              dispatch(handleCheckAllIdsReducer(storeFolder.checkedIds.size === storeFolder.totalFilesPlusFolders ? false : true))
+            }}>
           <Tooltip
             text="Select all files on screen"
             direction="top-10 -left-4"
@@ -36,14 +38,14 @@ const FileActions = () => {
           >
             <div>
               {getSvg({
-                type: "checkboxIndeterminate",
+                type: `${storeFolder.checkedIds.size === storeFolder.totalFilesPlusFolders ? "checkboxChecked" : "checkboxIndeterminate"}`,
                 width: "20px",
                 height: "20px",
               })}
             </div>
           </Tooltip>
 
-          <div className="text-[#1F1F1F] font-semibold">1 selected</div>
+          <div className="text-[#1F1F1F] font-semibold">{storeFolder.checkedIds.size} selected</div>
 
           <Tooltip text="Share" direction="top-10 -left-4" textNoWrap={true}>
             <div>
