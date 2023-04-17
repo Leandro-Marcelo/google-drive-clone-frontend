@@ -12,7 +12,10 @@ import {
   resetIsShowCtxMenuReducer,
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
-import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
+import {
+  setIsDraggingFileReducer,
+  setMenuOfNewIsOpenReducer,
+} from "../../../../../store/style/styleSlice"
 import { Folder } from "../../../../../utils/typesAndInterfaces"
 
 interface Props {}
@@ -85,7 +88,9 @@ export default function FolderContainer({}: Props) {
             onClick={(e) => {
               e.stopPropagation()
               dispatch(checkSpecificIdReducer(folder.id))
+              // * CLEAN UP
               dispatch(resetIsShowCtxMenuReducer())
+              dispatch(setMenuOfNewIsOpenReducer(false))
             }}
           >
             <div
@@ -115,7 +120,9 @@ export default function FolderContainer({}: Props) {
                       onClick={(e) => {
                         e.stopPropagation()
                         dispatch(handleCheckIdReducer(folder.id))
+                        // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
+                        dispatch(setMenuOfNewIsOpenReducer(false))
                       }}
                     >
                       {getSvg({
@@ -130,7 +137,9 @@ export default function FolderContainer({}: Props) {
                       onClick={(e) => {
                         e.stopPropagation()
                         dispatch(handleCheckIdReducer(folder.id))
+                        // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
+                        dispatch(setMenuOfNewIsOpenReducer(false))
                       }}
                     >
                       {/* p-1 */}
@@ -200,6 +209,9 @@ export default function FolderContainer({}: Props) {
                       e.stopPropagation()
                       handleShowCtxMenu(folder, e)
                       dispatch(checkSpecificIdReducer(folder.id))
+
+                      // * CLEAN UP
+                      dispatch(setMenuOfNewIsOpenReducer(false))
                     }}
                   >
                     <div>

@@ -41,8 +41,7 @@ const LeftSideBar = () => {
       <div className="h-[93%] ">
         <div className=" py-3 px-3 ">
           <div
-            /* bg-white */
-            className="flex w-[100px] items-center gap-3 rounded-2xl  py-4 px-2 justify-center cursor-pointer hover:bg-[#EFF3FB] transition-colors hover:shadow-md relative"
+            className="flex w-[100px] items-center gap-3 rounded-2xl  py-4 px-2 justify-center cursor-pointer hover:bg-[#EFF3FB] transition-colors hover:shadow-md relative bg-white"
             onClick={(e) => {
               e.stopPropagation()
               dispatch(setMenuOfNewIsOpenReducer(true))

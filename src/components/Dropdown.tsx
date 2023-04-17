@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useRef, useState } from "react"
 import googleDocsPNG from "../assets/imgs/googleDocs.png"
 import googleSheetsPNG from "../assets/imgs/googleSheets.png"
 import googleSlidesPNG from "../assets/imgs/googleSlides.png"
@@ -9,9 +9,11 @@ import googleSitesPNG from "../assets/imgs/googleSites.png"
 import googleAppsScriptPNG from "../assets/imgs/googleAppsScript.png"
 import googleJamboardPNG from "../assets/imgs/googleJamboard.png"
 import { getSvg } from "../utils/getSvg"
-import { useAppDispatch } from "../store/hook"
+import { useAppDispatch, useAppSelector } from "../store/hook"
 import { openModalCreateUpdateFolder } from "../utils/openModal"
 import { setMenuOfNewIsOpenReducer } from "../store/style/styleSlice"
+import { uploadManyFilesAPI } from "../services/files"
+import { uploadManyFilesReducer } from "../store/folder/folderSlice"
 
 export type SubMenuName = "docs" | "sheets" | "slides" | "forms" | "more"
 
@@ -21,6 +23,48 @@ interface Props {
 
 const Dropdown = ({ menuIsOpen }: Props) => {
   const dispatch = useAppDispatch()
+  const storeFolder = useAppSelector((store) => store.folder)
+
+  // * INPUT FILE
+  const refInputFile = useRef<HTMLInputElement>(null)
+
+  const uploadManyFilesFetch = async (formData: FormData) => {
+    try {
+      const res = await uploadManyFilesAPI({ formData })
+      dispatch(uploadManyFilesReducer(res.data))
+    } catch (err: any) {}
+  }
+
+  const showFiles = (htmlFiles: FileList) => {
+    const formData = new FormData()
+
+    if (htmlFiles.length === 1) {
+      formData.append("files", htmlFiles[0])
+    } else {
+      for (const htmlFile of htmlFiles) {
+        formData.append("files", htmlFile)
+      }
+    }
+
+    if (storeFolder.childFolders.length !== 0) {
+      formData.append(
+        "folderId",
+        storeFolder.childFolders[storeFolder.childFolders.length - 1].id
+      )
+    }
+
+    uploadManyFilesFetch(formData)
+  }
+
+  const handleChangeInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+
+    if (e.target.files !== null && e.target.files.length >= 1) {
+      showFiles(e.target.files)
+    }
+  }
+
+  // * ./ INPUT FILE
 
   const [updateSubsMenuOpen, setUpdateSubsMenuOpen] = useState(
     new Map<SubMenuName, boolean>()
@@ -58,6 +102,14 @@ const Dropdown = ({ menuIsOpen }: Props) => {
 
   return (
     <>
+      <input
+        type="file"
+        id="inputFile"
+        hidden
+        multiple
+        onChange={handleChangeInputFile}
+        ref={refInputFile}
+      />
       {menuIsOpen && (
         <ul
           className="absolute py-2 rounded-md animate-dropdown bg-white z-50 w-[200px] md:w-[300px] top-0 left-0"
@@ -99,6 +151,13 @@ const Dropdown = ({ menuIsOpen }: Props) => {
               onMouseEnter={(e) => {
                 resetSubsMenuLessSubMenuNameReceive(null)
               }}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (refInputFile.current) {
+                  refInputFile.current.click()
+                }
+                dispatch(setMenuOfNewIsOpenReducer(false))
+              }}
             >
               <div>
                 {getSvg({
@@ -132,11 +191,13 @@ const Dropdown = ({ menuIsOpen }: Props) => {
             <hr className="border-gray-200" />
           </li>
           <li className="pt-1">
-            <div
+            <a
               className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center"
               onMouseEnter={(e) => {
                 resetSubsMenuLessSubMenuNameReceive("docs")
               }}
+              href="https://docs.google.com"
+              target="_blank"
             >
               <div className="flex justify-between w-full">
                 <div className="flex gap-4">
@@ -164,7 +225,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4 "
-                      href="#"
+                      href="https://docs.google.com"
+                      target="_blank"
                     >
                       Blank document
                     </a>
@@ -172,21 +234,24 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li className="">
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4 group/stop"
-                      href="#"
+                      href="https://docs.google.com"
+                      target="_blank"
                     >
                       From a template
                     </a>
                   </li>
                 </ul>
               )}
-            </div>
+            </a>
           </li>
           <li className="pt-1">
-            <div
+            <a
               className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center group/google-sheets"
               onMouseEnter={(e) => {
                 resetSubsMenuLessSubMenuNameReceive("sheets")
               }}
+              href="https://docs.google.com/spreadsheets"
+              target="_blank"
             >
               <div className="flex justify-between w-full">
                 <div className="flex gap-4">
@@ -214,7 +279,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4 group-hover/google-docs:bg-gray-100"
-                      href="#"
+                      href="https://docs.google.com/spreadsheets"
+                      target="_blank"
                     >
                       Blank spreadsheet
                     </a>
@@ -222,21 +288,24 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/spreadsheets"
+                      target="_blank"
                     >
                       From a template
                     </a>
                   </li>
                 </ul>
               )}
-            </div>
+            </a>
           </li>
           <li className="pt-1">
-            <div
+            <a
               className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center"
               onMouseEnter={(e) => {
                 resetSubsMenuLessSubMenuNameReceive("slides")
               }}
+              href="https://docs.google.com/presentation"
+              target="_blank"
             >
               <div className="flex justify-between w-full">
                 <div className="flex gap-4">
@@ -264,7 +333,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/presentation"
+                      target="_blank"
                     >
                       Blank presentation
                     </a>
@@ -272,21 +342,24 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/presentation"
+                      target="_blank"
                     >
                       From a template
                     </a>
                   </li>
                 </ul>
               )}
-            </div>
+            </a>
           </li>
           <li className="pt-1">
-            <div
+            <a
               className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center"
               onMouseEnter={(e) => {
                 resetSubsMenuLessSubMenuNameReceive("forms")
               }}
+              href="https://docs.google.com/forms"
+              target="_blank"
             >
               <div className="flex justify-between w-full">
                 <div className="flex gap-4">
@@ -314,7 +387,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/forms"
+                      target="_blank"
                     >
                       Blank form
                     </a>
@@ -322,7 +396,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/forms"
+                      target="_blank"
                     >
                       Blank quiz
                     </a>
@@ -330,14 +405,15 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/forms"
+                      target="_blank"
                     >
                       From a template
                     </a>
                   </li>
                 </ul>
               )}
-            </div>
+            </a>
           </li>
           <li className="pt-1">
             <div
@@ -370,7 +446,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://docs.google.com/drawings"
+                      target="_blank"
                     >
                       <div className="flex gap-4">
                         <div className="h-[20px] w-[20px]">
@@ -387,7 +464,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://www.google.com/maps"
+                      target="_blank"
                     >
                       <div className="flex gap-4">
                         <div className="h-[20px] w-[20px]">
@@ -404,7 +482,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://sites.google.com/"
+                      target="_blank"
                     >
                       <div className="flex gap-4">
                         <div className="h-[20px] w-[20px]">
@@ -421,7 +500,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://script.google.com/"
+                      target="_blank"
                     >
                       <div className="flex gap-4">
                         <div className="h-[20px] w-[20px]">
@@ -438,7 +518,8 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                   <li>
                     <a
                       className="flex  px-6 py-1 text-sm text-gray-800 hover:bg-gray-100 items-center gap-4"
-                      href="#"
+                      href="https://jamboard.google.com/"
+                      target="_blank"
                     >
                       <div className="flex gap-4">
                         <div className="h-[20px] w-[20px]">
