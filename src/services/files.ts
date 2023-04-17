@@ -19,9 +19,9 @@ export const uploadManyFilesAPI = ({ formData }: UploadManyFilesParams) =>
     axiosClientConfig
   )
 
-export const softDeleteManyFilesAPI = (fileIds: string[]) =>
+export const softDeleteManyFilesAPI = (filesIds: string[]) =>
   axiosClient.put<UploadedFile[]>(
     `/files/softDeleteMany`,
-    fileIds,
+    filesIds,
     axiosClientConfig
   )

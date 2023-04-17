@@ -33,6 +33,8 @@ export interface File {
 
 // OTHERS
 
+export type OnlyFileOrFolder = "file" | "folder"
+
 export type CurrentUser = Omit<User, "password">
 
 export type PublicUser = Omit<User, "password">

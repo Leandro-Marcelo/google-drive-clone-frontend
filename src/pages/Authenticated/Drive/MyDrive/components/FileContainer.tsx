@@ -6,8 +6,8 @@ import { File } from "../../../../../utils/typesAndInterfaces"
 import { getSvg } from "../../../../../utils/getSvg"
 import Tooltip from "../../../../../components/Tooltip"
 import {
-  checkSpecificIdReducer,
-  handleCheckIdReducer,
+  checkSpecificFileOrFolderIdReducer,
+  handleCheckFileOrFolderIdReducer,
   resetIsShowCtxMenuReducer,
   setFileToUpdateReducer,
   updateIsShowCtxMenuReducer,
@@ -66,13 +66,18 @@ export default function FileContainer({}: Props) {
             key={file.id}
             /* rounded-md border-[1px] border-solid border-[#DADCE0] */
             className={`rounded-xl ${
-              storeFolder.checkedIds.has(file.id)
+              storeFolder.checkedFilesAndFoldersIds.has(file.id)
                 ? `bg-[#C2E7FF]`
                 : `bg-[#F2F6FC] hover:bg-[#f5f5f5]`
             }  group/showCheckbox`}
             onClick={(e) => {
               e.stopPropagation()
-              dispatch(checkSpecificIdReducer(file.id))
+              dispatch(
+                checkSpecificFileOrFolderIdReducer({
+                  id: file.id,
+                  type: "file",
+                })
+              )
               // * CLEAN UP
               dispatch(resetIsShowCtxMenuReducer())
               dispatch(setMenuOfNewIsOpenReducer(false))
@@ -90,6 +95,9 @@ export default function FileContainer({}: Props) {
                 e.preventDefault()
 
                 handleShowCtxMenu(file, e)
+
+                // * CLEAN UP
+                dispatch(setMenuOfNewIsOpenReducer(false))
               }}
             >
               <div
@@ -97,12 +105,17 @@ export default function FileContainer({}: Props) {
                 className={` text-ellipsis whitespace-nowrap   flex items-center w-full py-[6px]`}
               >
                 <div className="flex items-center gap-4 w-[90%]">
-                  {storeFolder.checkedIds.has(file.id) ? (
+                  {storeFolder.checkedFilesAndFoldersIds.has(file.id) ? (
                     <div
                       className="p-2 hover:bg-[#3c404314] rounded-full"
                       onClick={(e) => {
                         e.stopPropagation()
-                        dispatch(handleCheckIdReducer(file.id))
+                        dispatch(
+                          handleCheckFileOrFolderIdReducer({
+                            id: file.id,
+                            type: "file",
+                          })
+                        )
                         // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
                         dispatch(setMenuOfNewIsOpenReducer(false))
@@ -119,7 +132,12 @@ export default function FileContainer({}: Props) {
                       className="hover:bg-[#3c404314]   p-2 rounded-full cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation()
-                        dispatch(handleCheckIdReducer(file.id))
+                        dispatch(
+                          handleCheckFileOrFolderIdReducer({
+                            id: file.id,
+                            type: "file",
+                          })
+                        )
                         // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
                         dispatch(setMenuOfNewIsOpenReducer(false))
@@ -128,7 +146,7 @@ export default function FileContainer({}: Props) {
                       <div className="hidden group-hover/showCheckbox:flex">
                         {getSvg({
                           type: `${
-                            storeFolder.checkedIds.has(file.id)
+                            storeFolder.checkedFilesAndFoldersIds.has(file.id)
                               ? "checkboxChecked"
                               : "checkboxFileFolder"
                           }`,
@@ -172,7 +190,12 @@ export default function FileContainer({}: Props) {
                     onClick={(e) => {
                       e.stopPropagation()
                       handleShowCtxMenu(file, e)
-                      dispatch(checkSpecificIdReducer(file.id))
+                      dispatch(
+                        checkSpecificFileOrFolderIdReducer({
+                          id: file.id,
+                          type: "file",
+                        })
+                      )
                       // * CLEAN UP
                       dispatch(setMenuOfNewIsOpenReducer(false))
                     }}

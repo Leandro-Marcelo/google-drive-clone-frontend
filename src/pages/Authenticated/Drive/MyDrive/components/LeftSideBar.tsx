@@ -6,6 +6,7 @@ import { AuthenticatedRoutes } from "../../../../../utils/constants"
 import Dropdown from "../../../../../components/Dropdown"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import { setMenuOfNewIsOpenReducer } from "../../../../../store/style/styleSlice"
+import { resetIsShowCtxMenuReducer } from "../../../../../store/folder/folderSlice"
 
 export type SubMenuName = "docs" | "sheets" | "slides" | "forms" | "more"
 
@@ -45,6 +46,8 @@ const LeftSideBar = () => {
             onClick={(e) => {
               e.stopPropagation()
               dispatch(setMenuOfNewIsOpenReducer(true))
+              // * CLEAN UP
+              dispatch(resetIsShowCtxMenuReducer())
             }}
             style={{
               boxShadow:

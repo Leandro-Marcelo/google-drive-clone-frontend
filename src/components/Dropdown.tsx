@@ -13,7 +13,10 @@ import { useAppDispatch, useAppSelector } from "../store/hook"
 import { openModalCreateUpdateFolder } from "../utils/openModal"
 import { setMenuOfNewIsOpenReducer } from "../store/style/styleSlice"
 import { uploadManyFilesAPI } from "../services/files"
-import { uploadManyFilesReducer } from "../store/folder/folderSlice"
+import {
+  resetIsShowCtxMenuReducer,
+  uploadManyFilesReducer,
+} from "../store/folder/folderSlice"
 
 export type SubMenuName = "docs" | "sheets" | "slides" | "forms" | "more"
 
@@ -128,7 +131,10 @@ const Dropdown = ({ menuIsOpen }: Props) => {
               onClick={(e) => {
                 e.stopPropagation()
                 openModalCreateUpdateFolder()
+
+                // * CLEAN UP
                 dispatch(setMenuOfNewIsOpenReducer(false))
+                dispatch(resetIsShowCtxMenuReducer())
               }}
             >
               <div>

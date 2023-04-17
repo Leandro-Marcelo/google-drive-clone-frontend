@@ -3,12 +3,13 @@ import Tooltip from "../../../../../components/Tooltip"
 import { getSvg } from "../../../../../utils/getSvg"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
-  handleCheckAllIdsReducer,
+  checkAllFilesAndFoldersIdsReducer,
   updateChildFoldersReducer,
-  updateFilesToSoftDeletedFilesReducer,
+  updateFilesAndFoldersToSoftDeletedFilesReducer,
 } from "../../../../../store/folder/folderSlice"
 import folderMovePNG from "../../../../../assets/imgs/folderMove.png"
 import { softDeleteManyFilesAPI } from "../../../../../services/files"
+import { softDeleteManyFoldersAPI } from "../../../../../services/folders"
 
 const FileActions = () => {
   const dispatch = useAppDispatch()
@@ -16,10 +17,45 @@ const FileActions = () => {
 
   const handleUpdateFilesToSoftDeletedFiles = async () => {
     try {
-      const res = await softDeleteManyFilesAPI(
-        Array.from(storeFolder.checkedIds)
-      )
-      dispatch(updateFilesToSoftDeletedFilesReducer(res.data))
+      const filesIds: string[] = []
+      const foldersIds: string[] = []
+
+      storeFolder.checkedFilesAndFoldersIds.forEach((onlyFileOrFolder, id) => {
+        if (onlyFileOrFolder === "file") {
+          filesIds.push(id)
+        } else {
+          foldersIds.push(id)
+        }
+      })
+
+      if (filesIds.length > 0 && foldersIds.length > 0) {
+        const filesResponse = await softDeleteManyFilesAPI(filesIds)
+        const folderResponse = await softDeleteManyFoldersAPI(foldersIds)
+        dispatch(
+          updateFilesAndFoldersToSoftDeletedFilesReducer({
+            files: filesResponse.data,
+            folders: folderResponse.data,
+          })
+        )
+      } else if (filesIds.length > 0 && foldersIds.length === 0) {
+        const filesResponse = await softDeleteManyFilesAPI(filesIds)
+        dispatch(
+          updateFilesAndFoldersToSoftDeletedFilesReducer({
+            files: filesResponse.data,
+            folders: [],
+          })
+        )
+      } else if (filesIds.length === 0 && foldersIds.length > 0) {
+        const folderResponse = await softDeleteManyFoldersAPI(foldersIds)
+        dispatch(
+          updateFilesAndFoldersToSoftDeletedFilesReducer({
+            files: [],
+            folders: folderResponse.data,
+          })
+        )
+      } else {
+        console.log("No files or folders to delete")
+      }
     } catch (err) {}
   }
 
@@ -31,7 +67,7 @@ const FileActions = () => {
         e.preventDefault()
       }}
     >
-      {storeFolder.checkedIds.size > 0 ? (
+      {storeFolder.checkedFilesAndFoldersIds.size > 0 ? (
         /* pl-4  */
         <div className="flex items-center gap-3 pl-3">
           <Tooltip
@@ -40,13 +76,13 @@ const FileActions = () => {
             textNoWrap={true}
             onClick={(e) => {
               e.stopPropagation()
-              dispatch(handleCheckAllIdsReducer())
+              dispatch(checkAllFilesAndFoldersIdsReducer())
             }}
           >
             <div>
               {getSvg({
                 type: `${
-                  storeFolder.checkedIds.size ===
+                  storeFolder.checkedFilesAndFoldersIds.size ===
                   storeFolder.totalFilesPlusFolders
                     ? "checkboxChecked"
                     : "checkboxIndeterminate"
@@ -58,7 +94,7 @@ const FileActions = () => {
           </Tooltip>
 
           <div className="text-[#1F1F1F] font-semibold">
-            {storeFolder.checkedIds.size} selected
+            {storeFolder.checkedFilesAndFoldersIds.size} selected
           </div>
 
           <Tooltip text="Share" direction="top-10 -left-4" textNoWrap={true}>

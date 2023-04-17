@@ -3,6 +3,7 @@ import {
   File,
   Folder,
   IsShowCtxMenuType,
+  OnlyFileOrFolder,
   UpdateFileByIdParams,
   UpdateFolderByIdParams,
   UpdateIsShowCtxMenuReducer,
@@ -43,8 +44,11 @@ export interface FolderState extends ReduxState {
     outside: boolean
   }
 
-  checkedIds: Set<string>
+  /* CHECKBOX */
   totalFilesPlusFolders: number
+
+  /* ANOTHER */
+  checkedFilesAndFoldersIds: Map<string, OnlyFileOrFolder>
 }
 
 const initialState: FolderState = {
@@ -76,8 +80,10 @@ const initialState: FolderState = {
 
   // * CHECKBOX
 
-  checkedIds: new Set<string>(),
   totalFilesPlusFolders: 0,
+
+  // * ANOTHER
+  checkedFilesAndFoldersIds: new Map<string, OnlyFileOrFolder>(),
 }
 
 /*  const topCheckbox: any = useRef<any>()
@@ -177,10 +183,13 @@ export const foldersSlice = createSlice({
     },
 
     createFolderReducer(state, action: PayloadAction<Folder>) {
-      return {
+      const updatedFolderRTKState: FolderState = {
         ...state,
         folders: [...state.folders, action.payload],
+        totalFilesPlusFolders: state.totalFilesPlusFolders + 1,
       }
+
+      return updatedFolderRTKState
     },
 
     updateChildFoldersReducer(state, action: PayloadAction<ChildFolder>) {
@@ -288,70 +297,118 @@ export const foldersSlice = createSlice({
     },
 
     /* CHECK BOX */
-    handleCheckIdReducer(state, action: PayloadAction<string>) {
-      const updatedCheckedIds = new Set(state.checkedIds)
-      if (updatedCheckedIds.has(action.payload)) {
-        updatedCheckedIds.delete(action.payload)
-      } else {
-        updatedCheckedIds.add(action.payload)
-      }
 
-      const updatedFolderRTKState: FolderState = {
-        ...state,
-        checkedIds: updatedCheckedIds,
-      }
-
-      return updatedFolderRTKState
-    },
-
-    checkSpecificIdReducer(state, action: PayloadAction<string>) {
-      const updatedCheckedIds = new Set<string>()
-      updatedCheckedIds.add(action.payload)
-
-      const updatedFolderRTKState: FolderState = {
-        ...state,
-        checkedIds: updatedCheckedIds,
-      }
-
-      return updatedFolderRTKState
-    },
-
-    handleCheckAllIdsReducer(state, action: PayloadAction<void>) {
-      if (!(state.checkedIds.size === state.totalFilesPlusFolders)) {
-        const filesIds = state.files.map((file) => file.id)
-        const foldersIds = state.folders.map((folder) => folder.id)
-
-        const updatedFolderRTKState: FolderState = {
-          ...state,
-          checkedIds: new Set([...filesIds, ...foldersIds]),
-        }
-        return updatedFolderRTKState
-      } else {
-        const updatedFolderRTKState: FolderState = {
-          ...state,
-          checkedIds: new Set<string>(),
-        }
-
-        return updatedFolderRTKState
-      }
-    },
-
-    resetCheckedIdsReducer(state) {
-      const updatedFolderRTKState: FolderState = {
-        ...state,
-        checkedIds: new Set<string>(),
-      }
-
-      return updatedFolderRTKState
-    },
-
-    updateFilesToSoftDeletedFilesReducer(
+    handleCheckFileOrFolderIdReducer(
       state,
-      action: PayloadAction<UploadedFile[]>
+      action: PayloadAction<{
+        id: string
+        type: "file" | "folder"
+      }>
     ) {
-      const uploadedFiles: UploadedFile[] = action.payload
+      // copy state.checkedFilesAndFoldersIds
+      const updatedCheckedFilesAndFoldersIds = new Map(
+        state.checkedFilesAndFoldersIds
+      )
+
+      if (updatedCheckedFilesAndFoldersIds.has(action.payload.id)) {
+        updatedCheckedFilesAndFoldersIds.delete(action.payload.id)
+      } else {
+        updatedCheckedFilesAndFoldersIds.set(
+          action.payload.id,
+          action.payload.type
+        )
+      }
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        checkedFilesAndFoldersIds: updatedCheckedFilesAndFoldersIds,
+      }
+
+      return updatedFolderRTKState
+    },
+
+    checkSpecificFileOrFolderIdReducer(
+      state,
+      action: PayloadAction<{
+        id: string
+        type: OnlyFileOrFolder
+      }>
+    ) {
+      const updatedCheckedFilesAndFoldersIds = new Map<
+        string,
+        OnlyFileOrFolder
+      >()
+
+      updatedCheckedFilesAndFoldersIds.set(
+        action.payload.id,
+        action.payload.type
+      )
+
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        checkedFilesAndFoldersIds: updatedCheckedFilesAndFoldersIds,
+      }
+
+      return updatedFolderRTKState
+    },
+
+    checkAllFilesAndFoldersIdsReducer(state, action: PayloadAction<void>) {
+      if (
+        !(state.checkedFilesAndFoldersIds.size === state.totalFilesPlusFolders)
+      ) {
+        const files: [string, OnlyFileOrFolder][] = state.files.map((file) => [
+          file.id,
+          "file",
+        ])
+
+        const folders: [string, OnlyFileOrFolder][] = state.folders.map(
+          (folder) => [folder.id, "folder"]
+        )
+
+        const updatedCheckedFilesAndFoldersIds = new Map<
+          string,
+          OnlyFileOrFolder
+        >([...files, ...folders])
+
+        const updatedFolderRTKState: FolderState = {
+          ...state,
+          checkedFilesAndFoldersIds: updatedCheckedFilesAndFoldersIds,
+        }
+
+        return updatedFolderRTKState
+      } else {
+        const updatedFolderRTKState: FolderState = {
+          ...state,
+          checkedFilesAndFoldersIds: new Map<string, OnlyFileOrFolder>(),
+        }
+
+        return updatedFolderRTKState
+      }
+    },
+
+    resetCheckedFilesAndFoldersIdsReducer(state) {
+      const updatedFolderRTKState: FolderState = {
+        ...state,
+        checkedFilesAndFoldersIds: new Map<string, OnlyFileOrFolder>(),
+      }
+
+      return updatedFolderRTKState
+    },
+
+    updateFilesAndFoldersToSoftDeletedFilesReducer(
+      state,
+      action: PayloadAction<{
+        files: UploadedFile[]
+        folders: UploadedFile[]
+      }>
+    ) {
+      const uploadedFiles: UploadedFile[] = action.payload.files
       const fullfilledFiles: File[] = []
       const rejectedFiles: string[] = []
+
+      const uploadedFolders: UploadedFile[] = action.payload.files
+      const fullfilledFolders: File[] = []
+      const rejectedFolders: string[] = []
 
       uploadedFiles.forEach((file) => {
         if (file.status === "rejected") {
@@ -361,7 +418,17 @@ export const foldersSlice = createSlice({
         }
       })
 
+      uploadedFolders.forEach((folder) => {
+        if (folder.status === "rejected") {
+          rejectedFolders.push(folder.reason.message)
+        } else {
+          fullfilledFolders.push(folder.value)
+        }
+      })
+
       const fulfilledFilesIds = fullfilledFiles.map((file) => file.id)
+      const fulfilledFoldersIds = fullfilledFolders.map((folder) => folder.id)
+
       const updatedFiles = state.files.filter((file) => {
         if (fulfilledFilesIds.includes(file.id)) {
           return false
@@ -370,15 +437,23 @@ export const foldersSlice = createSlice({
         }
       })
 
+      const updatedFolders = state.folders.filter((folder) => {
+        if (fulfilledFoldersIds.includes(folder.id)) {
+          return false
+        } else {
+          return true
+        }
+      })
+
       const updatedTotalFilesPlusFolders =
-        updatedFiles.length + state.folders.length
+        updatedFiles.length + updatedFolders.length
 
       const updatedFolderRTKState: FolderState = {
         ...state,
         files: updatedFiles,
         softDeletedFiles: fullfilledFiles,
         totalFilesPlusFolders: updatedTotalFilesPlusFolders,
-        checkedIds: new Set<string>(),
+        checkedFilesAndFoldersIds: new Map<string, OnlyFileOrFolder>(),
       }
 
       return updatedFolderRTKState
@@ -400,14 +475,16 @@ export const {
   uploadManyFilesReducer,
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
-  handleCheckIdReducer,
-  handleCheckAllIdsReducer,
-  checkSpecificIdReducer,
-  resetCheckedIdsReducer,
   resetIsShowCtxMenuReducer,
 
   // * SOFT DELETE FILES
-  updateFilesToSoftDeletedFilesReducer,
+  updateFilesAndFoldersToSoftDeletedFilesReducer,
+
+  /* checjed */
+  handleCheckFileOrFolderIdReducer,
+  checkSpecificFileOrFolderIdReducer,
+  checkAllFilesAndFoldersIdsReducer,
+  resetCheckedFilesAndFoldersIdsReducer,
 } = foldersSlice.actions
 // # This is for store
 export default foldersSlice.reducer

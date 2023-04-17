@@ -7,9 +7,9 @@ import {
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
   setFolderToUpdateReducer,
-  handleCheckIdReducer,
-  checkSpecificIdReducer,
   resetIsShowCtxMenuReducer,
+  handleCheckFileOrFolderIdReducer,
+  checkSpecificFileOrFolderIdReducer,
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
 import {
@@ -81,13 +81,18 @@ export default function FolderContainer({}: Props) {
             key={folder.id}
             /* border-[1px] border-solid border-[#DADCE0] */
             className={`rounded-xl  ${
-              storeFolder.checkedIds.has(folder.id)
+              storeFolder.checkedFilesAndFoldersIds.has(folder.id)
                 ? `bg-[#C2E7FF]`
                 : `bg-[#F2F6FC] hover:bg-[#f5f5f5]`
             }  group/showCheckbox`}
             onClick={(e) => {
               e.stopPropagation()
-              dispatch(checkSpecificIdReducer(folder.id))
+              dispatch(
+                checkSpecificFileOrFolderIdReducer({
+                  id: folder.id,
+                  type: "folder",
+                })
+              )
               // * CLEAN UP
               dispatch(resetIsShowCtxMenuReducer())
               dispatch(setMenuOfNewIsOpenReducer(false))
@@ -102,6 +107,14 @@ export default function FolderContainer({}: Props) {
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
                 e.stopPropagation()
                 handleShowCtxMenu(folder, e)
+                dispatch(
+                  checkSpecificFileOrFolderIdReducer({
+                    id: folder.id,
+                    type: "folder",
+                  })
+                )
+                // * CLEAN UP
+                dispatch(setMenuOfNewIsOpenReducer(false))
               }}
               /* px-3 pb-3 py-1 relative cursor-default */
               /* z-100 relative flex items-center */
@@ -114,12 +127,17 @@ export default function FolderContainer({}: Props) {
 
                 {/* pl-3    */}
                 <div className="flex items-center gap-4 w-[90%]">
-                  {storeFolder.checkedIds.has(folder.id) ? (
+                  {storeFolder.checkedFilesAndFoldersIds.has(folder.id) ? (
                     <div
                       className="p-2 hover:bg-[#3c404314] rounded-full cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation()
-                        dispatch(handleCheckIdReducer(folder.id))
+                        dispatch(
+                          handleCheckFileOrFolderIdReducer({
+                            id: folder.id,
+                            type: "folder",
+                          })
+                        )
                         // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
                         dispatch(setMenuOfNewIsOpenReducer(false))
@@ -136,7 +154,12 @@ export default function FolderContainer({}: Props) {
                       className="hover:bg-[#3c404314]   p-2 rounded-full cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation()
-                        dispatch(handleCheckIdReducer(folder.id))
+                        dispatch(
+                          handleCheckFileOrFolderIdReducer({
+                            id: folder.id,
+                            type: "folder",
+                          })
+                        )
                         // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
                         dispatch(setMenuOfNewIsOpenReducer(false))
@@ -208,7 +231,12 @@ export default function FolderContainer({}: Props) {
                     onClick={(e) => {
                       e.stopPropagation()
                       handleShowCtxMenu(folder, e)
-                      dispatch(checkSpecificIdReducer(folder.id))
+                      dispatch(
+                        checkSpecificFileOrFolderIdReducer({
+                          id: folder.id,
+                          type: "folder",
+                        })
+                      )
 
                       // * CLEAN UP
                       dispatch(setMenuOfNewIsOpenReducer(false))

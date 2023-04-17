@@ -1,3 +1,4 @@
+import Dropdown from "../../../../../components/Dropdown"
 import { setFolderToUpdateReducer } from "../../../../../store/folder/folderSlice"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
@@ -131,7 +132,7 @@ const CtxMenus = () => {
           y={storeFolder.positionCtxMenu.y}
           x={storeFolder.positionCtxMenu.x}
         >
-          <ul className="rounded-md bg-white py-4">
+          {/*  <ul className="rounded-md bg-white py-4">
             <li
               className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
               onClick={() => openModalCreateUpdateFolder()}
@@ -147,7 +148,8 @@ const CtxMenus = () => {
             <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
               Folder Upload
             </li>
-          </ul>
+          </ul> */}
+          <Dropdown menuIsOpen={storeFolder.isShowCtxMenu.outside} />
         </ContextMenu>
       )}
     </>

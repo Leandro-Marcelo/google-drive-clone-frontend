@@ -8,7 +8,7 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../store/hook"
 import {
   getRootFilesAndFoldersReducer,
-  resetCheckedIdsReducer,
+  resetCheckedFilesAndFoldersIdsReducer,
   resetIsShowCtxMenuReducer,
 } from "../../../../store/folder/folderSlice"
 import { getRootFilesAPI } from "../../../../services/files"
@@ -78,7 +78,7 @@ const Index = () => {
   useEffect(() => {
     const cleanUp = (e: MouseEvent) => {
       dispatch(resetIsShowCtxMenuReducer())
-      dispatch(resetCheckedIdsReducer())
+      dispatch(resetCheckedFilesAndFoldersIdsReducer())
       dispatch(setMenuOfNewIsOpenReducer(false))
     }
 

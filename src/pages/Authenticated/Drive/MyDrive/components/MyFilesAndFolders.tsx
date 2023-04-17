@@ -1,18 +1,17 @@
-import { useRef, useState } from "react"
-import { getSvg } from "../../../../../utils/getSvg"
+import { useRef } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
-import ContextMenu from "./ContextMenu"
-/* import FolderContainer from "./FolderContainer" */
 import FileContainer from "./FileContainer"
 import FolderContainer from "./FolderContainer"
-import { openModalCreateUpdateFolder } from "../../../../../utils/openModal"
 import DropArea from "./DropArea"
 import {
-  resetCheckedIdsReducer,
+  resetCheckedFilesAndFoldersIdsReducer,
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
 } from "../../../../../store/folder/folderSlice"
-import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
+import {
+  setIsDraggingFileReducer,
+  setMenuOfNewIsOpenReducer,
+} from "../../../../../store/style/styleSlice"
 
 const MyFilesAndFolders = () => {
   const refInputFile = useRef<HTMLInputElement>(null)
@@ -58,7 +57,10 @@ const MyFilesAndFolders = () => {
               isShow: true,
             })
           )
-          dispatch(resetCheckedIdsReducer())
+
+          // * CLEAN UP
+          dispatch(resetCheckedFilesAndFoldersIdsReducer())
+          dispatch(setMenuOfNewIsOpenReducer(false))
         }}
       >
         <DropArea refInputFile={refInputFile} />
