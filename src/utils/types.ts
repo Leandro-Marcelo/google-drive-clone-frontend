@@ -41,6 +41,9 @@ export type SvgType =
   | "checkboxFileFolder"
   | "download"
   | "folderMove"
+  | "newFolder"
+  | "fileUpload"
+  | "folderUpload"
 
 export type SvgFill =
   | "#5F6368"

@@ -4,7 +4,7 @@ import styles from "../styles/Modal.module.css"
 import { useForm } from "../utils/hooks/useForm"
 import {
   createFolderReducer,
-  setFolderToUpdate,
+  setFolderToUpdateReducer,
   updateFolderByIdReducer,
 } from "../store/folder/folderSlice"
 import { createFolderAPI, updateFolderByIdAPI } from "../services/folders"
@@ -43,7 +43,7 @@ export default function ModalCreateFolder({ root }: Props) {
 
   function cancel() {
     handleClick()
-    dispatch(setFolderToUpdate(null))
+    dispatch(setFolderToUpdateReducer(null))
   }
 
   const updateFolderByIdFetch = async () => {
@@ -103,7 +103,7 @@ export default function ModalCreateFolder({ root }: Props) {
   return (
     <div
       ref={ref}
-      className={`modalContainer fixed top-0 flex h-screen w-full items-center justify-center bg-[rgba(0,0,0,0.35)] text-black`}
+      className={`modalContainer fixed top-0 flex h-screen w-full items-center justify-center bg-[rgba(0,0,0,0.35)] text-black z-20`}
     >
       <div
         className={`${styles.modalView} flex h-[200px] w-[343px] flex-col gap-2 overflow-hidden rounded-[10px] bg-white p-5`}

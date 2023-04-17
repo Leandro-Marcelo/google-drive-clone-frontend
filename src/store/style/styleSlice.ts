@@ -3,9 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface StyleRtkState {
   isDraggingFile: boolean
+  menuOfNewIsOpen: boolean
 }
 const STYLE_STATE_RESET: StyleRtkState = {
   isDraggingFile: false,
+  menuOfNewIsOpen: false,
 }
 
 const initialState = STYLE_STATE_RESET
@@ -22,6 +24,15 @@ export const stylesSlice = createSlice({
 
       return updatedStyleRTKState
     },
+
+    setMenuOfNewIsOpenReducer: (state, action: PayloadAction<boolean>) => {
+      const updatedStyleRTKState: StyleRtkState = {
+        ...state,
+        menuOfNewIsOpen: action.payload,
+      }
+
+      return updatedStyleRTKState
+    },
   },
 })
 
@@ -29,6 +40,7 @@ export const {
   /* showCloudUploadingReducer,
   hideCloudUploadingReducer, */
   setIsDraggingFileReducer,
+  setMenuOfNewIsOpenReducer,
 } = stylesSlice.actions
 
 export default stylesSlice.reducer

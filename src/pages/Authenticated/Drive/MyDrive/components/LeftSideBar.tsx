@@ -3,8 +3,16 @@ import googleDriveIcon from "../../../../../assets/imgs/googleDrive.png"
 import { getSvg } from "../../../../../utils/getSvg"
 import { useLocation } from "react-router-dom"
 import { AuthenticatedRoutes } from "../../../../../utils/constants"
+import Dropdown from "../../../../../components/Dropdown"
+import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
+import { setMenuOfNewIsOpenReducer } from "../../../../../store/style/styleSlice"
+
+export type SubMenuName = "docs" | "sheets" | "slides" | "forms" | "more"
 
 const LeftSideBar = () => {
+  const storeStyle = useAppSelector((store) => store.style)
+  const dispatch = useAppDispatch()
+
   const location = useLocation()
   const { pathname } = location
   const splitedPathname = pathname.split("/")
@@ -31,16 +39,23 @@ const LeftSideBar = () => {
         </div>
       </div>
       <div className="h-[93%] ">
-        <div className=" py-3 px-3">
+        <div className=" py-3 px-3 ">
           <div
-            className="flex w-[100px] items-center gap-3 rounded-2xl bg-white py-4 px-2 justify-center cursor-pointer hover:bg-[#EFF3FB] transition-colors hover:shadow-md"
+            /* bg-white */
+            className="flex w-[100px] items-center gap-3 rounded-2xl  py-4 px-2 justify-center cursor-pointer hover:bg-[#EFF3FB] transition-colors hover:shadow-md relative"
+            onClick={(e) => {
+              e.stopPropagation()
+              dispatch(setMenuOfNewIsOpenReducer(true))
+            }}
             style={{
               boxShadow:
                 "0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
             }}
           >
             <div className="">{getSvg({ type: "new", fill: "#5F6368" })}</div>
+            {/* relative w-[300px] ml-4 bg-red-500 */}
             <div className="text-sm font-medium text-[##3C4043]">New</div>
+            <Dropdown menuIsOpen={storeStyle.menuOfNewIsOpen} />
           </div>
         </div>
         <div className=" pl-3 pr-5 py-5 text-[13px] ">

@@ -13,12 +13,40 @@ import {
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
 import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
+import { Folder } from "../../../../../utils/typesAndInterfaces"
 
 interface Props {}
 
 export default function FolderContainer({}: Props) {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
+
+  const handleShowCtxMenu = (
+    clickedFolder: Folder,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    dispatch(
+      setFolderToUpdateReducer({
+        folderId: clickedFolder.id,
+        data: {
+          originalName: clickedFolder.originalName,
+          parentFolderId: clickedFolder.parentFolderId,
+        },
+      })
+    )
+    dispatch(
+      updatePositionCtxMenuReducer({
+        x: e.pageX,
+        y: e.pageY,
+      })
+    )
+    dispatch(
+      updateIsShowCtxMenuReducer({
+        type: "folder",
+        isShow: true,
+      })
+    )
+  }
 
   /* const addFolderIdToInFolderState = (id: number, originalName: string) => */
 
@@ -68,28 +96,7 @@ export default function FolderContainer({}: Props) {
                 e.preventDefault()
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
                 e.stopPropagation()
-
-                dispatch(
-                  setFolderToUpdateReducer({
-                    folderId: folder.id,
-                    data: {
-                      originalName: folder.originalName,
-                      parentFolderId: folder.parentFolderId,
-                    },
-                  })
-                )
-                dispatch(
-                  updatePositionCtxMenuReducer({
-                    x: e.pageX,
-                    y: e.pageY,
-                  })
-                )
-                dispatch(
-                  updateIsShowCtxMenuReducer({
-                    type: "folder",
-                    isShow: true,
-                  })
-                )
+                handleShowCtxMenu(folder, e)
               }}
               /* px-3 pb-3 py-1 relative cursor-default */
               /* z-100 relative flex items-center */
@@ -145,7 +152,7 @@ export default function FolderContainer({}: Props) {
                   )}
 
                   <div
-                    className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
+                    className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1 pr-2`}
                     onDoubleClick={(e) => {
                       e.stopPropagation()
                       dispatch(
@@ -189,6 +196,11 @@ export default function FolderContainer({}: Props) {
                     direction="top-8 -left-6"
                     textNoWrap={true}
                     hoverPadding="p-[2px]"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleShowCtxMenu(folder, e)
+                      dispatch(checkSpecificIdReducer(folder.id))
+                    }}
                   >
                     <div>
                       {getSvg({

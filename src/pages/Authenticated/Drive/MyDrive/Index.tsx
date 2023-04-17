@@ -21,6 +21,7 @@ import { getSvg } from "../../../../utils/getSvg"
 import CloudUploadingDragOver from "./components/CloudUploadingDragOver"
 import CtxMenus from "./components/CtxMenus"
 import MessageWarningStorage from "./components/MessageWarningStorage"
+import { setMenuOfNewIsOpenReducer } from "../../../../store/style/styleSlice"
 
 const Index = () => {
   const dispatch = useAppDispatch()
@@ -78,6 +79,7 @@ const Index = () => {
     const cleanUp = (e: MouseEvent) => {
       dispatch(resetIsShowCtxMenuReducer())
       dispatch(resetCheckedIdsReducer())
+      dispatch(setMenuOfNewIsOpenReducer(false))
     }
 
     window.addEventListener("click", cleanUp)

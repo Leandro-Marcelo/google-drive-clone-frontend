@@ -13,7 +13,10 @@ import {
   updateIsShowCtxMenuReducer,
   updatePositionCtxMenuReducer,
 } from "../../../../../store/folder/folderSlice"
-import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
+import {
+  setIsDraggingFileReducer,
+  setMenuOfNewIsOpenReducer,
+} from "../../../../../store/style/styleSlice"
 /* import { openModalUpdateFile } from "../utils/openModal" */
 
 interface Props {}
@@ -21,6 +24,33 @@ interface Props {}
 export default function FileContainer({}: Props) {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((state) => state.folder)
+
+  const handleShowCtxMenu = (
+    clickedFile: File,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    dispatch(
+      setFileToUpdateReducer({
+        fileId: clickedFile.id,
+        data: {
+          originalName: clickedFile.originalName,
+          folderId: clickedFile.folderId,
+        },
+      })
+    )
+    dispatch(
+      updatePositionCtxMenuReducer({
+        x: e.pageX,
+        y: e.pageY,
+      })
+    )
+    dispatch(
+      updateIsShowCtxMenuReducer({
+        type: "file",
+        isShow: true,
+      })
+    )
+  }
 
   return (
     <div
@@ -43,7 +73,9 @@ export default function FileContainer({}: Props) {
             onClick={(e) => {
               e.stopPropagation()
               dispatch(checkSpecificIdReducer(file.id))
+              // * CLEAN UP
               dispatch(resetIsShowCtxMenuReducer())
+              dispatch(setMenuOfNewIsOpenReducer(false))
             }}
           >
             {/* bg-blue-500 */}
@@ -57,27 +89,7 @@ export default function FileContainer({}: Props) {
                 // ESTO ES PARA QUE NO SE HABRA EL CONTEXT MENU POR DEFECTO DE LOS NAVEGADORES
                 e.preventDefault()
 
-                dispatch(
-                  setFileToUpdateReducer({
-                    fileId: file.id,
-                    data: {
-                      originalName: file.originalName,
-                      folderId: file.folderId,
-                    },
-                  })
-                )
-                dispatch(
-                  updatePositionCtxMenuReducer({
-                    x: e.pageX,
-                    y: e.pageY,
-                  })
-                )
-                dispatch(
-                  updateIsShowCtxMenuReducer({
-                    type: "file",
-                    isShow: true,
-                  })
-                )
+                handleShowCtxMenu(file, e)
               }}
             >
               <div
@@ -91,7 +103,9 @@ export default function FileContainer({}: Props) {
                       onClick={(e) => {
                         e.stopPropagation()
                         dispatch(handleCheckIdReducer(file.id))
+                        // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
+                        dispatch(setMenuOfNewIsOpenReducer(false))
                       }}
                     >
                       {getSvg({
@@ -106,7 +120,9 @@ export default function FileContainer({}: Props) {
                       onClick={(e) => {
                         e.stopPropagation()
                         dispatch(handleCheckIdReducer(file.id))
+                        // * CLEAN UP
                         dispatch(resetIsShowCtxMenuReducer())
+                        dispatch(setMenuOfNewIsOpenReducer(false))
                       }}
                     >
                       <div className="hidden group-hover/showCheckbox:flex">
@@ -131,7 +147,7 @@ export default function FileContainer({}: Props) {
                   )}
 
                   <div
-                    className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1`}
+                    className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1 pr-2`}
                   >
                     <span className=" text-[13px]">{file.originalName}</span>
                     <div
@@ -153,6 +169,13 @@ export default function FileContainer({}: Props) {
                     direction="top-8 -left-6"
                     textNoWrap={true}
                     hoverPadding="p-1"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleShowCtxMenu(file, e)
+                      dispatch(checkSpecificIdReducer(file.id))
+                      // * CLEAN UP
+                      dispatch(setMenuOfNewIsOpenReducer(false))
+                    }}
                   >
                     <div>
                       {getSvg({
