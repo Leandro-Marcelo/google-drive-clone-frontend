@@ -64,7 +64,7 @@ const MyFilesAndFolders = () => {
         }}
       >
         <DropArea refInputFile={refInputFile} />
-        <div className="flex flex-col px-4">
+        {/* <div className="flex flex-col px-4">
           <h4
             className="py-4 pl-1 text-[14px] text-[#1f1f1f] font-semibold relative z-10"
             onDragOver={(e) => {
@@ -83,7 +83,7 @@ const MyFilesAndFolders = () => {
             Files
           </h4>
           <FileContainer />
-        </div>
+        </div> */}
 
         {/* EL FILE NO DEJA VERSE EL AZUL QUE APARECE AL REDEDOR CUANDO HACEMOS DRAG OVER */}
       </div>

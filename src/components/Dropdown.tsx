@@ -10,7 +10,7 @@ import googleAppsScriptPNG from "../assets/imgs/googleAppsScript.png"
 import googleJamboardPNG from "../assets/imgs/googleJamboard.png"
 import { getSvg } from "../utils/getSvg"
 import { useAppDispatch, useAppSelector } from "../store/hook"
-import { openModalCreateFolder } from "../utils/openModal"
+import { openModalCreateUpdateFolder } from "../utils/openModal"
 import { setMenuOfNewIsOpenReducer } from "../store/style/styleSlice"
 import { uploadFilesAPI } from "../services/files"
 import {
@@ -135,7 +135,7 @@ const Dropdown = ({ menuIsOpen }: Props) => {
                 dispatch(setMenuOfNewIsOpenReducer(false))
                 dispatch(resetIsShowCtxMenuReducer())
 
-                openModalCreateFolder()
+                openModalCreateUpdateFolder()
               }}
             >
               <div>

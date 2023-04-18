@@ -2,7 +2,7 @@ import Dropdown from "../../../../../components/Dropdown"
 import { setFolderToUpdateReducer } from "../../../../../store/folder/folderSlice"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
-  openModalUpdateFolder,
+  openModalCreateUpdateFolder,
   openModalUpdateFile,
 } from "../../../../../utils/openModal"
 import ContextMenu from "./ContextMenu"
@@ -105,7 +105,7 @@ const CtxMenus = () => {
                     },
                   })
                 )
-                openModalUpdateFolder()
+                openModalCreateUpdateFolder()
               }}
             >
               Rename

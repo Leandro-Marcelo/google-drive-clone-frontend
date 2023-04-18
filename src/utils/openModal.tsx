@@ -19,7 +19,7 @@ export function openModal() {
   )
 }
 
-export function openModalCreateFolder() {
+/* export function openModalCreateFolder() {
   const ModalCreateFolder = lazy(
     () => import("../components/ModalCreateFolder")
   )
@@ -51,9 +51,9 @@ export function openModalUpdateFolder() {
       </Provider>
     </Suspense>
   )
-}
+} */
 
-/* export function openModalCreateUpdateFolder() {
+export function openModalCreateUpdateFolder() {
   const ModalCreateUpdateFolder = lazy(
     () => import("../components/ModalCreateUpdateFolder")
   )
@@ -68,7 +68,7 @@ export function openModalUpdateFolder() {
       </Provider>
     </Suspense>
   )
-} */
+}
 
 export function openModalUpdateFile() {
   const ModalUpdateFile = lazy(() => import("../components/ModalUpdateFile"))

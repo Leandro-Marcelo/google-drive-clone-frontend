@@ -33,12 +33,12 @@ export default function ModalCreateUpdateFolder({ root }: Props) {
   function cb(e: Event) {
     root.unmount()
     document.querySelector("#modalCreateFolder")?.remove()
-    document.removeEventListener("animationend", cb)
+    /* document.removeEventListener("animationend", cb) */
   }
 
   function handleClick() {
-    ref.current && ref.current.classList.add(styles.fadeOut)
-    ref.current?.addEventListener("animationend", cb, { once: true })
+    /* ref.current && ref.current.classList.add(styles.fadeOut)
+    ref.current?.addEventListener("animationend", cb, { once: true }) */
   }
 
   function cancel() {
@@ -104,7 +104,8 @@ export default function ModalCreateUpdateFolder({ root }: Props) {
   return (
     <div
       ref={ref}
-      className={`modalContainer fixed top-0 flex h-screen w-full items-center justify-center bg-[rgba(0,0,0,0.35)] text-black z-20`}
+      /* bg-[rgba(0,0,0,0.35)] text-black */
+      className={`modalContainer fixed top-0 flex h-screen w-full items-center justify-center `}
     >
       <div
         className={`${styles.modalView} flex h-[200px] w-[343px] flex-col gap-2 overflow-hidden rounded-[10px] bg-white p-5`}
