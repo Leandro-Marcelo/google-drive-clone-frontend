@@ -19,7 +19,7 @@ export function openModal() {
   )
 }
 
-/* export function openModalCreateFolder() {
+export function openModalCreateFolder() {
   const ModalCreateFolder = lazy(
     () => import("../components/ModalCreateFolder")
   )
@@ -28,7 +28,7 @@ export function openModal() {
   document.body.appendChild(modalDiv)
   const root = createRoot(modalDiv)
   root.render(
-    <Suspense fallback={<ModalLoading />}>
+    <Suspense fallback={<></>}>
       <Provider store={store}>
         <ModalCreateFolder root={root} />
       </Provider>
@@ -45,15 +45,15 @@ export function openModalUpdateFolder() {
   document.body.appendChild(modalDiv)
   const root = createRoot(modalDiv)
   root.render(
-    <Suspense fallback={<ModalLoading />}>
+    <Suspense fallback={<></>}>
       <Provider store={store}>
         <ModalUpdateFolder root={root} />
       </Provider>
     </Suspense>
   )
-} */
+}
 
-export function openModalCreateUpdateFolder() {
+/* export function openModalCreateUpdateFolder() {
   const ModalCreateUpdateFolder = lazy(
     () => import("../components/ModalCreateUpdateFolder")
   )
@@ -68,7 +68,7 @@ export function openModalCreateUpdateFolder() {
       </Provider>
     </Suspense>
   )
-}
+} */
 
 export function openModalUpdateFile() {
   const ModalUpdateFile = lazy(() => import("../components/ModalUpdateFile"))

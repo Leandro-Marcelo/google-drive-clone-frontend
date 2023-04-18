@@ -3,7 +3,7 @@
 
 .modalView {
   /* ? El forwards es para que cuando una vez termine la animación, se quede tal cual */
-  /* animation: fadeIn 0.3s ease forwards; */
+  animation: fadeIn 0.3s ease forwards;
 }
 
 .modalHeader {
