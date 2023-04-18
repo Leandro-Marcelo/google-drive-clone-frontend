@@ -50,6 +50,7 @@ export default function ModalUpdateFile({ root }: Props) {
         data: {
           originalName: originalName,
           folderId: fileToUpdate.data.folderId,
+          softDeleted: fileToUpdate.data.softDeleted,
         },
       })
       dispatch(updateFileByIdReducer(response.data))
@@ -80,7 +81,7 @@ export default function ModalUpdateFile({ root }: Props) {
   return (
     <div
       ref={ref}
-      className={`modalContainer fixed top-0 flex h-screen w-full items-center justify-center bg-[rgba(0,0,0,0.35)] text-black`}
+      className={`modalContainer fixed top-0 flex h-screen w-full items-center justify-center bg-[rgba(0,0,0,0.35)] text-black z-30`}
     >
       <div
         className={`${styles.modalView} flex h-[201px] w-[400px] flex-col gap-2 overflow-hidden rounded-[10px] bg-white p-6 `}

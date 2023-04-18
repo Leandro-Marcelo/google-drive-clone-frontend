@@ -17,6 +17,7 @@ import {
   setIsDraggingFileReducer,
   setMenuOfNewIsOpenReducer,
 } from "../../../../../store/style/styleSlice"
+import { useEffect, useState } from "react"
 /* import { openModalUpdateFile } from "../utils/openModal" */
 
 interface Props {}
@@ -35,6 +36,7 @@ export default function FileContainer({}: Props) {
         data: {
           originalName: clickedFile.originalName,
           folderId: clickedFile.folderId,
+          softDeleted: clickedFile.softDeleted,
         },
       })
     )
@@ -215,6 +217,32 @@ export default function FileContainer({}: Props) {
                 alt="leandro profile picture"
                 className="h-[200px] w-full rounded-md object-cover "
               />
+              {/* <iframe
+                src={file.imgSrc}
+                title="Archivo PDF"
+                width="100%"
+                height="500px"
+              /> */}
+              {/* <object
+                type="image/svg+xml"
+                data={file.imgSrc}
+                width="100%"
+                height="500px"
+              >
+                Archivo SVG
+              </object> */}
+              {/* <embed
+                src={file.imgSrc}
+                type="image/svg+xml"
+                width="100%"
+                height="500px"
+              /> */}
+              {/* <img
+                src={file.imgSrc}
+                alt="Archivo SVG"
+                width="100%"
+                height="500px"
+              /> */}
             </div>
           </div>
         ))}

@@ -8,6 +8,7 @@ import {
   UpdateFolderByIdParams,
   UpdateIsShowCtxMenuReducer,
   UploadedFile,
+  UploadedFolder,
 } from "../../utils/typesAndInterfaces"
 
 import { enableMapSet } from "immer"
@@ -26,6 +27,7 @@ export interface ChildFolder {
 export interface FolderState extends ReduxState {
   files: File[]
   softDeletedFiles: File[]
+  softDeletedFolders: Folder[]
   folders: Folder[]
   childFolders: ChildFolder[]
   folderToUpdate: UpdateFolderByIdParams | null
@@ -60,6 +62,7 @@ const initialState: FolderState = {
   // * FOLDER STATE
   files: [],
   softDeletedFiles: [],
+  softDeletedFolders: [],
   folders: [],
   childFolders: [],
   folderToUpdate: null,
@@ -399,15 +402,15 @@ export const foldersSlice = createSlice({
       state,
       action: PayloadAction<{
         files: UploadedFile[]
-        folders: UploadedFile[]
+        folders: UploadedFolder[]
       }>
     ) {
       const uploadedFiles: UploadedFile[] = action.payload.files
       const fullfilledFiles: File[] = []
       const rejectedFiles: string[] = []
 
-      const uploadedFolders: UploadedFile[] = action.payload.files
-      const fullfilledFolders: File[] = []
+      const uploadedFolders: UploadedFolder[] = action.payload.folders
+      const fullfilledFolders: Folder[] = []
       const rejectedFolders: string[] = []
 
       uploadedFiles.forEach((file) => {
@@ -451,7 +454,9 @@ export const foldersSlice = createSlice({
       const updatedFolderRTKState: FolderState = {
         ...state,
         files: updatedFiles,
+        folders: updatedFolders,
         softDeletedFiles: fullfilledFiles,
+        softDeletedFolders: fullfilledFolders,
         totalFilesPlusFolders: updatedTotalFilesPlusFolders,
         checkedFilesAndFoldersIds: new Map<string, OnlyFileOrFolder>(),
       }

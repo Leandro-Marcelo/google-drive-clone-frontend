@@ -3,24 +3,20 @@ import { useAppDispatch, useAppSelector } from "../store/hook"
 import styles from "../styles/Modal.module.css"
 import { useForm } from "../utils/hooks/useForm"
 import {
-  createFolderReducer,
   setFolderToUpdateReducer,
   updateFolderByIdReducer,
 } from "../store/folder/folderSlice"
-import { createFolderAPI, updateFolderByIdAPI } from "../services/folders"
-import { CreateFolderDBInput } from "../utils/typesAndInterfaces"
+import { updateFolderByIdAPI } from "../services/folders"
 
 interface Props {
   root: any
 }
 
-export default function ModalCreateUpdateFolder({ root }: Props) {
+export default function ModalUpdateFolder({ root }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const dispatch = useAppDispatch()
-  const { childFolders, folderToUpdate } = useAppSelector(
-    (state) => state.folder
-  )
+  const { folderToUpdate } = useAppSelector((state) => state.folder)
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -46,48 +42,18 @@ export default function ModalCreateUpdateFolder({ root }: Props) {
     dispatch(setFolderToUpdateReducer(null))
   }
 
-  const updateFolderByIdFetch = async () => {
-    try {
-      if (!folderToUpdate) return
+  const handleUpdateFolder = async () => {
+    if (!folderToUpdate) return
 
-      const response = await updateFolderByIdAPI({
-        folderId: folderToUpdate.folderId,
-        data: {
-          originalName: originalName,
-          parentFolderId: folderToUpdate.data.parentFolderId,
-          softDeleted: folderToUpdate.data.softDeleted,
-        },
-      })
-      dispatch(updateFolderByIdReducer(response.data))
-    } catch (err) {}
-  }
-
-  const createFolderFetch = async (
-    createFolderFetchParams: CreateFolderDBInput
-  ) => {
-    try {
-      const response = await createFolderAPI({
-        originalName: createFolderFetchParams.originalName,
-        parentFolderId: createFolderFetchParams.parentFolderId,
-      })
-      dispatch(createFolderReducer(response.data))
-    } catch (err) {}
-  }
-
-  const handleCreateUpdateFolder = () => {
-    if (folderToUpdate && folderToUpdate.folderId) {
-      updateFolderByIdFetch()
-    } else {
-      // Este If es para verificar si el folder que creo el usuario es hijo de otro folder para guardarlo así en la base de datos
-      if (childFolders && childFolders.length >= 1) {
-        createFolderFetch({
-          originalName,
-          parentFolderId: childFolders[childFolders.length - 1].id,
-        })
-      } else {
-        createFolderFetch({ originalName, parentFolderId: null })
-      }
-    }
+    const response = await updateFolderByIdAPI({
+      folderId: folderToUpdate.folderId,
+      data: {
+        originalName: originalName,
+        parentFolderId: folderToUpdate.data.parentFolderId,
+        softDeleted: folderToUpdate.data.softDeleted,
+      },
+    })
+    dispatch(updateFolderByIdReducer(response.data))
 
     handleClick()
     // aunque puede que no sea necesario ya que vamos a destruir el componente pero bueno xd
@@ -113,9 +79,7 @@ export default function ModalCreateUpdateFolder({ root }: Props) {
             "0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)",
         }}
       >
-        <div className="mb-2 text-[24px]  text-[#1F1F1F] pl-1">
-          {folderToUpdate && folderToUpdate.folderId ? "Rename" : "New folder"}
-        </div>
+        <div className="mb-2 text-[24px]  text-[#1F1F1F] pl-1">Rename</div>
         <input
           type="text"
           name="originalName"
@@ -133,9 +97,9 @@ export default function ModalCreateUpdateFolder({ root }: Props) {
           </button>
           <button
             className="closeBtn cursor-pointer rounded-full bg-none px-[15px] py-[10px] font-medium text-[#0b57d0] hover:bg-[#f6f9fd] text-[15px]"
-            onClick={handleCreateUpdateFolder}
+            onClick={handleUpdateFolder}
           >
-            {folderToUpdate && folderToUpdate.folderId ? "Rename" : "Create"}
+            Rename
           </button>
         </div>
       </div>

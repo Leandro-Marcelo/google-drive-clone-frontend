@@ -2,7 +2,7 @@ import Dropdown from "../../../../../components/Dropdown"
 import { setFolderToUpdateReducer } from "../../../../../store/folder/folderSlice"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
-  openModalCreateUpdateFolder,
+  openModalUpdateFolder,
   openModalUpdateFile,
 } from "../../../../../utils/openModal"
 import ContextMenu from "./ContextMenu"
@@ -101,10 +101,11 @@ const CtxMenus = () => {
                         storeFolder.folderToUpdate.data.originalName,
                       parentFolderId:
                         storeFolder.folderToUpdate.data.parentFolderId,
+                      softDeleted: storeFolder.folderToUpdate.data.softDeleted,
                     },
                   })
                 )
-                openModalCreateUpdateFolder()
+                openModalUpdateFolder()
               }}
             >
               Rename

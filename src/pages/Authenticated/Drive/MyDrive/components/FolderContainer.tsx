@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
-import { openModalCreateUpdateFolder } from "../../../../../utils/openModal"
 import { getSvg } from "../../../../../utils/getSvg"
 import ContextMenu from "./ContextMenu"
 import {
@@ -10,6 +9,7 @@ import {
   resetIsShowCtxMenuReducer,
   handleCheckFileOrFolderIdReducer,
   checkSpecificFileOrFolderIdReducer,
+  resetCheckedFilesAndFoldersIdsReducer,
 } from "../../../../../store/folder/folderSlice"
 import Tooltip from "../../../../../components/Tooltip"
 import {
@@ -34,6 +34,7 @@ export default function FolderContainer({}: Props) {
         data: {
           originalName: clickedFolder.originalName,
           parentFolderId: clickedFolder.parentFolderId,
+          softDeleted: clickedFolder.softDeleted,
         },
       })
     )
@@ -187,6 +188,7 @@ export default function FolderContainer({}: Props) {
                     className={`group/tooltip overflow-hidden text-ellipsis whitespace-nowrap  flex-1 pr-2`}
                     onDoubleClick={(e) => {
                       e.stopPropagation()
+                      dispatch(resetCheckedFilesAndFoldersIdsReducer())
                       dispatch(
                         updateChildFoldersReducer({
                           id: folder.id,

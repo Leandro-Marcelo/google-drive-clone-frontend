@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import { getSvg } from "../../../../../utils/getSvg"
 import cloudUploading from "../../../../../assets/cloudUploading.gif"
 import { setIsDraggingFileReducer } from "../../../../../store/style/styleSlice"
-import { uploadManyFilesAPI } from "../../../../../services/files"
+import { uploadFilesAPI } from "../../../../../services/files"
 import { uploadManyFilesReducer } from "../../../../../store/folder/folderSlice"
 
 export default function DropArea({ refInputFile }: { refInputFile: any }) {
@@ -45,14 +45,7 @@ export default function DropArea({ refInputFile }: { refInputFile: any }) {
     }
 ); */
 
-  const uploadManyFilesFetch = async (formData: FormData) => {
-    try {
-      const res = await uploadManyFilesAPI({ formData })
-      dispatch(uploadManyFilesReducer(res.data))
-    } catch (err: any) {}
-  }
-
-  const showFiles = (htmlFiles: FileList) => {
+  const showFiles = async (htmlFiles: FileList) => {
     const formData = new FormData()
 
     if (htmlFiles.length === 1) {
@@ -63,14 +56,22 @@ export default function DropArea({ refInputFile }: { refInputFile: any }) {
       }
     }
 
-    if (storeFolder.childFolders.length !== 0) {
+    const folderId =
+      storeFolder.childFolders.length !== 0
+        ? storeFolder.childFolders[storeFolder.childFolders.length - 1].id
+        : "null"
+
+    /* if (storeFolder.childFolders.length !== 0) {
       formData.append(
         "folderId",
         storeFolder.childFolders[storeFolder.childFolders.length - 1].id
       )
-    }
+    } */
 
-    uploadManyFilesFetch(formData)
+    try {
+      const res = await uploadFilesAPI({ files: formData, folderId })
+      dispatch(uploadManyFilesReducer(res.data))
+    } catch (err: any) {}
   }
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {

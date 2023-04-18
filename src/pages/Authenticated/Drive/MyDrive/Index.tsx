@@ -28,8 +28,6 @@ const Index = () => {
   const storeFolder = useAppSelector((store) => store.folder)
 
   useEffect(() => {
-    //console.log("childFolders", childFolders);
-
     const getRootFilesAndFolderFetch = async () => {
       try {
         const filesResponse = await getRootFilesAPI()

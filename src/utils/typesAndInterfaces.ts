@@ -17,6 +17,7 @@ export interface Folder {
   userId: string
   updatedAt: Date
   parentFolderId: string | null
+  softDeleted: boolean
 }
 
 export interface File {
@@ -47,7 +48,10 @@ export interface AuthValidateResponse {
 }
 
 // FILE
-export type UpdateFileDBInput = Pick<File, "originalName" | "folderId">
+export type UpdateFileDBInput = Pick<
+  File,
+  "originalName" | "folderId" | "softDeleted"
+>
 
 export interface UpdateFileByIdParams {
   fileId: string
@@ -58,10 +62,29 @@ export interface UploadManyFilesParams {
   formData: FormData
 }
 
+export interface UploadFilesParams {
+  folderId: string | null
+  files: FormData
+}
+
 export type UploadedFile =
   | {
       status: "fulfilled"
       value: File
+    }
+  | {
+      status: "rejected"
+      reason: {
+        id: string
+        originalName: string
+        message: string
+      }
+    }
+
+export type UploadedFolder =
+  | {
+      status: "fulfilled"
+      value: Folder
     }
   | {
       status: "rejected"
@@ -81,7 +104,7 @@ export type CreateFolderDBInput = Pick<
 
 export type UpdateFolderDBInput = Pick<
   Folder,
-  "originalName" | "parentFolderId"
+  "originalName" | "parentFolderId" | "softDeleted"
 >
 
 export interface UpdateFolderByIdParams {

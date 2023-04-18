@@ -10,9 +10,9 @@ import googleAppsScriptPNG from "../assets/imgs/googleAppsScript.png"
 import googleJamboardPNG from "../assets/imgs/googleJamboard.png"
 import { getSvg } from "../utils/getSvg"
 import { useAppDispatch, useAppSelector } from "../store/hook"
-import { openModalCreateUpdateFolder } from "../utils/openModal"
+import { openModalCreateFolder } from "../utils/openModal"
 import { setMenuOfNewIsOpenReducer } from "../store/style/styleSlice"
-import { uploadManyFilesAPI } from "../services/files"
+import { uploadFilesAPI } from "../services/files"
 import {
   resetIsShowCtxMenuReducer,
   uploadManyFilesReducer,
@@ -31,14 +31,7 @@ const Dropdown = ({ menuIsOpen }: Props) => {
   // * INPUT FILE
   const refInputFile = useRef<HTMLInputElement>(null)
 
-  const uploadManyFilesFetch = async (formData: FormData) => {
-    try {
-      const res = await uploadManyFilesAPI({ formData })
-      dispatch(uploadManyFilesReducer(res.data))
-    } catch (err: any) {}
-  }
-
-  const showFiles = (htmlFiles: FileList) => {
+  const showFiles = async (htmlFiles: FileList) => {
     const formData = new FormData()
 
     if (htmlFiles.length === 1) {
@@ -49,14 +42,22 @@ const Dropdown = ({ menuIsOpen }: Props) => {
       }
     }
 
-    if (storeFolder.childFolders.length !== 0) {
+    const folderId =
+      storeFolder.childFolders.length !== 0
+        ? storeFolder.childFolders[storeFolder.childFolders.length - 1].id
+        : "null"
+
+    /* if (storeFolder.childFolders.length !== 0) {
       formData.append(
         "folderId",
         storeFolder.childFolders[storeFolder.childFolders.length - 1].id
       )
-    }
+    } */
 
-    uploadManyFilesFetch(formData)
+    try {
+      const res = await uploadFilesAPI({ files: formData, folderId })
+      dispatch(uploadManyFilesReducer(res.data))
+    } catch (err: any) {}
   }
 
   const handleChangeInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,11 +131,11 @@ const Dropdown = ({ menuIsOpen }: Props) => {
               }}
               onClick={(e) => {
                 e.stopPropagation()
-                openModalCreateUpdateFolder()
-
                 // * CLEAN UP
                 dispatch(setMenuOfNewIsOpenReducer(false))
                 dispatch(resetIsShowCtxMenuReducer())
+
+                openModalCreateFolder()
               }}
             >
               <div>

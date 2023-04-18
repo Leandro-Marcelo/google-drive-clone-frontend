@@ -1,6 +1,7 @@
 import {
   File,
   UpdateFileByIdParams,
+  UploadFilesParams,
   UploadManyFilesParams,
   UploadedFile,
 } from "../utils/typesAndInterfaces"
@@ -12,12 +13,19 @@ export const getRootFilesAPI = () =>
 export const updateFileByIdAPI = ({ fileId, data }: UpdateFileByIdParams) =>
   axiosClient.put<File>(`/files/${fileId}`, data, axiosClientConfig)
 
-export const uploadManyFilesAPI = ({ formData }: UploadManyFilesParams) =>
+export const uploadFilesAPI = ({ files, folderId }: UploadFilesParams) =>
+  axiosClient.post<UploadedFile[]>(
+    `/files/upload/${folderId}`,
+    files,
+    axiosClientConfig
+  )
+
+/* export const uploadManyFilesAPI = ({ formData }: UploadManyFilesParams) =>
   axiosClient.post<UploadedFile[]>(
     `/files/uploadMany`,
     formData,
     axiosClientConfig
-  )
+  ) */
 
 export const softDeleteManyFilesAPI = (filesIds: string[]) =>
   axiosClient.put<UploadedFile[]>(

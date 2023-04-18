@@ -5,6 +5,7 @@ import {
   GetFolderContents,
   UpdateFolderByIdParams,
   UploadedFile,
+  UploadedFolder,
 } from "../utils/typesAndInterfaces"
 import { axiosClient, axiosClientConfig } from "./index"
 
@@ -30,7 +31,7 @@ export const getFolderContentsAPI = ({ folderId }: GetFolderContents) =>
   >(`/folders/${folderId}`, axiosClientConfig)
 
 export const softDeleteManyFoldersAPI = (foldersIds: string[]) =>
-  axiosClient.put<UploadedFile[]>(
+  axiosClient.put<UploadedFolder[]>(
     `/folders/softDeleteMany`,
     foldersIds,
     axiosClientConfig
