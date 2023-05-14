@@ -88,7 +88,7 @@ export default function FileContainer({}: Props) {
             {/* bg-blue-500 */}
             <div
               /* px-3 pb-3 py-1  */
-              className="px-[10px] relative cursor-default"
+              className="px-[10px] relative cursor-default pb-[10px]"
               // onClick={() => setIsClicked(!isClicked)}
               onContextMenu={(e) => {
                 // ESTO ES PARA QUE NO SE ACTIVE EL DROP AREA CONTEXT MENU
@@ -97,6 +97,12 @@ export default function FileContainer({}: Props) {
                 e.preventDefault()
 
                 handleShowCtxMenu(file, e)
+                dispatch(
+                  checkSpecificFileOrFolderIdReducer({
+                    id: file.id,
+                    type: "file",
+                  })
+                )
 
                 // * CLEAN UP
                 dispatch(setMenuOfNewIsOpenReducer(false))

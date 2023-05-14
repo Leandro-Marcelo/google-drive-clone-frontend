@@ -58,11 +58,15 @@ const Dropdown = ({ menuIsOpen }: Props) => {
       const res = await uploadFilesAPI({ files: formData, folderId })
       dispatch(uploadManyFilesReducer(res.data))
     } catch (err: any) {}
+
+    // Reiniciar el valor del input file a null, esto es porque si subes el mismo archivo varias veces, el navegador no detecta el evento change. [CHATGPT] dijo que podría ser cosa de seguridad web
+    if (refInputFile && refInputFile.current) {
+      refInputFile.current.value = ""
+    }
   }
 
   const handleChangeInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-
+    /* e.preventDefault() */
     if (e.target.files !== null && e.target.files.length >= 1) {
       showFiles(e.target.files)
     }
@@ -120,6 +124,9 @@ const Dropdown = ({ menuIsOpen }: Props) => {
           style={{
             boxShadow:
               "0px 12px 16px rgba(0, 0, 0, 0.1), 0px 8px 12px rgba(0, 0, 0, 0.06), 0px -10px 16px rgba(0, 0, 0, 0.06)",
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
           }}
         >
           <li className="pb-2 pt-1">

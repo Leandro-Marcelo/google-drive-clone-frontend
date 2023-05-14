@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import { getSvg } from "../../../../../utils/getSvg"
-import ContextMenu from "./ContextMenu"
 import {
   updateChildFoldersReducer,
   updateIsShowCtxMenuReducer,

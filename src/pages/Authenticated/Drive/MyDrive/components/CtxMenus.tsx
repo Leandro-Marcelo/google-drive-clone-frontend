@@ -1,5 +1,9 @@
 import Dropdown from "../../../../../components/Dropdown"
-import { setFolderToUpdateReducer } from "../../../../../store/folder/folderSlice"
+import { softDeleteManyFoldersAPI } from "../../../../../services/folders"
+import {
+  setFolderToUpdateReducer,
+  updateFilesAndFoldersToSoftDeletedFilesReducer,
+} from "../../../../../store/folder/folderSlice"
 import { useAppDispatch, useAppSelector } from "../../../../../store/hook"
 import {
   openModalCreateFolder,
@@ -12,6 +16,19 @@ const CtxMenus = () => {
   const dispatch = useAppDispatch()
   const storeFolder = useAppSelector((store) => store.folder)
 
+  const handleDeleteFolder = async () => {
+    if (!storeFolder.folderToUpdate?.folderId) return
+
+    const foldersIds: string[] = [storeFolder.folderToUpdate.folderId]
+    const folderResponse = await softDeleteManyFoldersAPI(foldersIds)
+    dispatch(
+      updateFilesAndFoldersToSoftDeletedFilesReducer({
+        files: [],
+        folders: folderResponse.data,
+      })
+    )
+  }
+
   return (
     <>
       {/* FILES */}
@@ -21,7 +38,12 @@ const CtxMenus = () => {
           y={storeFolder.positionCtxMenu.y}
           x={storeFolder.positionCtxMenu.x}
         >
-          <ul className="rounded-md bg-white py-4">
+          <ul
+            className="rounded-md bg-white py-4"
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          >
             <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
               Preview {storeFolder.fileToUpdate?.fileId}
             </li>
@@ -78,7 +100,12 @@ const CtxMenus = () => {
           y={storeFolder.positionCtxMenu.y}
           x={storeFolder.positionCtxMenu.x}
         >
-          <ul className="cardShadow rounded-md bg-white py-4">
+          <ul
+            className="cardShadow rounded-md bg-white py-4"
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          >
             {/* <li className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]">
                                         Get Link {folder.id}
                                     </li>
@@ -119,7 +146,7 @@ const CtxMenus = () => {
                                     </li> */}
             <li
               className="py-2 px-4 hover:cursor-pointer hover:bg-[#f5f5f5]"
-              // onClick={() => handleDelete(folder.id)}
+              onClick={(e) => handleDeleteFolder()}
             >
               Remove
             </li>
